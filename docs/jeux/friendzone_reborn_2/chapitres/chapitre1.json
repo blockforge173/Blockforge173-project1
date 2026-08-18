@@ -1,0 +1,585 @@
+{
+  "titre":"Chapitre 1 - Sans nouvelles",
+  "musique":"tension_legere",
+  "fond":"maison_eva_soiree",
+  "debut":"retourApresCinematique",
+  "scenes":{
+    "retourApresCinematique":{
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Pendant quelques secondes, personne ne dit rien.",
+          "fond":"maison_eva_salon_groupe"
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"La pièce est portant pleine, mais le silence qui s'est installé donne l'impression qu'elle est complètement vide."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"..."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Vous l'avez vue aussi... pas vrai ?"
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Demander de qui elle parle",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Tu parles de la personne qu'on a vue à la fin ?"
+          },
+          "next":"questionInconnu"
+        },
+        {
+          "texte":"Dire que quelque chose ne colle pas",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Oui. Je ne sais pas pourquoi, mais quelque chose ne colle pas."
+          },
+          "effet":{
+            "intuition":1
+          },
+          "next":"questionInconnu"
+        },
+        {
+          "texte":"Rester silencieux",
+          "message":{
+            "personnage":"joueur",
+            "texte":"..."
+          },
+          "next":"reactionSilence"
+        }
+      ]
+    },
+
+    "reactionSilence":{
+      "dialogues":[
+        {
+          "personnage":"emelyne",
+          "texte":"{{nomJoueur}} ?"
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Je réfléchis."
+        },
+        {
+          "personnage":"Alors réfléchis vite... parce que moi je veux comprendre qui c'était."
+        }
+      ],
+      "next":"questionInconnu"
+    },
+
+    "questionInconnu":{
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Cette personne était là. Près d'Eva."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"On ne sait même pas si elle a quelque chose à voir avec sa dispariton."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Non. Mais pour l'instant, c'est plus que ce qu'on avait il y a cinq minutes."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Vous êtes en train de dire qu'on devrait commencer à enquêter nous-même."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Dire qu'il faut transmettre l'information à la police",
+          "message":{
+            "personnage":"joueur",
+            "texte":"On devrait transmettre ça à la police. Eux peuvent vérifier cette piste."
+          },
+          "effet":{
+            "prudence":2,
+            "relationEmelyne":1
+          },
+          "next":"avisPolice"
+        },
+        {
+          "texte":"Dire qu'il faut chercher à savoir qui est cette personne",
+          "message":{
+            "personnage":"joueur",
+            "texte":"On peut prévenir la police,mais rien ne nous empêche d'essayer de comprendre qui est cette personne."
+          },
+          "effet":{
+            "enquete":2,
+            "relationZoe":1
+          },
+          "next":"chercherNousMeme"
+        },
+        {
+          "texte":"Dire qu'il est trop tôt pour décider",
+          "message":{
+            "personnage":"joueur",
+            "texte":"On vient juste de découvrir ça. Je pense qu'on devrait éviter de tirer des conclusions trop vite."
+          },
+          "effet":{
+            "prudence":1
+          },
+          "next":"temporiser"
+        }
+      ]
+    },
+
+    "avisPolice":{
+      "dialogues":[
+        {
+          "personnage":"emelyne",
+          "texte":"Je suis d'accord. S'il y a vraiment quelque chose à trouver,ils auront plus de moyens que nous."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Et s'ils passent à côté ?"
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Zoé..."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"quoi ? Je dis juste qu'on connaît Eva mieux qu'eux."
+        }
+      ],
+      "next":"finSoiree"
+    },
+
+    "chercherNousMeme":{
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Merci. C'est ecactement ce que j'essaye de dire."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Chercher des informations, d'accord. Mais on ne fait rien de dangereux."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Donc on a déjà des règles avant  même d'avoir commencé."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Avec toi, je préfère."
+        }
+      ],
+      "next":"finSoiree"
+    },
+
+    "temporiser":{
+      "dialogues":[
+        {
+          "personnage":"emelyne",
+          "texte":"Pour une fois, quelqu'un réfléchit avant de foncer."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Je réfléchis."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Tu réfléchis très vite."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"C'est toujours réfléchir."
+        }
+      ],
+      "next":"finSoiree"
+    },
+
+    "finSoiree":{
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"La discussion continue encore longtemps.",
+          "fond":"maison_eva_salon_nuit"
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Mais aucune théorie ne permet réellement d'expliquer ce qui est arrivé à Eva."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Une seule chose semble certaine."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Quelqu'un était avec elle."
+        }
+      ],
+      "next":"ellipse"
+    },
+
+    "ellipse":{
+      "musique":"melancolie",
+      "fond":"nooir",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Quelques jours plus tard..."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Eva n'a toujours pas été retrouvée."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"La police poursuit ses recherches."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"A l'université, tout semble pourtant continuer comme avant."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Presque."
+        }
+      ],
+      "next":"universiteRetour"
+    },
+
+    "universiteRetour":{
+      "musique":"universite",
+      "fond":"cour_universite",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Tu traverses la cour de l'université."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Des étudiant duscutent, d'autras courent pour rejoindre leur cours."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"A les regarder, il serait presque impossible d'oublier qu'Eva manque toujours à l'appel."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"{{nomJoueur}} !"
+        }
+      ],
+      "next":"retrouvaillesGroupe"
+    },
+
+    "retrouvaillesGroupe":{
+      "fond":"cour_universite_groupe",
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"On t'attendait;"
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Pourquoi ?"
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Parce que Zoé a décidé qu'on avait maintenant notre propre cellule d'enquête."
+        },
+        {
+          "personnage":"Arrête de présenter ça comme ça."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Elle a trouvé quelque chose."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Demander ce qu'elle a trouvé",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Qu'est-ce que tu as trouvé ?"
+          },
+          "next":"premierIndice"
+        },
+        {
+          "texte":"Demander d'abord si la police est au courant",
+          "message":{
+            "personnage":"joueur",
+            "texte":"La police est au courant de ce que tu as trouvé ?"
+          },
+          "effet":{
+            "prudence":1
+          },
+          "next":"policePasEncore"
+        },
+        {
+          "texte":"Taquiner Zoé sur sa cellule d'enquête",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Donc Bryan avait raison. On a vraiment une cellule d'enquête."
+          },
+          "effet":{
+            "relationZoe":1
+          },
+          "next":"reactionCellule"
+        }
+      ]
+    },
+
+    "reactionCellule":{
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Je regrette déjà de t'avoir attendu."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Moi je trouve le nom plutôt bien."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Vous avez terminé ?"
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Oui. Regarde ça."
+        }
+      ],
+      "next":"premierIndice"
+    },
+
+    "policePasEncore":{
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Pas encore."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Parce qu'on voulait d'abord être certains que ça voulait réellement dire quelque chose."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Et pour ça, on a besoin de toi."
+        }
+      ],
+      "next":"premierIndice"
+    },
+
+    "premierIndice":{
+      "musique":"mystere",
+      "fond":"cour_universite_indice",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Zoé sort sont téléphone."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Une photographie appareît à l'écran."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"J'ai récupéré ça à partir d'une ancienne publication."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Regarde derrière Eva."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"La qualité n'est pas excellente."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Mais le visage est suffisament visible."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Dire que c'est la personne aperçue avec Eva",
+          "message":{
+            "personnage":"joueur",
+            "texte":"C'est elle. La personne qu'on a vue avec Eva."
+          },
+          "effet":{
+            "indiceIncconnuConfirme":true,
+            "enquete":2
+          },
+          "next":"confirmationIndice"
+        },
+        {
+          "texte":"Dire qu'il est difficile d'en être certain",
+          "message":{
+            "personnage":"joueur",
+            "texte":"ça luit ressemble, mais avec cette photo je peux pas être certain à cent pour cent."
+          },
+          "effet":{
+            "prudence":2
+          },
+          "next":"confirmationPrudence"
+        }
+      ]
+    },
+
+    "confirmationIndice":{
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Je savait que je n'étais pas folle."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Personne n'a dit ça."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Pas aujourd'hui."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Très drôle."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Elle était déjà dans la vie d'eva avant sa disparrition."
+        }
+      ],
+      "next":"nouvelleQuestion"
+    },
+
+    "confirmationPrudente":{
+      "dialogues":[
+        {
+          "personnage":"emelyne",
+          "texte":"Je pense pareil."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Peut-être. Mais regarde sa veste. Et ses cheveux."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"ça commence quand même à faire beaucoup de coïncidences."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Dans tout les cas, cette personne connaissait probableent Eva."
+        }
+      ],
+      "next":"nouvelleQuestion"
+    },
+
+    "nouvelleQuestion":{
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Un nouveau silence s'installe."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Donc la vrai question maintenant..."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"... c'est qui elle est."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Et comment on la retrouve."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Chercher dans les anciennes publication d'Eva",
+          "message":{
+            "personnage":"joueur",
+            "texte":"On commence par les anciennes publication d'Eva. Si cette personne appareît une fois, elle apparaît peut-ête ailleurs."
+          },
+          "effet":{
+            "pisteReseaux":true
+          },
+          "next":"decisionEnquete"
+        },
+        {
+          "texte":"Chercher dans les anciens messages d'eva",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Si elle connaissait Eva, son nom est peut-être quelque part dans ses anciens messages."
+          },
+          "effet":{
+            "pisteMessage":true
+          },
+          "next":"decisionEnquete"
+        },
+        {
+          "texte":"Retourner dans les lieux fréquentés par Eva",
+          "message":{
+            "personnage":"joueur",
+            "texte":"On devrait retourner dans les endroits qu'Eva fréquantait."
+          },
+          "effet":{
+            "pisteTemoin":true
+          },
+          "next":"decisionEnquete"
+        }
+      ]
+    },
+
+    "decisionEnquete":{
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Alors on fait ça."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Et si on trouve quelque chose de sérieux, on transmet tout."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"A la police"
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Oui, Bryan. A la police."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"On cherche des réponses. Rien de plus."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Tu regardes une dernière fois la photographie."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Eva sourit sur l'image."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Derrière elle, la silhouette inconnue regarde directement dans sa direction."
+        }
+      ],
+      "next":"finChapitre1"
+    },
+
+    "finChapitre1":{
+      "musique":"mystere_fin",
+      "fond":"photo_inconnue",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Cette personne connaissait Eva."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Maintenant, il ne reste plus qu'à découvrir pourquoi."
+        }
+      ],
+      "nexte":"chapitre2"
+    }
+  }
+}

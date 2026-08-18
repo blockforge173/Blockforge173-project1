@@ -1,0 +1,707 @@
+{
+  "titre":"chapitre 4 - ce qu'Eva savait",
+  "musique":"tension_legere",
+  "fond":"maison_eva_exterieur",
+  "debut":"arriveeChezEva",
+  "scene":{
+    "arriveeChezEva":{
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Quelques jours après avoir confronté vos souvenirs, vous retournez chez les parents d'Eva;"
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"cette fois, vous êtes venus chercher quelque chose qui appartenait à Eva."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Son téléphone"
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"christophe vous ouvre la porte."
+        }
+      ],
+      "next":"duscussionChristophe"
+    },
+    "discussionChristophe":{
+      "fond":"maison_eva_salon",
+      "dialogues":[
+        {
+          "personnage":"christophe",
+          "texte":"Zoé m'a dit que vous vouliez récupérer le téléphone d'Eva."
+        },
+        {
+          "personnage":"christophe",
+          "texte":"Avant que je vous le donne, j'aimerais comprendre pourquoi."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"On a trouvé d'autre photos."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Des enciennes publication d'Eva. Et des photo prises par certains d'entre nous."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Vous être entrain de me dire que la personne de la vidéo était déjà autour de ma fille avant sa disparition."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"On pense que c'est la même personne. On ne peut pas encore en être certains."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"La plus ancienne photo date d'avant même que {{nomJoueur}} rencontre Eva."
+        }
+      ],
+      "next":"souvenirsExpliques"
+    },
+    "souvenirExpliques":{
+      "dialogues":[
+        {
+          "personnage":"emelyne",
+          "texte":"Depuis, on a aussi repensé à certains comportements d'Eva."
+        },
+        {
+          "personnage":"christophe",
+          "texte":"Quels comportements ?"
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Des moments où elle semblait nerveuse. Des fois où elle regardait derrière elle."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Elle m'avait demandé une fois de l'attendre après les cours alors qu'elles rentait normalement suele."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Mais on ne sait pas si tout ça avait réelleent un rapport avec cette personne."
+        },
+        {
+          "personnage":"christophe",
+          "texte":"Et maintenant vous voulez fouiller ses conversations."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Pour savoir si Eva savait qui était cette personne."
+        }
+      ],
+      "next":"mmiseEnGardeChristophe"
+    },
+    "miseEnGardeChristophe":{
+      "musique":"tension",
+      "dialogues":[
+        {
+          "personnage":"christophe",
+          "texte":"Je vous retrouver ma fille autant que vous."
+        },
+        {
+          "personnage":"christophe",
+          "texte":"Mais vous ne savez pas qui est cette personne."
+        },
+        {
+          "personnage":"christophe",
+          "texte":"Et si elle y est pour quelque chose, vous savez encore moins de quoi elle est capable."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"On ne compte confronter personne."
+        },
+        {
+          "personnage":"christophe",
+          "texte":"Je préfère l'entendre clairement."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Promettre de chercher uniquement des informations",
+          "message":{
+            "personnage":"joueur",
+            "texte":"ON cherche uniquement des information. On ne contactera personne."
+          },
+          "effet":{
+            "proesseChristophe":true,
+            "prudence":1
+          },
+          "next":"regleChristophe"
+        },
+        {
+          "texte":"Promettre de transmettre les découvertes à l'enquêteur.",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Si on trouve quelque chose qui peut indentifier cette personne, on le transmet immédiatement à l'enquêteur."
+          },
+          "effet":{
+            "proesseChristophe":true,
+            "confianceChristophe":1
+          },
+          "next":"regleChristophe"
+        },
+        {
+          "texte":"Expliquer que vous devez continuer",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Je comprends le risque. Mais maintenant qu'on saait tout ça, on ne peut pas faire comme si on n'avait rien vu."
+          },
+          "effet":{
+            "determination":1
+          },
+          "next":"regleChristophe"
+        }
+      ]
+    },
+    "regleChristophe":{
+      "dialogues":[
+        {
+          "personnage":"christophe",
+          "texte":"D'accord. Vous regardez. Vous cherchez."
+        },
+        {
+          "personnage":"christophe",
+          "texte":"Mais vous ne contactez personne."
+        },
+        {
+          "personnage":"christophe",
+          "texte":"Si vous trouvez un nom, une adresse, un numéro ou quiu que ce soit qui puisse identifier cette personne, vous venez me voir."
+        },
+        {
+          "personnage":"christophe",
+          "texte":"Et on appelle l'enquêteur."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Compris"
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Christophe qui la pièce quelques instants."
+        }
+      ],
+      "next":"telephoneEva"
+    },
+    "telephoneEva":{
+      "fond":"maison_eva_salon_telephone",
+      "musique":"melancolie",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Christophe revient avec le téléphone d'Eva et le pose doucement sur la table."
+        },
+        {
+          "personnage":"christophe",
+          "texte":"Il est resté comme ç a depuis que la police nous l'a rendu."
+        },
+        {
+          "personnage":"christophe",
+          "texte":"Faite attention."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Puis il vous laisse seuls."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Pendant quelque secondes, personne ne touche au téléphone."
+        }
+      ],
+      "next":"ouvrirTelephone"
+    },
+    "ouvrirTelephone":{
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Bon..."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Zoé déverrouille le téléphone."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Ses application, ses photos et ses conversations apparaissent."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Vous réalisez que vous êtes sur le point d'entrer dans la vie privée d'Eva."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Commmencer directement la recherche",
+          "message":{
+            "personnage":"On cherche uniquement ce qui peut avoir un rapport avec sa disparition."
+          },
+          "effet":{
+            "respectViePriveeEva":1
+          },
+          "next":"rechercheDates"
+        },
+        {
+          "texte":"Regarder brièvement ta conversation avec Eva.",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Attendez une seconde..."
+          },
+          "next":"conversationJoueurEva"
+        }
+      ]
+    },
+    "conversationJoueurEva":{
+      "fond":"telephone_conversation_joueur_eva",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Ton nom apparaît parmi les conversations."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Tu ouvres la discussion et retrouves des messages ordinaires."
+        },
+        {
+          "personnage":"eva",
+          "texte":"Tu es bien rentré ?"
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Oui 🙂"
+        },
+        {
+          "personnage":"eva",
+          "texte":"Parfait ❤️"
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Des phrase banales autrefois semblent aujourd'hui appartenir à une autre vie."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"{{nomJoueur}} ?"
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Oui... on continue."
+        }
+      ],
+      "next":"rechercheDates"
+    },
+    "rechercheDates":{
+      "fond":"telephone_eva_recherche_messages",
+      "musique":"mystere_legere",
+      "dialogues":[
+        {
+          "personnage":"emelyne",
+          "texte":"On commence par les dates des photos."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"ça évitera de lire des mois de conversations pour rien."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Première date..."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Zoé remonte plusieurs semaines dans les messages."
+        }
+      ],
+      "next":"messageZoe"
+    },
+    "messageZoe":{
+      "fond":"telephone_message_zoe",
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Attendes. ça, je m'en souviens."
+        },
+        {
+          "personnage":"eva",
+          "texte":"T'es encore à la fac ?"
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Non pourquoi ?"
+        },
+        {
+          "personnage":"eva",
+          "texte":"Rien tkt ❤️"
+        },
+        {
+          "personnage":"zoe",
+          "texte":"A l'époque j'avais même pas trouvé ça bizarre."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"La date ?"
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Le même jour qu'une des photos."
+        }
+      ],
+      "next":"messageEmelyne"
+    },
+    "messageEmelyne":{
+      "fond":"telephone_message_emelyne",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Une autre conversation attire votre attention."
+        },
+        {
+          "personnage":"eva",
+          "texte":"Tu passes par la cafétéria aujourd'hui."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Oui vers midi pourquoi ?"
+        },
+        {
+          "personnage":"eva",
+          "texte":"Je te rejoins alors."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Je pensais juste qu'elle voulait manger avec moi."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"C'était peut-être exactement ça."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Ou elle ne voulait pas être seule."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"On recommence à interpréter"
+        }
+      ],
+      "next":"numeroInconnu"
+    },
+    "numeroInconnu":{
+      "fond":"telephone_numero_inconnu",
+      "musique":"tension",
+      "dialogues":[
+        {
+          "personnage":"bryan",
+          "texte":"J'ai peut-être quelque chose."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Une conversation apparaît avec un numéro qui n'est enregisté sous aucun nom."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"C'est qui ?"
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Aucune idée."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Pas de nom. Pas de phtoto. Seulement un numéro."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"regarde les anciens messages."
+        }
+      ],
+      "next":"premiersMessagesInconnu"
+    },
+    "premiersMessagesInconnu":{
+      "fond":"telephone_conversation_inconnue",
+      "dialogues":[
+        {
+          "personnage":"inconnu",
+          "texte":"On doit parler."
+        },
+        {
+          "personnage":"eva",
+          "texte":"Pas ici."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Quelques jours plus tard..."
+        },
+        {
+          "personnage":"inconnu",
+          "texte":"Tu continues à m'éviter."
+        },
+        {
+          "personnage":"eva",
+          "texte":"Je t'ai répondu."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"C'est elle."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"On n'en sait rien."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Penser que le numéro appartion à la silhouette.",
+          "message":{
+            "personnage":"joueur",
+            "texte":"ça pourrait être la personne qu'on cherche."
+          },
+          "effet":{
+            "hypotheseNumeroSilhouette":1
+          },
+          "next":"continuerConversation"
+        },
+        {
+          "texte":"Refuser de conclure trop vite.",
+          "message":{
+            "personnage":"joueur",
+            "texte":"On n'a encore rien qui relie ce numéro aux photo."
+          },
+          "effet":{
+            "prudence":1
+          },
+          "next":"continuerConversation"
+        }
+      ]
+    },
+    "continuerConversation":{
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Continue."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Vous avancez vers les jours précédant la disparition."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Les échanges sont rares. Eva répond peu."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Puis un échange vous arrête."
+        }
+      ],
+      "next":"laisseMoiTranquille"
+    },
+    "laisseMoiTranquille":{
+      "musique":"tension_forte",
+      "dialogues":[
+        {
+          "personnage":"inconnu",
+          "texte":"IL faut qu'on ce voie."
+        },
+        {
+          "personnage":"eva",
+          "texte":"D'ccord."
+        },
+        {
+          "personnage":"eva",
+          "texte":"Mais après ça tu me laisses tranquille."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Le silence tombe dans la pièce."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Elle voulait que cette personne la  laisse tranquille."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Donc elle la connaissait."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Elle connaissait au moins la personne ce numéro. On ne sait toujours pas si c'est la silhouette."
+        }
+      ],
+      "next":"questionDanger"
+    },
+    "questionDanger":{
+      "dialogues":[
+        {
+          "personnage":"joueur",
+          "texte":"L'enquêteur 'avait demadé si Eva se sentait en danger."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Et maintenant ?"
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Dire que tu commences à le croire",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Maintenat... oui. Je commence à pansser que quelque chose lui faisait peur."
+          },
+          "effet":{
+            "hypotheseEvaEnDanger":1
+          },
+          "next":"soirDisparition"
+        },
+        {
+          "texte":"Dire que le message ne suffit toujoours pas",
+          "message":{
+            "personnage":"joueur",
+            "texte":"ça montre qu'elle voulait couper le contact. Mais ça ne prouve pas encore qu'elle se sentait en danger."
+          },
+          "effet":{
+            "prudence":2
+          },
+          "next":"soirDisparition"
+        }
+      ]
+    },
+    "soirDisparition":{
+      "fond":"telephone_soir_disparition",
+      "musique":"mystere_fort",
+      "dialogues":[
+        {
+          "personnage":"emelyne",
+          "texte":"Attendez. Regardez la date du dernier échange."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Le soir de la disparition d'Eva."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Ouvre-le."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Un dernier message apparaît."
+        }
+      ],
+      "next":"dernierMessage"
+    },
+    "dernierMessage":{
+      "dialogues":[
+        {
+          "personnage":"inconnu",
+          "texte":"Je suis là."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Aucune réponse d'Eva."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"C'était le soir où elle a disparu..."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Et quelques heureus plus tard, la caméra filme cette silhouette derrière elle."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"On ne peut toujours pas affirmer que c'est la même personne."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Mais on ne peut plus faire comme si ça n'avait aucun rapport."
+        }
+      ],
+      "next":"decisionFinale"
+    },
+    "decisionFinle":{
+      "musique":"tension_legere",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Le numéro inconnu est toujours affiché à l'écrant."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"La mise en garde de Christophe te revient immédiatement."
+        },
+        {
+          "personnage":"christophe",
+          "texte":"Mais vous ne contactez personne."
+        },
+        {
+          "personnage":"christophe",
+          "texte":"Si vous trouvez quoi que ce soit qui puisse identifier cette personne , vous venez me voir."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Respecter la promesse et aller chercher christophe.",
+          "message":{
+            "personnage":"joueur",
+            "texte":"On ne touche à rien. ON va chercher Christophe et on transmet ça à la police."
+          },
+          "effet":{
+            "respectPromesseChristophe":true
+          },
+          "next":"finRespectPromesse"
+        },
+        {
+          "texte":"Noter le numéro avant d'aller chercher Christophe.",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Je note le numéro. Ensuite on va chercher Christophe."
+          },
+          "effet":{
+            "numeroInconnuConserve":true
+          },
+          "next":"finNumeroConserve"
+        }
+      ]
+    },
+    "finRespectPromesse":{
+      "musique":"fin_mystere",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Pour la première fois, vous avez trouvé quelque chose provenant directement d'eva."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Elle connaissait quelqu'un qu'elle voulait voir disparaître de sa vie."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Cette personne lui a écrit le soir de sa disparition."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Reste à savoir si le nuéro inconnu et la silhouette appartiennent à une seule et même personne."
+        }
+      ],
+      "next":"chapitre5"
+    },
+    "finNumeroConserve":{
+      "musique":"fin_mystere",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Tu notes le numéro avant de poser le téléphone."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Pour la première fois, vous possédez une piste qui pourrait mener à une personne réelle."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Mais personne ne sait encore si elle mène à la silhouette."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Ni à Eva."
+        }
+      ],
+      "next":"chapitre5"
+    }
+  }
+}

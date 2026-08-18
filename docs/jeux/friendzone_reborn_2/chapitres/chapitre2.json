@@ -1,0 +1,534 @@
+{
+  "titre":"Chapitre 2 - Dans les souvenirs",
+  "musique":"mystere_legere",
+  "fond":"cour_universite",
+  "debut":"debutChapitre2",
+  "scenes":{
+    "debutChapitre2":{
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Le lendemain, limage retrouvée par Zoé te revient encore en tête",
+          "fond":"cour_universite"
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Cette silhouette était déjà présente derrière Eva bien avant le soir de sa disparition."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"La question n'est plus seulement de savoir qui la suivie cette nuit-là."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Il faut maintenant comprendre depuis combien de temps cette personne gravitait autour d'elle."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"{{nomJoueur}}, on est à la bibliothèque. on a commencé sans toi."
+        }
+      ],
+      "next":"arriveeBibliotheque"
+    },
+    "arriveeBibiotheque":{
+      "fond":"bibliotheque_groupe",
+      "ambiance":"bibliotheque",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Quand tu arrives, Zoé, Emelyne, et Bryan sont installés autour d'une table."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Plusieur téléphones et un ordinateur portable sont posés devant eux."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Bienvenue dans la cellule d'enquête."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Ne recommence pas avec ça."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"J'ai remonté presque deux ans de publication d'Eva."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Demander si elle a retrouvé la silhouette",
+          "message":{
+            "personnage":"joueur",
+            "texte":"ET ? Tu l'as retrouvée ailleurs ?"
+          },
+          "next":"premierTri"
+        },
+        {
+          "texte":"Demander comment elle peut être sûre que c'est la même personne",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Avant d'aller plus loin, comment tu peux être sûre que c'est la même personne ?"
+          },
+          "effet":{
+            "prudence":1
+          },
+          "next":"douteSilhouette"
+        }
+      ]
+    },
+    "douteSilhouette":{
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Je ne peut pas l'être à cent pour cent."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"C'est justement pour ça qu'on compare tout."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Même taille approximative, même façon de s'habiller, même silhouette."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Et surtout...  toujours près d'Eva."
+        }
+      ],
+      "next":"premierTri"
+    },
+    "premierTri":{
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Zoé fait défiler plusieur anciennes publications."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"La plupart ne montre rien."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Puis il y a celle-là."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Une photo prise dans la cours de l'université apparaît à l'écran."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Regardez derrière les arbres."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Une silhouette sombre apparaît au fond de l'image."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Dire que ça peut être une coïncidence",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Une photo, ça peut encore être une coïcidence"
+          },
+          "effet":{
+            "prudence":1
+          },
+          "next":"deuxiemePhoto"
+        },
+        {
+          "texte":"Dire que la ressemblance est troublante",
+          "message":{
+            "personnage":"joueur",
+            "texte":"La ressemblance est quand même troublante"
+          },
+          "effet":{
+            "enquete":1
+          },
+          "next":"deuxiemePhoto"
+        }
+      ]
+    },
+    "deuxiemePhoto":{
+      "dialogues":[
+        {
+          "personnage":"bryan",
+          "texte":"Alors regarde la suivante."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Cette fois, la photo vient du compte de Bryan."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Je l'avais prise pendant une sortie avec le groupe."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Eva est au premier plan."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Plus loin, près d'un bâtiment, la même forme semble apparaître."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Tu t'en souvenais ?"
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Pas du tout."
+        }
+      ],
+      "next":"photoDuJoueur"
+    },
+    "photoDuJoueur":{
+      "musique":"mystere",
+      "fond":"bibliotheque_photo_joueur",
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Et celle-là..."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Elle pose sont téléphone devant toi."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Tu reconnais immédiatement l'image."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Attendez... cette photo, c'est moi qui l'ai prise."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Tu te rappelles de quelqu'un derrière Eva ?"
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Dire que tu ne te souviens de personne",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Non. Absolument personne."
+          },
+          "effet":{
+            "souvenirPhoto":true
+          },
+          "next":"reactionPhotoJoueur"
+        },
+        {
+          "texte":"Essayer de se souvenir",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Je sais pas... laisse-moi rélféchir."
+          },
+          "effet":{
+            "intuition":1,
+            "souvenirPhoto":true
+          },
+          "next":"flashSouvenirCourt"
+        }
+      ]
+    },
+    "flashSouvenirCourt":{
+      "fond":"souvenir_cour_eva",
+      "musique":"souvenir",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Pendant un instant, tu revois cette journée."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Eva souriait devant l'objectif."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Tu te souviens surtout d'elle. Pas des gens derrière."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"A l'époque, tu n'avais aucune raison de regarder ailleurs."
+        }
+      ],
+      "next":"reactionPhotoJoueur"
+    },
+    "reactionPhotoJoueur":{
+      "fond":"bibliotheque_groupe",
+      "musique":"mystere_legere",
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"C'est ça qui me dérange."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"On était tous là et personne n'a rien remarqué."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Ou alors on cherche tellement cette personne maintenant qu'on croit la voir partout."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Trois fois, ça commence à faire beaucoup."
+        }
+      ],
+      "next":"verificationDates"
+    },
+    "verificationDates":{
+      "fond":"bibliotheque_dates",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Emelyne prend une feuille et commence à noter les dates."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"On arrête de regarder uniquement les images."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"On regarde quand elles ont été priises."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"La première date de quelques jours avant la disparition."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"La deuxieme remonte à plusieurs semaines."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"La troisième est encore plus ancienne."
+        }
+      ],
+      "next":"anciennePhoto"
+    },
+    "anciennePhoto":{
+      "fond":"bibliotheque_ancienne_photo",
+      "musique":"tension_legere",
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Attendez."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Quoi ?"
+        },
+        {
+          "personnage":"zoe",
+          "texte":"J'en est trouvé une autre."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"La photo est plus ancienne que toutes les autres."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Au fond, derrière une vitre, une silhouette semble apparaît encore."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Regardez la date."
+        }
+      ],
+      "next":"dateAvantRencontre"
+    },
+    "dateAvantRencontre":{
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Tu lis la date une deuxième fois."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"C'était avant même que je rencontre Eva."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Oui."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Donc cette personne ne s'est pas intéréssé à Eva juste avant sa disparition."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Si c'est bien la même personne."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"penser qu'Eva connaissait probablement cette personne",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Si elle était déjà là depuis aussi longtemps, Eva la connaissait peut-être."
+          },
+          "effet":{
+            "hypotheseEvaConnaitSilhouette":true,
+            "enquete":1
+          },
+          "next":"debatConnaissance"
+        },
+        {
+          "texte":"Penser qu'Eva pouvait être observée depuis longtemps.",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Ou alors Eva était observée depuis bien plus longtemps qu'on ne le penssait"
+          },
+          "effet":{
+            "hypotheseEvaSuivie":true,
+            "prudence":1
+          },
+          "next":"debatConnaissance"
+        }
+      ]
+    },
+    "debatConnaissance":{
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Si Eva connaissait cette personne, pourquoi elle ne m'en aurait jamais parlé ?"
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Parce qu'Eva ne parlait pas toujours de ses problèmes."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Ou parce qu'il n'y avait peut-être aucun problème."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"On ne sait même pas encore ce qu'Eva penssait de cette personne."
+        }
+      ],
+      "next":"souvenirQuestionEnqueteur"
+    },
+    "souvenirQuestionEnqueteur":{
+      "fond":"souvenir_interrogatoire",
+      "musique":"souvenir_tension",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Une question te revient soudainement."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Une question posée par l'enquêteur quelque jours après la disparition d'eva."
+        },
+        {
+          "personnage":"lieutenant morel",
+          "texte":"Est-ce qu'Eva vous semblait différente ce soir-là."
+        },
+        {
+          "personnage":"lieutenant morel",
+          "texte":"est-ce qu'elle vous avait donné l'impretion de se sentir en danger."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"A l'époque, tu n'avais aucune raison de répondre oui."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Aujourd'hui, la question semble différente."
+        }
+      ],
+      "next":"retourBibliotheque"
+    },
+    "retourBibliotheque":{
+      "fond":"bibliotheque_groupe",
+      "musique":"mystere_legere",
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"{{nomJoueur}} ?"
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Le lieutenant morel m'avait demandé si Eva se sentait en danger."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Et tu avait répondu quoi ?"
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Que je n'avait rien remarqué."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Mais à ce moment-là, on ne savvait pas quoi chercher."
+        }
+      ],
+      "next":"prochaineEtape"
+    },
+    "prochaineEtape":{
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Les photos nous dise où cette personne était."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Pas ce qu'Eva pensait d'elle."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Alors il faut cherche ce qu'Eva disait à cette époque."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Ses message"
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Continuer l'enquête sur les messages d'Eva",
+          "message":{
+            "personnage":"joueur",
+            "texte":"On commence per ses messages. Si Eva connaissait cette personne, il y a peut-être une trace quelque part."
+          },
+          "effet":{
+            "pisteMessages":true
+          },
+          "next":"finChapitre2"
+        }
+      ]
+    },
+    "finChapitre2":{
+      "musique":"mystere_fin",
+      "fond":"bibliotheque_photo_ancienne",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Quatre photos."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Et toujours cette même présence autour d'Eva."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Le plus ancien cliché date d'avant même ta rencontre avec Eva."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"La question n'est plus seulement de savoir qui était derriere Eva le soir de sa disparition."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Mais depuis combien de temps cette personne faisait partie de son histoire."
+        }
+      ],
+      "next":"chapitre3"
+    }
+  }
+}

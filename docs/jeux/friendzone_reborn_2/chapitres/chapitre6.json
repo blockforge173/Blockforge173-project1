@@ -1,0 +1,534 @@
+{
+  "titre": "Chapitre 6 — Sur les traces d'Eva",
+  "musique": "mystere_legere",
+  "fond": "universite_exterieur",
+  "debut": "debutChapitre6",
+  "scenes": {
+    "debutChapitre6": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "L'appel et la photographie reçus la veille ont changé quelque chose : quelqu'un sait que vous cherchez Eva."
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "Il nous reste les lieux qu'Eva fréquentait. Les photos et les messages nous donnent plusieurs adresses."
+        },
+        {
+          "personnage": "zoe",
+          "texte": "Alors on commence par ceux où elle allait le plus souvent."
+        }
+      ],
+      "next": "brancheChoixChapitre5"
+    },
+    "brancheChoixChapitre5": {
+      "conditions": [
+        {
+          "si": {
+            "prevenirEnqueteur": true
+          },
+          "next": "branchePoliceDebut"
+        },
+        {
+          "sinon": "brancheSoloDebut"
+        }
+      ]
+    },
+    "branchePoliceDebut": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Après votre décision de prévenir Christophe, l'appel, le message et la photographie ont été transmis à l'enquêteur."
+        },
+        {
+          "personnage": "christophe",
+          "texte": "Si vous continuez vos recherches, vous ne confrontez personne. Au moindre problème, vous appelez."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Compris."
+        }
+      ],
+      "next": "premierLieu",
+      "effet": {
+        "brancheChapitre6": "police"
+      }
+    },
+    "brancheSoloDebut": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Vous avez décidé de poursuivre vos recherches sans prévenir Christophe ni l'enquêteur."
+        },
+        {
+          "personnage": "bryan",
+          "texte": "Après l'appel d'hier, on devrait peut-être prévenir quelqu'un."
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "Alors personne ne joue au héros."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "On reste ensemble."
+        }
+      ],
+      "next": "premierLieu",
+      "effet": {
+        "brancheChapitre6": "solo"
+      }
+    },
+    "premierLieu": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Votre première étape est un petit café situé à quelques rues de l'université."
+        },
+        {
+          "personnage": "employee",
+          "texte": "Eva ? Oui, elle venait deux ou trois fois par semaine. Elle s'installait généralement au fond avec un livre."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Deux ou trois fois ?"
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Tu ignorais complètement cette habitude d'Eva."
+        },
+        {
+          "personnage": "employee",
+          "texte": "Elle était discrète, mais toujours agréable. Elle restait parfois longtemps à lire."
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "On cherche quelqu'un autour d'Eva... et on découvre aussi des morceaux de sa vie qu'on ne connaissait pas."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Reconnaître que tu connaissais moins Eva que tu le pensais",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Je pensais la connaître. Mais elle gardait encore beaucoup de choses pour elle."
+          },
+          "effet": {
+            "comprehensionEva": 1
+          },
+          "next": "questionSilhouetteCafe"
+        },
+        {
+          "texte": "Respecter la part privée d'Eva",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Elle avait aussi le droit d'avoir des endroits et des habitudes rien qu'à elle."
+          },
+          "effet": {
+            "respectEva": 1
+          },
+          "next": "questionSilhouetteCafe"
+        }
+      ],
+      "fond": "cafe_eva",
+      "musique": "exploration"
+    },
+    "questionSilhouetteCafe": {
+      "dialogues": [
+        {
+          "personnage": "zoe",
+          "texte": "Elle venait toujours seule ?"
+        },
+        {
+          "personnage": "employee",
+          "texte": "Non. Pas toujours."
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "Vous vous souvenez de la personne qui l'accompagnait ?"
+        },
+        {
+          "personnage": "employee",
+          "texte": "Pas précisément."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Et si on vous montrait une photo ?"
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Zoé montre l'une des photographies où apparaît la silhouette."
+        },
+        {
+          "personnage": "employee",
+          "texte": "Cette personne-là... oui. Je crois les avoir déjà vus ensemble ici."
+        }
+      ],
+      "next": "deuxiemeLieu",
+      "musique": "tension_legere"
+    },
+    "deuxiemeLieu": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Votre recherche continue dans un autre endroit qu'Eva fréquentait régulièrement."
+        },
+        {
+          "personnage": "temoin",
+          "texte": "Eva venait parfois ici pour être tranquille. Elle parlait peu, mais elle aidait facilement les autres."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Chaque témoignage révèle une Eva familière et pourtant différente de celle que tu connaissais."
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "Attendez. Cet endroit apparaît dans nos dates."
+        },
+        {
+          "personnage": "bryan",
+          "texte": "Quelle date ?"
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "Le jour du message."
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Il faut qu'on se voie."
+        },
+        {
+          "personnage": "eva",
+          "texte": "D'accord. Mais après ça tu me laisses tranquille."
+        },
+        {
+          "personnage": "zoe",
+          "texte": "Eva est venue ici ce jour-là ?"
+        },
+        {
+          "personnage": "temoin",
+          "texte": "Oui. Et elle n'était pas seule."
+        }
+      ],
+      "next": "temoignageDispute",
+      "fond": "lieu_calme_eva",
+      "musique": "mystere"
+    },
+    "temoignageDispute": {
+      "dialogues": [
+        {
+          "personnage": "temoin",
+          "texte": "Ils parlaient bas, mais Eva avait clairement envie que la conversation se termine."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Vous avez entendu quelque chose ?"
+        },
+        {
+          "personnage": "temoin",
+          "texte": "Elle a dit : « Je t'ai déjà demandé de me laisser tranquille. »"
+        },
+        {
+          "personnage": "zoe",
+          "texte": "C'est presque exactement ce qu'on a retrouvé dans ses messages."
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "Vous pourriez reconnaître la personne ?"
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Vous montrez la photographie."
+        },
+        {
+          "personnage": "temoin",
+          "texte": "Oui. C'est cette personne."
+        },
+        {
+          "personnage": "bryan",
+          "texte": "Donc le numéro..."
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "La date, la rencontre et les paroles d'Eva correspondent. La silhouette et la personne qui lui écrivait sont la même personne."
+        },
+        {
+          "personnage": "zoe",
+          "texte": "Et l'appel reçu par {{nomJoueur}} ?"
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "Ça, on n'en sait toujours rien."
+        }
+      ],
+      "next": "apparitionSilhouette",
+      "effet": {
+        "silhouetteEtNumeroEvaMemePersonne": true
+      },
+      "musique": "revelation"
+    },
+    "apparitionSilhouette": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "En quittant les lieux, Zoé ralentit brusquement."
+        },
+        {
+          "personnage": "zoe",
+          "texte": "Attendez... là-bas."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "À quelques dizaines de mètres, une personne s'éloigne."
+        },
+        {
+          "personnage": "zoe",
+          "texte": "C'est elle."
+        }
+      ],
+      "next": "brancheConfrontation",
+      "fond": "rue_sortie_lieu",
+      "musique": "tension_forte"
+    },
+    "brancheConfrontation": {
+      "conditions": [
+        {
+          "si": {
+            "prevenirEnqueteur": true
+          },
+          "next": "policeIntervention"
+        },
+        {
+          "sinon": "poursuiteSolo"
+        }
+      ]
+    },
+    "policeIntervention": {
+      "dialogues": [
+        {
+          "personnage": "joueur",
+          "texte": "Personne ne bouge. J'appelle."
+        },
+        {
+          "personnage": "zoe",
+          "texte": "Elle s'en va !"
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "On ne la suit pas seuls."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Quelques instants plus tard, des policiers arrivent et interceptent la personne avant toute confrontation."
+        },
+        {
+          "personnage": "enqueteur",
+          "texte": "Vous avez bien fait de nous prévenir."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Pour la première fois, la silhouette n'est plus seulement une forme floue sur une photographie."
+        }
+      ],
+      "next": "questionAppelant",
+      "effet": {
+        "interventionPoliceReussie": true
+      },
+      "musique": "urgence"
+    },
+    "poursuiteSolo": {
+      "dialogues": [
+        {
+          "personnage": "zoe",
+          "texte": "Elle s'en va !"
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Vous avancez pour ne pas perdre la personne de vue."
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "On avait dit qu'on ne ferait rien de stupide."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "La personne tourne dans une rue plus calme, puis s'arrête."
+        },
+        {
+          "personnage": "silhouette",
+          "texte": "Vous êtes vraiment incapables d'arrêter."
+        },
+        {
+          "personnage": "zoe",
+          "texte": "Vous connaissiez Eva."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "C'est vous qui lui envoyiez ces messages ?"
+        },
+        {
+          "personnage": "silhouette",
+          "texte": "Vous avez déjà trouvé la réponse."
+        },
+        {
+          "personnage": "silhouette",
+          "texte": "Vous auriez dû écouter l'appel."
+        }
+      ],
+      "next": "appelAmbigu",
+      "fond": "rue_isolee",
+      "musique": "danger"
+    },
+    "appelAmbigu": {
+      "dialogues": [
+        {
+          "personnage": "joueur",
+          "texte": "C'était vous ?"
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "La silhouette ne répond pas."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "C'est vous qui m'avez appelé ?"
+        },
+        {
+          "personnage": "silhouette",
+          "texte": "Rentrez chez vous."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "La personne tente de partir. Bryan se décale instinctivement pour lui barrer le passage."
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "Bryan, non !"
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "La silhouette le bouscule violemment et prend la fuite."
+        },
+        {
+          "personnage": "zoe",
+          "texte": "Bryan ! Ça va ?"
+        },
+        {
+          "personnage": "bryan",
+          "texte": "Oui... je crois."
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "Voilà exactement pourquoi Christophe nous avait prévenus."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "On arrête de la suivre. Maintenant on appelle la police."
+        }
+      ],
+      "next": "questionAppelant",
+      "effet": {
+        "confrontationDangereuse": true,
+        "confianceChristophe": -2
+      },
+      "musique": "urgence"
+    },
+    "questionAppelant": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Une certitude existe désormais."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "La silhouette et la personne qui envoyait les messages à Eva ne font qu'une."
+        },
+        {
+          "personnage": "zoe",
+          "texte": "Mais est-ce que c'est elle qui t'a appelé ?"
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Je ne sais pas."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Ton téléphone se met soudainement à vibrer."
+        }
+      ],
+      "next": "appelFinal",
+      "fond": "transition_sombre",
+      "musique": "mystere"
+    },
+    "appelFinal": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "NUMÉRO INCONNU"
+        },
+        {
+          "personnage": "zoe",
+          "texte": "{{nomJoueur}}..."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Tu regardes l'écran."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "La silhouette a désormais un visage dans votre enquête. La voix, elle, reste sans identité."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Répondre",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Allô ?"
+          },
+          "effet": {
+            "appelFinalPris": true,
+            "chapitre6Termine": true
+          },
+          "next": "finChapitre6"
+        },
+        {
+          "texte": "Ne pas répondre",
+          "effet": {
+            "appelFinalIgnore": true,
+            "chapitre6Termine": true
+          },
+          "next": "finChapitre6"
+        }
+      ],
+      "fond": "telephone_numero_inconnu",
+      "musique": "silence"
+    },
+    "finChapitre6": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Une partie du mystère vient enfin de tomber."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "La silhouette et la personne qui contactait Eva ne font qu'une."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Mais l'appel reçu par {{nomJoueur}} ouvre une autre question."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Qui se trouve réellement derrière cette voix ?"
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Et pourquoi cette personne veut-elle à tout prix que vous cessiez de chercher Eva ?"
+        }
+      ],
+      "next": "chapitre7",
+      "fond": "noir",
+      "musique": "mystere_fin"
+    }
+  }
+}

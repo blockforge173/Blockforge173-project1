@@ -1,0 +1,669 @@
+{
+  "titre":"Chapitre 3 - Ce dont on se souvient",
+  "musique":"souvenir_melancolique",
+  "fond":"bibliotheque_groupe",
+  "debut":"debutChapitre3",
+  "scenes":{
+    "debutChapitre3":{
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Les photographie sont toujours étalées devant vous."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Depuis que vous avez découvert la silhouette sur plusieurs images, certains souvenir semble avoir changé de sens."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Depuis qu'on a vu ces photos... j'arrête pas de repenser à certains moments avec Eva."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Moi aussi."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"A quels moments ?"
+        }
+      ],
+      "next":"souvenirRepasIntroduction"
+    },
+    "souvenirRepasIntroduction":{
+      "dialogues":[
+        {
+          "personnage":"joueur",
+          "texte":"La première fois qu'Eva et moi avons mangé seuls ensemble."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Elle était nerveuse ce jour-là."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Tu pensais que c'était à cause de toi ?"
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Oui. C'était la première fois qu'on se retrouvait vraient seuls."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Tu fermes les yeux quelques secondes. Le souvenir revient."
+        }
+      ],
+      "next":"souvenirRepas"
+    },
+    "souvenirRepas":{
+      "fond":"souvenir_repas_eva",
+      "musique":"souvenir",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"quelques semaines plus tôt..."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Eva esst assise en face de toi. Elle sourit, mais son regard quitte régulièrement le tien."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"ça va ?"
+        },
+        {
+          "personnage":"eva",
+          "texte":"Oui, oui."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Eva regarde bbrièvement derrière toi avant de revenir vers son assiette."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"T'as l'air un peu stressée."
+        },
+        {
+          "personnage":"eva",
+          "texte":"Un peu"
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"A ce moment-là, tu avait cru comprende pourquoi. C'était votre premier repas seuls tous les deux."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Lui demander si c'est à cause de votre rendez-vous",
+          "message":{
+            "personnage":"joueur",
+            "texte":"C'est parce qu'on est tous les deux ?"
+          },
+          "next":"souvenirRepasReponse"
+        },
+        {
+          "texte":"Ne pas insister",
+          "message":{
+            "personnage":"joueur",
+            "texte":"D'accord. Si tu veux en parler, je suis là."
+          },
+          "effet":{
+            "souvenirRespectEva":1,
+            "relationEva":1
+          },
+          "next":"souvenirRepasReponseAlternative"
+        }
+      ]
+    },
+    "souvenirRepasReponse":{
+      "dialogues":[
+        {
+          "personnage":"eva",
+          "texte":"Peut-être un peu."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Elle sourit. puis son regard passe encore une fois derrière ton épaule."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Z l'époque, ce détail ne t'avait pas marqué."
+        }
+      ],
+      "next":"retourRepas"
+    },
+    "souvenirRepasReponseAlternative":{
+      "dialogues":[
+        {
+          "personnage":"eva",
+          "texte":"Merci."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Eva te sourit avant de regarder brièvement vers l'entrée."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Quelques secondes plus tard, elle reprend la conversation comme si de rien n'était."
+        }
+      ],
+      "next":"retourRepas"
+    },
+    "retourRepas":{
+      "fond":"bibliotheque_groupe",
+      "musique":"mystere_groupe",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Retour au présent."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"J'était persuadé qu'elle était stressée à cause de moi."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Et maintenant tu pense que c'était à cause de cette personne ?"
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Dire que c'est possible",
+          "message":{
+            "personnage":"joueur",
+            "texte":"c'est possible. Elle regardait toujours derrière moi"
+          },
+          "effet":{
+            "hypotheseEvaSuivie":1
+          },
+          "next":"miseEnGardeEmelyne"
+        },
+        {
+          "texte":"Dire que tu n'en sais rien",
+          "message":{
+            "personnage":"joueur",
+            "texte":"J'en sais rien. C'est justement ça le problème"
+          },
+          "effet":{
+            "prudence":1
+          },
+          "next":"miseEnGardeEmelyne"
+        }
+      ]
+    },
+    "miseEnGardeEmelyne":{
+      "dialogues":[
+        {
+          "personnage":"emelyne",
+          "texte":"On doit faire attention."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"A quoi ?"
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Maintenant qu'on connaît cette silhouette, chaque comportement bizarre d'Eva va nous sembler lié à elle."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Et si c'était vraiment le cas ?"
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Justement. On n'en sait rien."
+        }
+      ],
+      "next":"souvenirZoeIntroduction"
+    },
+    "souvenirZoeIntroduction":{
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Il y quand même quelque chose dont je me souviens."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Quoi ?"
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Un soir après les cours, Eva m'avait demadé de rester avec elle."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Sur le moment, j'avais même pas demandé pourquoi."
+        }
+      ],
+      "next":"souvenirZoe"
+    },
+    "souvenirZoe":{
+      "fond":"souvenir_couloir_eve_zoe",
+      "musique":"souvenir",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Quelques semaine avant la disparition."
+        },
+        {
+          "personnage":"eva",
+          "texte":"Zoé ?"
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Oui ?"
+        },
+        {
+          "personnage":"eva",
+          "texte":"Tu pars maintenant ?"
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Non, j'ai encore un truc à faire. Pourquoi ?"
+        },
+        {
+          "personnage":"eva",
+          "texte":"Comment ça."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Eva hésite quelques secondes."
+        },
+        {
+          "personnage":"eva",
+          "texte":"Tu pourrais m'attendre après ?"
+        },
+        {
+          "personnage":"zoe",
+          "texte":"ça va me prendre un moment."
+        },
+        {
+          "personnage":"eva",
+          "texte":"Pas grave. Oublie."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"T'es sûre ?"
+        },
+        {
+          "personnage":"eva",
+          "texte":"Oui. T'inquiète."
+        }
+      ],
+      "next":"retourSouvenirZoe"
+    },
+    "retourSouvenirZoe":{
+      "fond":"bibliotheque_groupe",
+      "musique":"mystere_legere",
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Elle rentrait seule tout le temps."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Pourquoi elle m'aurait demandé de l'attendre ce jour-là."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Elle voulait peut-être juste passer du temps avec toi."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Peut-être. Mais maintenant, ça paraît différent."
+        }
+      ],
+      "next":"souvenirEmelyneIntroduction"
+    },
+    "souvenirEmelyneIntroduction":{
+      "dialogues":[
+        {
+          "personnage":"emelyne",
+          "texte":"J'en ai un aussi."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Toi aussi ?"
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Dans un couloir de l'université."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Eva s'était arrêtée net en regardant quelqu'un."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"J'avais pensé qu'elle essayait juste d'éviter une connaissance."
+        }
+      ],
+      "next":"souvenirEmelyne"
+    },
+    "souvenirEmelyne":{
+      "fond":"souvenir_couloir_emelyne_eva",
+      "musique":"souvenir_tension",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Dans le souvenir d'émelyne, le couloir est rempli d'étudients."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Eva ?"
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Eva vient de ralentire brusquement."
+        },
+        {
+          "personnage":"eva",
+          "texte":"Hm ?"
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Tu viens ?"
+        },
+        {
+          "personnage":"eva",
+          "texte":"Oui."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Eva regarde quelques secondes vers l'autreextrémité du couloir."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Tu connais quelqu'un là-bas ?"
+        },
+        {
+          "personnage":"eva",
+          "texte":"Non."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Elle reprend immédiatement sa marche."
+        }
+      ],
+      "next":"retourSouvenirEmelyne"
+    },
+    "retourSouvenirEmelyne":{
+      "fond":"bibliotheque_groupe",
+      "musique":"mystere_groupe",
+      "dialogues":[
+        {
+          "personnage":"emelyne",
+          "texte":"Je n'ai même pas regardé qui se trouvait au bout du couloir."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Donc ça pouvait être n'importe qui."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Exactement"
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Ou la silhouette."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Ou la silhouette. Mais on ne peut pas le savoir."
+        }
+      ],
+      "next":"souvenirFamille"
+    },
+    "souvenirFamille":{
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"La soeur d'Eva m'avait aussi raconté quelque chose après sa disparition."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Quoi ?"
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Eva lui demandait parfois si elle restait à la maison le soir."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Elle disait que c'était juste pour savoir."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"ça ne prouve rien non plus."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Je sais."
+        }
+      ],
+      "next":"mettreToutEmsemble"
+    },
+    "mettreToutEmsemble":{
+      "fond":"bibliotheque_note",
+      "musique":"tension_legere",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Emelyne écrit les différents souvenirs à côté des dates des photos."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Le repas. La demande faite à Zoé. Le couloir. Les questions posées à sa soeur."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Pris séparément, aucun de ces événements ne prouve quoi que ce soit."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Placés à côté des photographien ils deviennent beaucoup plus difficile à ignorer."
+        }
+      ],
+      "next":"choixHypothese"
+    },
+    "choixHypothese":{
+      "dialogues":[
+        {
+          "personnage":"bryan",
+          "texte":"Alors vous pensez quoi ?"
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Que quelque chose se passait."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"ça, C'est possible. Mais on ne sait toujours pas quoi?"
+        }
+      ],
+      "choix":[
+        {
+          "texte":"Eva avait peut-être peur de cette personne",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Je pense qu'Eva avait peut-être peur de cette personne. ça expliquerait certains de ses comportements."
+          },
+          "effet":{
+            "hypotheseEvaDanger":1,
+            "hypothesePrincipale":"danger"
+          },
+          "next":"reactionHypothese"
+        },
+        {
+          "texte":"Eva connaissait peut-être cette personne.",
+          "message":{
+            "personnage":"joueur",
+            "texte":"Ou Eva la connaissait. Elle cachait peut-être quelque chose sans forcément être en danger."
+          },
+          "effet":{
+            "hypotheseEvaConnaitSilhouette":1,
+            "hypothesePrincipale":"connaissance"
+          },
+          "next":"reactionHypothese"
+        },
+        {
+          "texte":"On relie peut-être des événements sans rapport",
+          "message":{
+            "personnage":"joueur",
+            "texte":"On doit aussi accepter qu'on est peut-être en train de relier des événements qui n'on aucun rapport"
+          },
+          "effet":{
+            "prudence":2,
+            "hypothesePrincipale":"incertitude"
+          },
+          "next":"reactionHypothese"
+        }
+      ]
+    },
+    "reactionHypothese":{
+      "dialogues":[
+        {
+          "personnage":"emelyne",
+          "texte":"Pout l'instant, ce ne sont que des hypothèse."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Mais on a quand même plus de question qu'hier."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Et toujours aucune idée de qui est cette personne."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Les souvenirs ne suffiront pas."
+        }
+      ],
+      "next":"questionEnqueteur"
+    },
+    "questionEnqueteur":{
+      "fond":"souvenir_interrogatoir",
+      "musique":"souvenir_tension",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"La question de l'enquêteur te revient encore une fois."
+        },
+        {
+          "personnage":"lieutenant morel",
+          "texte":"Est-ce qu'Eva vous semblait différente ?"
+        },
+        {
+          "personnage":"lieutenant morel",
+          "texte":"Est-ce qu'elle vous avait donné l'impression de se sentir en danger."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"A l'époque Tu avait répondu avec ce que tu savais."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Aujourd'hui, tu n'es pas certain de donner exactement la même réponse"
+        }
+      ],
+      "next":"retourPresentFinal"
+    },
+    "retourPresentFinal":{
+      "fond":"bibliotheque_groupe",
+      "musique":"mystere",
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Les photos nous montrent que cette personne était là."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Nos souvenirs nous montrent seulement qu'Eva était parfois différente."
+        },
+        {
+          "personnage":"bryan",
+          "texte":"Mais rien ne relie encore les deux."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Il nous faut quelque chose qui vienne d'Eva elle-même."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Ses messages."
+        }
+      ],
+      "next":"preparationMessages"
+    },
+    "preparationMessages":{
+      "dialogues":[
+        {
+          "personnage":"zoe",
+          "texte":"Si Eva connaissait cette personne, elle en a peut-être parlé à quelqu'un."
+        },
+        {
+          "personnage":"emelyne",
+          "texte":"Ou elle a peut-être envoyé un message sans expliquer clairement ce qui se passait."
+        },
+        {
+          "personnage":"joueur",
+          "texte":"Dans tout les cas, on doit chercher."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Pour la première fois, vous allez arrêter d'interppréter ce que vous avez vu."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Et commencer à chercher ce qu'Eva elle-même avait laissé derrière elle."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"commencer par les message d'Eva",
+          "message":{
+            "personnage":"joueur",
+            "texte":"On regarde ses messages. Peut-être qu'ils nous permettront enfin de comprendre ce qu'elle savait."
+          },
+          "effet":{
+            "pisteMessages":true
+          },
+          "next":"finchapitre3"
+        }
+      ]
+    },
+    "finChapitre3":{
+      "musique":"mystere_fin",
+      "dialogues":[
+        {
+          "personnage":"narrateur",
+          "texte":"Des regards derrière une épaule."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Une demande inhabituelle faite à Zoé."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Une hésitation dans un couloir."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Des détails insignefiants au moment où ils se sont produits."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Aujourd'hui, chacun d'eux semble pouvoir raconter une autre histoire."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Mais les souvenirs peuvent tromper."
+        },
+        {
+          "personnage":"narrateur",
+          "texte":"Les messages d'Eva, eux, pourrait être beaucoup plus difficiles à interpréter autrement."
+        }
+      ],
+      "next":"chapitre4"
+    }
+  }
+}

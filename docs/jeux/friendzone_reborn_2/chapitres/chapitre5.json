@@ -1,0 +1,716 @@
+{
+  "titre": "Chapitre 5 — Numéro inconnu",
+  "musique": "tension_legere",
+  "fond": "appartement_joueur_soir",
+  "debut": "debutChapitre5",
+  "scenes": {
+    "debutChapitre5": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Le lendemain de votre découverte dans le téléphone d'Eva, tu es seul."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Le dernier message envoyé à Eva tourne encore dans ta tête."
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Je suis là."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Ton téléphone se met soudainement à vibrer."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "NUMÉRO INCONNU"
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Répondre",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Allô ?"
+          },
+          "effet": {
+            "appelPrisImmediatement": true
+          },
+          "next": "premierContact"
+        },
+        {
+          "texte": "Ignorer l'appel",
+          "effet": {
+            "appelIgnore": true
+          },
+          "next": "appelIgnore"
+        }
+      ]
+    },
+    "appelIgnore": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Tu laisses sonner. L'appel s'arrête."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Quelques secondes plus tard, le même numéro rappelle."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Répondre",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Allô ?"
+          },
+          "next": "premierContact"
+        },
+        {
+          "texte": "Ignorer encore",
+          "next": "smsApresRefus"
+        }
+      ]
+    },
+    "smsApresRefus": {
+      "musique": "tension",
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "L'appel s'arrête une seconde fois."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Un message apparaît presque immédiatement."
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Réponds."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Le téléphone sonne une troisième fois."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Répondre",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Qu'est-ce que vous voulez ?"
+          },
+          "effet": {
+            "appelInsistant": true
+          },
+          "next": "avertissement"
+        }
+      ]
+    },
+    "premierContact": {
+      "musique": "tension",
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Un silence."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Allô ?"
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Tu devrais arrêter."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Arrêter quoi ?"
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "De chercher."
+        }
+      ],
+      "next": "questionsAppel"
+    },
+    "avertissement": {
+      "dialogues": [
+        {
+          "personnage": "inconnu",
+          "texte": "Tu devrais arrêter."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Arrêter quoi ?"
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "De chercher."
+        }
+      ],
+      "next": "questionsAppel"
+    },
+    "questionsAppel": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Cette personne sait que vous cherchez des réponses."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Demander qui appelle",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Qui êtes-vous ?"
+          },
+          "effet": {
+            "questionIdentite": true
+          },
+          "next": "reponseIdentite"
+        },
+        {
+          "texte": "Demander si cette personne connaît Eva",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Vous connaissez Eva ?"
+          },
+          "effet": {
+            "questionEva": true
+          },
+          "next": "reponseEva"
+        },
+        {
+          "texte": "Demander comment elle a obtenu ton numéro",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Comment vous avez eu mon numéro ?"
+          },
+          "effet": {
+            "questionNumero": true
+          },
+          "next": "reponseNumero"
+        },
+        {
+          "texte": "Demander si elle envoyait les messages à Eva",
+          "message": {
+            "personnage": "joueur",
+            "texte": "C'est vous qui envoyiez ces messages à Eva ?"
+          },
+          "effet": {
+            "questionMessages": true
+          },
+          "next": "reponseMessages"
+        }
+      ]
+    },
+    "reponseIdentite": {
+      "dialogues": [
+        {
+          "personnage": "inconnu",
+          "texte": "Mon nom ne t'aidera pas."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Alors pourquoi vous m'appelez ?"
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Pour t'éviter de faire une erreur."
+        }
+      ],
+      "next": "deuxiemeQuestion"
+    },
+    "reponseEva": {
+      "dialogues": [
+        {
+          "personnage": "inconnu",
+          "texte": "Tu poses la mauvaise question."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Alors c'est quoi la bonne ?"
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Demande-toi plutôt si toi, tu la connaissais vraiment."
+        }
+      ],
+      "next": "deuxiemeQuestion"
+    },
+    "reponseNumero": {
+      "dialogues": [
+        {
+          "personnage": "inconnu",
+          "texte": "Ce n'est pas très difficile de trouver quelqu'un quand on sait où chercher."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Ça ne répond pas à ma question."
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "C'est pourtant la seule réponse que tu auras."
+        }
+      ],
+      "next": "deuxiemeQuestion"
+    },
+    "deuxiemeQuestion": {
+      "choix": [
+        {
+          "texte": "Demander comment l'appelant sait que vous enquêtez",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Comment vous savez qu'on cherche des informations ?"
+          },
+          "next": "saitEnquete"
+        },
+        {
+          "texte": "Parler des messages retrouvés",
+          "message": {
+            "personnage": "joueur",
+            "texte": "C'est vous qui écriviez à Eva ?"
+          },
+          "next": "reponseMessages"
+        }
+      ]
+    },
+    "reponseMessages": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Un court silence suit ta question."
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Vous avez donc trouvé son téléphone."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Tu n'avais jamais parlé du téléphone."
+        }
+      ],
+      "next": "telephoneConnu"
+    },
+    "telephoneConnu": {
+      "musique": "tension_forte",
+      "dialogues": [
+        {
+          "personnage": "joueur",
+          "texte": "Comment vous savez qu'on a son téléphone ?"
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Vous devriez vraiment arrêter de poser certaines questions."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Vous nous surveillez ?"
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Je t'avais prévenu."
+        }
+      ],
+      "next": "evaAuraitVoulu"
+    },
+    "saitEnquete": {
+      "dialogues": [
+        {
+          "personnage": "inconnu",
+          "texte": "Vous n'êtes pas aussi discrets que vous le pensez."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Vous nous surveillez ?"
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Arrête de chercher Eva."
+        }
+      ],
+      "next": "evaAuraitVoulu"
+    },
+    "evaAuraitVoulu": {
+      "dialogues": [
+        {
+          "personnage": "inconnu",
+          "texte": "Elle aurait préféré que tu arrêtes."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Vous ne savez pas ce qu'Eva aurait voulu."
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Tu en es sûr ?"
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Les photos, les souvenirs et les messages qu'Eva cachait te reviennent en tête."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Exiger de savoir où est Eva",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Si vous savez autant de choses, dites-moi où est Eva."
+          },
+          "next": "questionOuEva"
+        },
+        {
+          "texte": "Demander si Eva est encore en vie",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Eva est vivante ?"
+          },
+          "next": "questionEvaVivante"
+        },
+        {
+          "texte": "Refuser de se laisser intimider",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Je n'arrêterai pas tant qu'on ne saura pas ce qui lui est arrivé."
+          },
+          "effet": {
+            "determination": 2
+          },
+          "next": "finAppel"
+        }
+      ]
+    },
+    "questionOuEva": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Un silence beaucoup plus long que les précédents."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Où est-elle ?"
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Tu continues à croire que toutes les réponses vont te plaire."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Répondez-moi !"
+        }
+      ],
+      "next": "finAppel"
+    },
+    "questionEvaVivante": {
+      "dialogues": [
+        {
+          "personnage": "joueur",
+          "texte": "Eva est vivante ?"
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Aucune réponse pendant plusieurs secondes."
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Ce n'est pas la question que tu devrais te poser."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Alors laquelle ?"
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Jusqu'où tu es prêt à aller pour le savoir ?"
+        }
+      ],
+      "next": "finAppel"
+    },
+    "finAppel": {
+      "musique": "silence",
+      "dialogues": [
+        {
+          "personnage": "inconnu",
+          "texte": "Arrête de chercher."
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "C'est le seul conseil que je te donnerai."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "L'appel se coupe."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Cette personne connaît Eva, ou veut au moins te le faire croire."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Et surtout, elle sait que vous enquêtez."
+        }
+      ],
+      "next": "rejoindreGroupe"
+    },
+    "rejoindreGroupe": {
+      "fond": "bibliotheque_groupe",
+      "musique": "mystere_legere",
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Un peu plus tard, tu retrouves Zoé, Émelyne et Bryan."
+        },
+        {
+          "personnage": "zoe",
+          "texte": "Tu nous as dit que c'était urgent. Qu'est-ce qui s'est passé ?"
+        },
+        {
+          "personnage": "joueur",
+          "texte": "J'ai reçu un appel."
+        },
+        {
+          "personnage": "bryan",
+          "texte": "De qui ?"
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Aucune idée. Numéro inconnu."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Mais cette personne savait qu'on cherchait des informations sur Eva."
+        }
+      ],
+      "next": "reactionGroupe"
+    },
+    "reactionGroupe": {
+      "dialogues": [
+        {
+          "personnage": "zoe",
+          "texte": "Attends... comment cette personne a ton numéro ?"
+        },
+        {
+          "personnage": "bryan",
+          "texte": "Et comment elle sait qu'on cherche ?"
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "Qu'est-ce qu'elle t'a dit exactement ?"
+        },
+        {
+          "personnage": "joueur",
+          "texte": "D'arrêter de chercher."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Et quand j'ai parlé des messages d'Eva, elle a compris qu'on avait trouvé son téléphone."
+        },
+        {
+          "personnage": "zoe",
+          "texte": "Tu lui avais dit ?"
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Non."
+        }
+      ],
+      "next": "comparaisonNumero"
+    },
+    "comparaisonNumero": {
+      "fond": "bibliotheque_notes",
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Vous comparez le numéro ayant appelé avec celui qui écrivait à Eva."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Les deux numéros sont différents."
+        },
+        {
+          "personnage": "zoe",
+          "texte": "C'est pas le même."
+        },
+        {
+          "personnage": "bryan",
+          "texte": "Donc il y en a deux ?"
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "Non. Ça veut juste dire que les numéros sont différents."
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "Une même personne peut utiliser plusieurs numéros. Deux personnes différentes peuvent aussi être impliquées."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Penser que les deux numéros sont liés",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Je pense quand même que les deux sont liés."
+          },
+          "effet": {
+            "hypotheseAppelantSilhouette": 1
+          },
+          "next": "troisInconnues"
+        },
+        {
+          "texte": "Garder toutes les pistes séparées",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Pour l'instant, on doit considérer que ça peut être trois personnes différentes."
+          },
+          "effet": {
+            "prudence": 2
+          },
+          "next": "troisInconnues"
+        }
+      ]
+    },
+    "troisInconnues": {
+      "dialogues": [
+        {
+          "personnage": "emelyne",
+          "texte": "On a la silhouette vue sur les photos et la vidéo."
+        },
+        {
+          "personnage": "bryan",
+          "texte": "Le numéro qui écrivait à Eva."
+        },
+        {
+          "personnage": "zoe",
+          "texte": "Et maintenant la personne qui t'a appelé."
+        },
+        {
+          "personnage": "joueur",
+          "texte": "Une, deux ou trois personnes."
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "Et aucun moyen de savoir lesquelles sont liées."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Ton téléphone vibre à nouveau."
+        }
+      ],
+      "next": "dernierSMS"
+    },
+    "dernierSMS": {
+      "musique": "tension_forte",
+      "fond": "telephone_sms_inconnu",
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Un message du numéro inconnu."
+        },
+        {
+          "personnage": "inconnu",
+          "texte": "Je t'avais prévenu."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Une image accompagne le message."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "La photographie montre votre groupe quittant la maison des parents d'Eva après vos recherches dans son téléphone."
+        },
+        {
+          "personnage": "zoe",
+          "texte": "Cette photo... elle date d'hier."
+        },
+        {
+          "personnage": "bryan",
+          "texte": "Donc cette personne était là."
+        },
+        {
+          "personnage": "emelyne",
+          "texte": "Ou quelqu'un qui travaille avec elle."
+        }
+      ],
+      "next": "realisationFinale"
+    },
+    "realisationFinale": {
+      "fond": "noir",
+      "musique": "mystere_fin",
+      "dialogues": [
+        {
+          "personnage": "joueur",
+          "texte": "Dans les deux cas... quelqu'un nous regarde maintenant."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Jusqu'ici, vous cherchiez une personne présente dans le passé d'Eva."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Pour la première fois, cette personne — ou quelqu'un qui lui est lié — vient d'entrer dans votre présent."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Continuer malgré l'avertissement",
+          "message": {
+            "personnage": "joueur",
+            "texte": "On continue. Mais à partir de maintenant, on fait beaucoup plus attention."
+          },
+          "effet": {
+            "chapitre5Termine": true,
+            "determination": 1,
+            "groupeSurveille": true
+          },
+          "next": "finChapitre5"
+        },
+        {
+          "texte": "Prévenir Christophe et l'enquêteur",
+          "message": {
+            "personnage": "joueur",
+            "texte": "On transmet l'appel, le message et la photo à l'enquêteur avant de faire quoi que ce soit."
+          },
+          "effet": {
+            "chapitre5Termine": true,
+            "prudence": 1,
+            "groupeSurveille": true,
+            "prevenirEnqueteur": true
+          },
+          "next": "finChapitre5"
+        }
+      ]
+    },
+    "finChapitre5": {
+      "fond": "noir",
+      "musique": "mystere_fin",
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "La silhouette reste sans visage."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Le numéro qui écrivait à Eva reste sans nom."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Et la voix qui vient de t'appeler reste impossible à identifier."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Vous ignorez encore s'il s'agit d'une seule personne ou de plusieurs."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Mais une chose a changé."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Quelqu'un sait que vous cherchez."
+        }
+      ],
+      "next": "chapitre6"
+    }
+  }
+}
