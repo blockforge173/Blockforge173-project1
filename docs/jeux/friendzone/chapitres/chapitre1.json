@@ -85,7 +85,8 @@
                 {
                     "fond":"cafeteria_accident",
                     "personnage": "narrateur",
-                    "texte": "En passant entre les tables, elle trébuche et renverse l'un des chocolats sur une étudiante assise à proximité."
+                    "texte": "En passant entre les tables, elle trébuche et renverse l'un des chocolats sur une étudiante assise à proximité.",
+                    "galerie":"cafeteriaAccident"
                 },
                 {
                     "personnage": "zoe",
