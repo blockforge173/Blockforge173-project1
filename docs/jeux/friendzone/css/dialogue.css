@@ -1,0 +1,804 @@
+/* ==========================================
+   FRIENDZONÉ REBORN
+   dialogue.css
+========================================== */
+
+
+/* ==========================================
+   Conversation
+========================================== */
+
+#conversation{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+    padding:25px;
+
+    overflow-y:auto;
+
+    scroll-behavior:smooth;
+
+}
+
+
+
+/* ==========================================
+   Message
+========================================== */
+
+.message{
+
+    display:flex;
+
+    flex-direction:column;
+
+    max-width:75%;
+
+    animation:apparitionMessage .25s ease;
+
+}
+
+
+
+/* ==========================================
+   Nom du personnage
+========================================== */
+
+.nom{
+
+    font-size:13px;
+
+    margin-bottom:5px;
+
+    color:#cfcfcf;
+
+    font-weight:bold;
+
+}
+
+
+
+/* ==========================================
+   Bulle
+========================================== */
+
+.bulle{
+
+    padding:14px 18px;
+
+    border-radius:18px;
+
+    line-height:1.6;
+
+    word-break:break-word;
+
+    font-size:17px;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.20);
+
+}
+
+
+
+/* ==========================================
+   Joueur
+========================================== */
+
+.joueur{
+
+    align-self:flex-end;
+
+}
+
+.joueur .nom{
+
+    text-align:right;
+
+    color:#8fc5ff;
+
+}
+
+.joueur .bulle{
+
+    background:#2f80ed;
+
+    color:#ffffff;
+
+    border-bottom-right-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   Eva
+========================================== */
+
+.eva{
+
+    align-self:flex-start;
+
+}
+
+.eva .nom{
+
+    color:#ffb8d3;
+
+}
+
+.eva .bulle{
+
+    background:#ff7eb6;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   Zoé
+========================================== */
+
+.zoe{
+
+    align-self:flex-start;
+
+}
+
+.zoe .nom{
+
+    color:#ffd38b;
+
+}
+
+.zoe .bulle{
+
+    background:#f39c12;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   Émelyne
+========================================== */
+
+.emelyne{
+
+    align-self:flex-start;
+
+}
+
+.emelyne .nom{
+
+    color:#98f2bf;
+
+}
+
+.emelyne .bulle{
+
+    background:#2ecc71;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   Bryan
+========================================== */
+
+.bryan{
+
+    align-self:flex-start;
+
+}
+
+.bryan .nom{
+
+    color:#b6b7ff;
+
+}
+
+.bryan .bulle{
+
+    background:#6c5ce7;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   Narration
+========================================== */
+
+.narration,
+.narrateur{
+
+    align-self:center;
+
+    max-width:90%;
+
+}
+
+.narration .nom,
+.narrateur .nom{
+
+    display:none;
+
+}
+
+.narration .bulle,
+.narrateur .bulle{
+
+    background:rgba(0,0,0,.70);
+
+    color:#ffffff;
+
+    border:1px solid rgba(255,255,255,.12);
+
+    border-radius:12px;
+
+    text-align:center;
+
+    font-style:italic;
+
+    text-shadow:0 1px 3px rgba(0,0,0,.9);
+
+}
+
+
+/*==========================================
+Christophe
+==========================================*/
+
+.christophe{
+
+    align-self:flex-start;
+
+}
+
+.christophe .nom{
+
+    color:#7ee7f2;
+
+}
+
+.christophe .bulle{
+
+    background:#168aad;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+/*===========================================
+Système
+==========================================*/
+
+.systeme{
+
+    align-self:flex-start;
+
+}
+
+.systeme .nom{
+
+    color:darkred;
+
+}
+
+.systeme .bulle{
+
+    background:#C0392B;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+/*===========================================
+Lieutenant Morel
+==========================================*/
+
+.lieutenant-morel{
+
+    align-self:flex-start;
+
+}
+
+.lieutenant-morel .nom{
+
+    color:#f5c16c;
+
+}
+
+.lieutenant-morel .bulle{
+
+    background:#9a6700;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   Agent d'accueil
+========================================== */
+
+.agent-accueil{
+
+    align-self:flex-start;
+
+}
+
+.agent-accueil .nom{
+
+    color:#80ed99;
+
+}
+
+.agent-accueil .bulle{
+
+    background:#2d6a4f;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   Autre policier
+========================================== */
+
+.autre-policier{
+
+    align-self:flex-start;
+
+}
+
+.autre-policier .nom{
+
+    color:#a9def9;
+
+}
+
+.autre-policier .bulle{
+
+    background:#4361ee;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   Enquêteur
+========================================== */
+
+.enqueteur{
+
+    align-self:flex-start;
+
+}
+
+.enqueteur .nom{
+
+    color:#f7b267;
+
+}
+
+.enqueteur .bulle{
+
+    background:#bc6c25;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   Policier
+========================================== */
+
+.policier{
+
+    align-self:flex-start;
+
+}
+
+.policier .nom{
+
+    color:#90e0ef;
+
+}
+
+.policier .bulle{
+
+    background:#0077b6;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   Claire
+========================================== */
+
+.claire{
+
+    align-self:flex-start;
+
+}
+
+.claire .nom{
+
+    color:#e4c1f9;
+
+}
+
+.claire .bulle{
+
+    background:#9d4edd;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   Lena
+========================================== */
+
+.lena{
+
+    align-self:flex-start;
+
+}
+
+.lena .nom{
+
+    color:#ffcad4;
+
+}
+
+.lena .bulle{
+
+    background:#c9184a;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   Élève
+========================================== */
+
+.eleve{
+
+    align-self:flex-start;
+
+}
+
+.eleve .nom{
+
+    color:#caffbf;
+
+}
+
+.eleve .bulle{
+
+    background:#588157;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   Téléphone
+========================================== */
+
+.telephone{
+
+    align-self:flex-start;
+
+}
+
+.telephone .nom{
+
+    color:#bde0fe;
+
+}
+
+.telephone .bulle{
+
+    background:#495057;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   SMS
+========================================== */
+
+.sms{
+
+    align-self:flex-start;
+
+}
+
+.sms .nom{
+
+    color:#d8f3dc;
+
+}
+
+.sms .bulle{
+
+    background:#40916c;
+
+    color:#ffffff;
+
+    border-bottom-left-radius:6px;
+
+}
+
+
+
+/* ==========================================
+   Pensée
+========================================== */
+
+.pensee{
+
+    align-self:center;
+
+    max-width:90%;
+
+}
+
+.pensee .nom{
+
+    display:none;
+
+}
+
+.pensee .bulle{
+
+    background:rgba(255,255,255,.08);
+
+    color:#ffffff;
+
+    border-left:4px solid #8a8a8a;
+
+    font-style:italic;
+
+}
+
+
+
+/* ==========================================
+   Heure
+========================================== */
+
+.heure{
+
+    margin-top:5px;
+
+    font-size:11px;
+
+    color:#999;
+
+}
+
+.joueur .heure{
+
+    text-align:right;
+
+}
+
+
+
+/* ==========================================
+   Avatar
+========================================== */
+
+.ligne{
+
+    display:flex;
+
+    align-items:flex-end;
+
+    gap:10px;
+
+}
+
+.avatar{
+
+    width:48px;
+
+    height:48px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    flex-shrink:0;
+
+}
+
+
+
+/* ==========================================
+   Scrollbar
+========================================== */
+
+#conversation::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+#conversation::-webkit-scrollbar-track{
+
+    background:transparent;
+
+}
+
+#conversation::-webkit-scrollbar-thumb{
+
+    background:#4a4a4a;
+
+    border-radius:20px;
+
+}
+
+#conversation::-webkit-scrollbar-thumb:hover{
+
+    background:#666;
+
+}
+
+
+
+/* ==========================================
+   Animation
+========================================== */
+
+@keyframes apparitionMessage{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(12px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media(max-width:800px){
+
+    #conversation{
+
+        padding:18px;
+
+    }
+
+    .message{
+
+        max-width:92%;
+
+    }
+
+    .bulle{
+
+        font-size:16px;
+
+    }
+
+}
+
+
+
+/* ==========================================
+   AFFICHAGE DU NOM DU JOUEUR
+========================================== */
+
+.message.joueur .nom {
+
+    display:block !important;
+
+    visibility:visible !important;
+
+    opacity:1 !important;
+
+    position:static !important;
+
+    width:auto;
+
+    height:auto;
+
+    margin:0 4px 5px 0;
+
+    color:#ffffff !important;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    text-align:right;
+
+    text-shadow:
+        0 1px 3px rgba(0,0,0,0.9);
+
+}
