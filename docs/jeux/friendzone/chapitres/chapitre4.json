@@ -4,7 +4,7 @@
   "debut": "attente22h",
   "scenes": {
     "attente22h": {
-      "fond": "chambre_joueur2",
+      "fond": "discussion_eva_message",
       "ambiance": "chambre_joueur",
       "dialogues": [
         {
