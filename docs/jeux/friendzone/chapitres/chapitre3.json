@@ -4,7 +4,7 @@
     "debut": "premierMessage",
     "scenes": {
         "premierMessage": {
-            "fond": ""discussion_eva_message",
+            "fond": "discussion_eva_message",
             "ambiance": "appartement joueur",
             "dialogues": [
                 {
