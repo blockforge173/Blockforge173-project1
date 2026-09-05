@@ -4,7 +4,7 @@
     "debut": "premierMessage",
     "scenes": {
         "premierMessage": {
-            "fond": "chambre_joueur",
+            "fond": ""discussion_eva_message",
             "ambiance": "appartement joueur",
             "dialogues": [
                 {
@@ -860,7 +860,8 @@
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "Tu enfiles ta veste et quittes ton logement."
+                    "texte": "Tu enfiles ta veste et quittes ton logement.",
+                    "fond": "sortie_joueur"
                 },
                 {
                     "personnage": "narrateur",
@@ -921,7 +922,8 @@
                         "negative": "Je viens chercher un livre.",
                         "neutre": "Je viens chercher un livre que j'avais commandé.",
                         "amicale": "Je viens chercher un livre que j'avais commandé. J'attendais sa sortie depuis un moment.",
-                        "proche": "Je viens chercher un livre que j'avais commandé. Je te montrerai peut-être lequel si ça t'intéresse."
+                        "proche": "Je viens chercher un livre que j'avais commandé. Je te montrerai peut-être lequel si ça t'intéresse.",
+                        "fond": "rencontre_emelyne_librairie"
                     }
                 },
                 {
@@ -1128,7 +1130,8 @@
                 },
                 {
                     "personnage": "narrateur",
-                    "texte": "Elle désigne une rue plus calme qui longe un petit parc."
+                    "texte": "Elle désigne une rue plus calme qui longe un petit parc.",
+                    "fond": "proposition_rentree_ensemble_emelyne"
                 }
             ],
             "choix": [
@@ -1161,7 +1164,8 @@
                 {
                     "personnage": "narrateur",
                     "texte": "Vous commencez à marcher côte à côte.",
-                    "galerie": "chap3PromenadeEmelyne"
+                    "galerie": "chap3PromenadeEmelyne",
+                    "fond": "promenade_emelyne"
                 },
                 {
                     "personnage": "narrateur",
@@ -1523,7 +1527,8 @@
                     "texte": "Continuer à marcher",
                     "message": {
                         "personnage": "narrateur",
-                        "texte": "Vous continuez à marcher dans le parc."
+                        "texte": "Vous continuez à marcher dans le parc.",
+                        "fond": "parc_emelyne"
                     },
                     "next": "discussionPersonnelleEmelyne"
                 }
@@ -1633,7 +1638,8 @@
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "Vous arrivez près de la sortie du parc."
+                    "texte": "Vous arrivez près de la sortie du parc.",
+                    "fond": "sortie_parc_emelyne"
                 },
                 {
                     "personnage": "emelyne",
@@ -1699,7 +1705,8 @@
                 },
                 {
                     "personnage": "narrateur",
-                    "texte": "Vous faites encore quelques pas ensemble."
+                    "texte": "Vous faites encore quelques pas ensemble.",
+                    "fond": "rentree_avec_emelyne"
                 },
                 {
                     "personnage": "emelyne",
@@ -1834,7 +1841,8 @@
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "Vous vous arrêtez à l'intersection où vos chemins se séparent."
+                    "texte": "Vous vous arrêtez à l'intersection où vos chemins se séparent.",
+                    "fond": "fin_promenade_emelyne"
                 },
                 {
                     "personnage": "emelyne",
@@ -1887,7 +1895,8 @@
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "Tu prends le chemin du retour."
+                    "texte": "Tu prends le chemin du retour.",
+                    "fond": "rue_chez_joueur"
                 },
                 {
                     "personnage": "narrateur",
@@ -1972,6 +1981,8 @@
             ]
         },
         "reponseApprocheDirecte": {
+            "fond": "discussion_eva_message",
+            "ambiance": "appartement joueur",
             "dialogues": [
                 {
                     "personnage": "eva",
