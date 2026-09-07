@@ -4,12 +4,12 @@
   "debut": "lendemainMatin",
   "scenes": {
     "lendemainMatin": {
-      "fond": "couloir",
       "ambiance": "class",
       "dialogues": [
         {
           "personnage": "narrateur",
-          "texte": "Le lendemain matin, {{nomJoueur}} arrive devant l'établissement."
+          "texte": "Le lendemain matin, {{nomJoueur}} arrive devant l'établissement.",
+          "fond" : "universite"
         },
         {
           "personnage": "narrateur",
@@ -44,7 +44,8 @@
       "dialogues": [
         {
           "personnage": "narrateur",
-          "texte": "En entrant dans le hall, {{nomJoueur}} aperçoit Eva près des casiers."
+          "texte": "En entrant dans le hall, {{nomJoueur}} aperçoit Eva près des casiers.",
+          "fond" : "couloir_rencontre_eva"
         },
         {
           "personnage": "eva",
@@ -171,7 +172,8 @@
         },
         {
           "personnage": "narrateur",
-          "texte": "Avant que tu puisses répondre, Zoé arrive derrière elle."
+          "texte": "Avant que tu puisses répondre, Zoé arrive derrière elle.",
+          "fond" : "couloir_arrivee_zoe"
         },
         {
           "personnage": "zoe",
@@ -379,7 +381,8 @@
         },
         {
           "personnage": "narrateur",
-          "texte": "Vous commencez à marcher ensemble vers les salles de cours."
+          "texte": "Vous commencez à marcher ensemble vers les salles de cours.",
+          "fond" : "direction_salle_de_cours_eva_zoe"
         }
       ],
       "choix": [
@@ -394,6 +397,7 @@
       ]
     },
     "arriveeEvaFroide": {
+      "fond" : "couloir_rencontre_eva",
       "dialogues": [
         {
           "personnage": "narrateur",
@@ -636,7 +640,8 @@
       "dialogues": [
         {
           "personnage": "narrateur",
-          "texte": "Dans le couloir suivant, tu croises Émelyne."
+          "texte": "Dans le couloir suivant, tu croises Émelyne.",
+          "fond" : "couloir_croisee_emelyne"
         },
         {
           "personnage": "emelyne",
@@ -937,7 +942,8 @@
       "dialogues": [
         {
           "personnage": "narrateur",
-          "texte": "Vous commencez à préparer la présentation."
+          "texte": "Vous commencez à préparer la présentation.",
+          "fond" : "class_travaille_groupe"
         },
         {
           "personnage": "narrateur",
@@ -983,7 +989,8 @@
       "dialogues": [
         {
           "personnage": "narrateur",
-          "texte": "Vous vous éloignez légèrement du groupe."
+          "texte": "Vous vous éloignez légèrement du groupe.",
+          "fond" : "discussion_bryan_ecart"
         },
         {
           "personnage": "bryan",
@@ -1508,7 +1515,8 @@
       "dialogues": [
         {
           "personnage": "narrateur",
-          "texte": "Le professeur appelle finalement votre groupe."
+          "texte": "Le professeur appelle finalement votre groupe.",
+          "fond" : "presentation_classe"
         },
         {
           "personnage": "narrateur",
@@ -1560,7 +1568,8 @@
       "dialogues": [
         {
           "personnage": "narrateur",
-          "texte": "À midi, le groupe se retrouve devant la cafétéria."
+          "texte": "À midi, le groupe se retrouve devant la cafétéria.",
+          "fond" : "devant_cafeteria"
         },
         {
           "personnage": "zoe",
@@ -2190,7 +2199,8 @@
         {
           "personnage": "narrateur",
           "texte": "En quittant le café, Eva ralentit légèrement pour marcher près de toi.",
-          "galerie":"chap5RapprochementEva"
+          "galerie":"chap5RapprochementEva",
+          "fond" : "sortie_devant_cafe"
         },
         {
           "personnage": "eva",
@@ -2291,7 +2301,8 @@
       "dialogues": [
         {
           "personnage": "narrateur",
-          "texte": "Plus tard dans la soirée, ton téléphone vibre."
+          "texte": "Plus tard dans la soirée, ton téléphone vibre.",
+          "fond": "discussion_eva_message"
         },
         {
           "personnage": "eva",
