@@ -2185,7 +2185,6 @@
       ]
     },
     "finSortieGroupe": {
-      "fond": "rue parisienne",
       "ambiance": "rue parisienne",
       "dialogues": [
         {
@@ -2296,7 +2295,6 @@
       ]
     },
     "messageSoirEva": {
-      "fond": "chambre_joueur2",
       "ambiance": "chambre_joueur",
       "dialogues": [
         {
