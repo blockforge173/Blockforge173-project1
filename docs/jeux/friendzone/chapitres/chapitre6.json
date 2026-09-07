@@ -65,7 +65,8 @@
                         "negative": "On entre ?",
                         "faible": "On peut entrer si tu veux.",
                         "moyenne": "J'ai trouvé une table un peu à l'écart.",
-                        "haute": "J'ai trouvé une table tranquille. J'avais envie qu'on puisse vraiment discuter."
+                        "haute": "J'ai trouvé une table tranquille. J'avais envie qu'on puisse vraiment discuter.",
+                        "fond":"dans_le_restaurant"
                     }
                 }
             ],
