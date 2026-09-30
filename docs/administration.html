@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Administration Blockforge173 Projects."
+    >
+
+    <title>
+        Administration - Blockforge173 Projects
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ==========================================
+         HEADER
+    =========================================== -->
+
+    <header class="header">
+
+        <div class="logo">
+            Blockforge173 Projects
+        </div>
+
+
+        <nav class="navigation">
+
+            <a href="index.html">
+                Accueil
+            </a>
+
+            <a href="jeux.html">
+                Jeux
+            </a>
+
+            <a href="minecraft.html">
+                Minecraft
+            </a>
+
+            <a href="projets.html">
+                Projets
+            </a>
+
+            <a href="a_propos.html">
+                À propos
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+        </nav>
+
+
+        <!-- ======================================
+             NAVIGATION DU COMPTE
+        ======================================= -->
+
+        <nav
+            class="navigation"
+            id="navigation-compte"
+        >
+        </nav>
+
+    </header>
+
+
+
+    <!-- ==========================================
+         CONTENU PRINCIPAL
+    =========================================== -->
+
+    <main
+        class="page-contenu"
+        id="administration"
+        hidden
+    >
+
+
+        <!-- ======================================
+             TITRE
+        ======================================= -->
+
+        <section class="section">
+
+            <div class="titre-section">
+
+                <p class="sur-titre">
+                    Espace propriétaire
+                </p>
+
+                <h1>
+                    Administration
+                </h1>
+
+                <p>
+                    Gestion des accès aux jeux
+                    Blockforge173 Projects.
+                </p>
+
+            </div>
+
+
+
+            <!-- ==================================
+                 FORMULAIRE LICENCE
+            =================================== -->
+
+            <div class="auth-conteneur">
+
+                <form
+                    class="formulaire-auth"
+                    id="formulaire-licence"
+                >
+
+
+                    <div>
+
+                        <p class="sur-titre">
+                            Licences
+                        </p>
+
+                        <h2>
+                            Attribuer une licence
+                        </h2>
+
+                    </div>
+
+
+
+                    <!-- ==========================
+                         UTILISATEUR
+                    =========================== -->
+
+                    <div class="champ-auth">
+
+                        <label for="utilisateur">
+                            Utilisateur
+                        </label>
+
+                        <select
+                            id="utilisateur"
+                            name="utilisateur"
+                            required
+                        >
+
+                            <option value="">
+                                Chargement des utilisateurs...
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- ==========================
+                         JEU
+                    =========================== -->
+
+                    <div class="champ-auth">
+
+                        <label for="jeu">
+                            Jeu
+                        </label>
+
+                        <select
+                            id="jeu"
+                            name="jeu"
+                            required
+                        >
+
+                            <option value="">
+                                Chargement des jeux...
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- ==========================
+                         TYPE DE LICENCE
+                    =========================== -->
+<div class="champ-auth">
+
+    <label for="type-licence">
+        Type de licence
+    </label>
+
+    <select
+        id="type-licence"
+        name="type-licence"
+        required
+        disabled
+    >
+
+        <option value="BETA">
+            BETA
+        </option>
+
+    </select>
+
+</div>
+
+
+
+                    <!-- ==========================
+                         EXPIRATION
+                    =========================== -->
+
+                    <div
+                        class="champ-auth"
+                        id="conteneur-expiration"
+                    >
+
+                        <label for="expiration">
+                            Date d'expiration
+                        </label>
+
+                        <input
+                            type="datetime-local"
+                            id="expiration"
+                            name="expiration"
+                            required
+                        >
+
+                        <small>
+                            Obligatoire pour une licence BETA.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- ==========================
+                         MESSAGE
+                    =========================== -->
+
+                    <div
+                        class="message-auth"
+                        id="message-administration"
+                        role="status"
+                        aria-live="polite"
+                    >
+                    </div>
+
+
+
+                    <!-- ==========================
+                         BOUTON
+                    =========================== -->
+
+                    <button
+                        type="submit"
+                        class="bouton-principal"
+                        id="bouton-attribuer"
+                    >
+                        Attribuer la licence
+                    </button>
+
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ======================================
+             LICENCES EXISTANTES
+        ======================================= -->
+
+        <section class="section">
+
+            <div class="titre-section">
+
+                <p class="sur-titre">
+                    Accès
+                </p>
+
+                <h2>
+                    Licences existantes
+                </h2>
+
+                <p>
+                    Liste des licences actuellement
+                    enregistrées dans Blockforge173 Projects.
+                </p>
+
+            </div>
+
+
+            <div
+                class="auth-conteneur"
+                id="conteneur-liste-licences"
+            >
+
+                <div
+                    class="formulaire-auth"
+                    id="liste-licences"
+                >
+
+                    <p>
+                        Chargement des licences...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ==========================================
+         CHARGEMENT
+    =========================================== -->
+
+    <main
+        class="page-contenu"
+        id="chargement-administration"
+    >
+
+        <section class="section">
+
+            <div class="titre-section">
+
+                <p class="sur-titre">
+                    Blockforge173 Projects
+                </p>
+
+                <h1>
+                    Vérification...
+                </h1>
+
+                <p>
+                    Vérification de vos droits
+                    d'administration.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ==========================================
+         FOOTER
+    =========================================== -->
+
+    <footer>
+
+        <p>
+            © 2026 Blockforge173 Projects
+        </p>
+
+    </footer>
+
+
+
+    <!-- ==========================================
+         SCRIPTS
+    =========================================== -->
+
+    <script src="compte.js"></script>
+
+    <script src="administration.js"></script>
+
+
+</body>
+
+</html>
