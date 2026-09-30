@@ -1,0 +1,1618 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Salle opérationnelle - Gestion Secours</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --fond: #081018;
+            --fond-clair: #101b25;
+            --panneau: #121f2a;
+            --panneau-2: #182733;
+            --bordure: #2a3d4b;
+
+            --texte: #ffffff;
+            --texte-secondaire: #94a8b7;
+
+            --rouge: #d63031;
+            --orange: #f39c12;
+            --vert: #27ae60;
+            --bleu: #3498db;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--fond);
+            color: var(--texte);
+            min-height: 100vh;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 30px;
+
+            background: #0c151d;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--rouge);
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+        .logo h1 {
+            font-size: 19px;
+        }
+
+        .logo p {
+            color: var(--texte-secondaire);
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        nav a {
+            color: #c9d3db;
+
+            text-decoration: none;
+
+            padding: 9px 13px;
+
+            border-radius: 6px;
+        }
+
+        nav a:hover {
+            background: var(--panneau-2);
+        }
+
+        .heure {
+            color: var(--texte-secondaire);
+            text-align: right;
+        }
+
+        #heure {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            padding: 20px;
+        }
+
+        .titre-page {
+            margin-bottom: 20px;
+        }
+
+        .titre-page h2 {
+            font-size: 25px;
+        }
+
+        .titre-page p {
+            color: var(--texte-secondaire);
+            margin-top: 5px;
+        }
+
+        /* =========================
+           STATISTIQUES
+        ========================= */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 10px;
+
+            padding: 17px;
+        }
+
+        .stat-label {
+            color: var(--texte-secondaire);
+            font-size: 13px;
+        }
+
+        .stat-value {
+            font-size: 27px;
+            font-weight: bold;
+
+            margin-top: 6px;
+        }
+
+        /* =========================
+           GRILLE
+        ========================= */
+
+        .operations-grid {
+            display: grid;
+
+            grid-template-columns:
+                330px 1fr 350px;
+
+            gap: 15px;
+        }
+
+        .panel {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 15px;
+
+            border-bottom: 1px solid var(--bordure);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .panel-header h3 {
+            font-size: 16px;
+        }
+
+        .panel-content {
+            padding: 12px;
+        }
+
+        /* =========================
+           INTERVENTIONS
+        ========================= */
+
+        .intervention {
+            padding: 13px;
+
+            background: var(--panneau-2);
+
+            border: 1px solid transparent;
+
+            border-radius: 8px;
+
+            margin-bottom: 10px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .intervention:hover {
+            border-color: var(--rouge);
+        }
+
+        .intervention.selected {
+            border-color: var(--rouge);
+
+            background: #202c35;
+        }
+
+        .intervention-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+
+            margin-bottom: 7px;
+        }
+
+        .intervention h4 {
+            font-size: 14px;
+        }
+
+        .intervention p {
+            color: var(--texte-secondaire);
+
+            font-size: 12px;
+
+            margin-top: 5px;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 4px 7px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: bold;
+        }
+
+        .urgence {
+            background: rgba(214, 48, 49, 0.20);
+            color: #ff7675;
+        }
+
+        .urgent {
+            background: rgba(243, 156, 18, 0.20);
+            color: #ffc05c;
+        }
+
+        .normal {
+            background: rgba(52, 152, 219, 0.20);
+            color: #74b9ff;
+        }
+
+        /* =========================
+           CARTE
+        ========================= */
+
+        .map {
+            min-height: 580px;
+
+            position: relative;
+
+            background:
+                linear-gradient(
+                    rgba(10, 20, 28, 0.20),
+                    rgba(10, 20, 28, 0.20)
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 39px,
+                    rgba(255,255,255,0.03) 40px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 39px,
+                    rgba(255,255,255,0.03) 40px
+                ),
+                #13212b;
+        }
+
+        .route {
+            position: absolute;
+
+            background: #344955;
+
+            opacity: 0.8;
+        }
+
+        .route1 {
+            height: 24px;
+            width: 110%;
+
+            top: 45%;
+            left: -5%;
+
+            transform: rotate(-8deg);
+        }
+
+        .route2 {
+            width: 22px;
+            height: 110%;
+
+            left: 57%;
+            top: -5%;
+
+            transform: rotate(7deg);
+        }
+
+        .route3 {
+            height: 15px;
+            width: 85%;
+
+            left: 5%;
+            top: 72%;
+
+            transform: rotate(12deg);
+        }
+
+        /* =========================
+           MARQUEURS
+        ========================= */
+
+        .marker {
+            position: absolute;
+
+            width: 25px;
+            height: 25px;
+
+            border-radius:
+                50% 50% 50% 0;
+
+            transform: rotate(-45deg);
+
+            cursor: pointer;
+
+            box-shadow:
+                0 5px 10px
+                rgba(0,0,0,0.4);
+        }
+
+        .marker::after {
+            content: "";
+
+            width: 8px;
+            height: 8px;
+
+            background: white;
+
+            border-radius: 50%;
+
+            position: absolute;
+
+            top: 8px;
+            left: 8px;
+        }
+
+        .marker-intervention {
+            background: var(--rouge);
+        }
+
+        .marker-caserne {
+            background: var(--bleu);
+        }
+
+        .marker-hopital {
+            background: var(--vert);
+        }
+
+        .m1 {
+            left: 35%;
+            top: 30%;
+        }
+
+        .m2 {
+            left: 65%;
+            top: 65%;
+        }
+
+        .m3 {
+            left: 18%;
+            top: 62%;
+        }
+
+        .m4 {
+            left: 75%;
+            top: 20%;
+        }
+
+        .legende {
+            position: absolute;
+
+            left: 15px;
+            bottom: 15px;
+
+            background: rgba(5, 10, 15, 0.90);
+
+            border: 1px solid var(--bordure);
+
+            padding: 10px;
+
+            border-radius: 7px;
+
+            font-size: 12px;
+
+            color: var(--texte-secondaire);
+        }
+
+        /* =========================
+           VEHICULES
+        ========================= */
+
+        .vehicule {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 10px;
+
+            padding: 11px;
+
+            margin-bottom: 8px;
+
+            background: var(--panneau-2);
+
+            border-radius: 7px;
+        }
+
+        .vehicule h4 {
+            font-size: 13px;
+        }
+
+        .vehicule p {
+            color: var(--texte-secondaire);
+
+            font-size: 11px;
+
+            margin-top: 3px;
+        }
+
+        .status {
+            width: 9px;
+            height: 9px;
+
+            border-radius: 50%;
+
+            display: inline-block;
+
+            margin-right: 5px;
+        }
+
+        .disponible {
+            background: var(--vert);
+        }
+
+        .engage {
+            background: var(--orange);
+        }
+
+        .indisponible {
+            background: var(--rouge);
+        }
+
+        /* =========================
+           DETAILS
+        ========================= */
+
+        .details {
+            margin-top: 15px;
+        }
+
+        .details h3 {
+            font-size: 17px;
+
+            margin-bottom: 10px;
+        }
+
+        .details p {
+            color: var(--texte-secondaire);
+
+            line-height: 1.5;
+
+            font-size: 13px;
+
+            margin-bottom: 8px;
+        }
+
+        .separator {
+            height: 1px;
+
+            background: var(--bordure);
+
+            margin: 15px 0;
+        }
+
+        /* =========================
+           ENGAGEMENT
+        ========================= */
+
+        select {
+            width: 100%;
+
+            padding: 10px;
+
+            margin-bottom: 10px;
+
+            background: #0b151d;
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 6px;
+
+            color: white;
+        }
+
+        button {
+            border: none;
+
+            padding: 11px 15px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .btn-engager {
+            width: 100%;
+
+            background: var(--rouge);
+
+            color: white;
+        }
+
+        .btn-engager:hover {
+            background: #e33a3b;
+        }
+
+        .btn-renfort {
+            width: 100%;
+
+            margin-top: 8px;
+
+            background: #263947;
+
+            color: white;
+        }
+
+        /* =========================
+           JOURNAL
+        ========================= */
+
+        .journal {
+            max-height: 180px;
+
+            overflow-y: auto;
+
+            background: #091219;
+
+            padding: 10px;
+
+            border-radius: 7px;
+
+            font-family: Consolas, monospace;
+
+            font-size: 11px;
+
+            color: #a8bbc9;
+        }
+
+        .journal div {
+            margin-bottom: 7px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1200px) {
+
+            .operations-grid {
+                grid-template-columns:
+                    300px 1fr;
+            }
+
+            .right-column {
+                grid-column:
+                    1 / -1;
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            header {
+                height: auto;
+
+                flex-direction: column;
+
+                gap: 15px;
+
+                padding: 15px;
+            }
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .operations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .map {
+                min-height: 400px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            18
+        </div>
+
+        <div>
+
+            <h1>
+                Gestion Secours
+            </h1>
+
+            <p>
+                Salle opérationnelle
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a href="index.html">
+            Accueil
+        </a>
+
+        <a href="cta.html">
+            CTA
+        </a>
+
+        <a href="vehicules.html">
+            Véhicules
+        </a>
+
+        <a href="casernes.html">
+            Casernes
+        </a>
+
+    </nav>
+
+
+    <div class="heure">
+
+        <div id="heure">
+            00:00:00
+        </div>
+
+        <small id="date">
+            --
+        </small>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <div class="titre-page">
+
+        <h2>
+            Salle opérationnelle
+        </h2>
+
+        <p>
+            Supervision en temps réel des interventions et des moyens de secours.
+        </p>
+
+    </div>
+
+
+    <!-- STATISTIQUES -->
+
+    <section class="stats">
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Appels en attente
+            </div>
+
+            <div
+                class="stat-value"
+                id="nombreAppels"
+            >
+                3
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Interventions actives
+            </div>
+
+            <div
+                class="stat-value"
+                id="nombreInterventions"
+            >
+                2
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Moyens disponibles
+            </div>
+
+            <div
+                class="stat-value"
+                id="nombreDisponibles"
+            >
+                6
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Moyens engagés
+            </div>
+
+            <div
+                class="stat-value"
+                id="nombreEngages"
+            >
+                2
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="operations-grid">
+
+        <!-- COLONNE GAUCHE -->
+
+        <div>
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h3>
+                        Interventions
+                    </h3>
+
+                    <span class="badge urgence">
+                        ACTIVES
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="panel-content"
+                    id="listeInterventions"
+                >
+
+                    <div
+                        class="intervention selected"
+                        onclick="selectionnerIntervention(1)"
+                        id="intervention-1"
+                    >
+
+                        <div class="intervention-top">
+
+                            <h4>
+                                🔥 Feu d'appartement
+                            </h4>
+
+                            <span class="badge urgence">
+                                URGENCE
+                            </span>
+
+                        </div>
+
+                        <p>
+                            12 rue des Lilas
+                        </p>
+
+                        <p>
+                            FPT 01 • VSAV 01
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="intervention"
+                        onclick="selectionnerIntervention(2)"
+                        id="intervention-2"
+                    >
+
+                        <div class="intervention-top">
+
+                            <h4>
+                                🚗 Accident de circulation
+                            </h4>
+
+                            <span class="badge urgent">
+                                URGENT
+                            </span>
+
+                        </div>
+
+                        <p>
+                            D47 - PK 18
+                        </p>
+
+                        <p>
+                            VSR 01
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="intervention"
+                        onclick="selectionnerIntervention(3)"
+                        id="intervention-3"
+                    >
+
+                        <div class="intervention-top">
+
+                            <h4>
+                                ❤️ Malaise à domicile
+                            </h4>
+
+                            <span class="badge normal">
+                                SAP
+                            </span>
+
+                        </div>
+
+                        <p>
+                            8 avenue Victor-Hugo
+                        </p>
+
+                        <p>
+                            En attente de moyen
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CARTE -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Carte opérationnelle
+                </h3>
+
+                <span class="badge normal">
+                    SECTEUR 01
+                </span>
+
+            </div>
+
+
+            <div class="map">
+
+                <div class="route route1"></div>
+                <div class="route route2"></div>
+                <div class="route route3"></div>
+
+
+                <div
+                    class="marker marker-intervention m1"
+                    title="Feu d'appartement"
+                ></div>
+
+
+                <div
+                    class="marker marker-intervention m2"
+                    title="Accident de circulation"
+                ></div>
+
+
+                <div
+                    class="marker marker-caserne m3"
+                    title="Centre de secours principal"
+                ></div>
+
+
+                <div
+                    class="marker marker-hopital m4"
+                    title="Centre hospitalier"
+                ></div>
+
+
+                <div class="legende">
+
+                    🔴 Intervention
+                    &nbsp;&nbsp;
+
+                    🔵 Caserne
+                    &nbsp;&nbsp;
+
+                    🟢 Hôpital
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- COLONNE DROITE -->
+
+        <div class="right-column">
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h3>
+                        Moyens disponibles
+                    </h3>
+
+                </div>
+
+
+                <div class="panel-content">
+
+                    <div class="vehicule">
+
+                        <div>
+
+                            <h4>
+                                FPT 02
+                            </h4>
+
+                            <p>
+                                Fourgon Pompe Tonne
+                            </p>
+
+                        </div>
+
+                        <small>
+
+                            <span
+                                class="status disponible"
+                            ></span>
+
+                            Disponible
+
+                        </small>
+
+                    </div>
+
+
+                    <div class="vehicule">
+
+                        <div>
+
+                            <h4>
+                                VSAV 02
+                            </h4>
+
+                            <p>
+                                Secours à personne
+                            </p>
+
+                        </div>
+
+                        <small>
+
+                            <span
+                                class="status disponible"
+                            ></span>
+
+                            Disponible
+
+                        </small>
+
+                    </div>
+
+
+                    <div class="vehicule">
+
+                        <div>
+
+                            <h4>
+                                EPA 01
+                            </h4>
+
+                            <p>
+                                Moyen aérien
+                            </p>
+
+                        </div>
+
+                        <small>
+
+                            <span
+                                class="status disponible"
+                            ></span>
+
+                            Disponible
+
+                        </small>
+
+                    </div>
+
+
+                    <div class="vehicule">
+
+                        <div>
+
+                            <h4>
+                                VLCDG 01
+                            </h4>
+
+                            <p>
+                                Chef de groupe
+                            </p>
+
+                        </div>
+
+                        <small>
+
+                            <span
+                                class="status disponible"
+                            ></span>
+
+                            Disponible
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DETAILS -->
+
+            <div
+                class="panel details"
+            >
+
+                <div class="panel-header">
+
+                    <h3>
+                        Intervention sélectionnée
+                    </h3>
+
+                </div>
+
+
+                <div class="panel-content">
+
+                    <h3 id="detailTitre">
+                        🔥 Feu d'appartement
+                    </h3>
+
+                    <p id="detailAdresse">
+                        📍 12 rue des Lilas
+                    </p>
+
+                    <p id="detailDescription">
+
+                        Fumée importante signalée.
+                        Une personne pourrait être
+                        bloquée au deuxième étage.
+
+                    </p>
+
+
+                    <div class="separator"></div>
+
+
+                    <p>
+                        <strong>
+                            Moyens engagés :
+                        </strong>
+                    </p>
+
+                    <p id="detailMoyens">
+                        FPT 01 • VSAV 01
+                    </p>
+
+
+                    <div class="separator"></div>
+
+
+                    <label for="vehiculeSelect">
+
+                        <small>
+                            Engager un moyen supplémentaire
+                        </small>
+
+                    </label>
+
+
+                    <select id="vehiculeSelect">
+
+                        <option>
+                            FPT 02
+                        </option>
+
+                        <option>
+                            VSAV 02
+                        </option>
+
+                        <option>
+                            EPA 01
+                        </option>
+
+                        <option>
+                            VLCDG 01
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        class="btn-engager"
+                        onclick="engagerVehicule()"
+                    >
+                        🚨 Engager le moyen
+                    </button>
+
+
+                    <button
+                        class="btn-renfort"
+                        onclick="demanderRenfort()"
+                    >
+                        Demander des renforts
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- JOURNAL -->
+
+            <div
+                class="panel"
+                style="margin-top:15px;"
+            >
+
+                <div class="panel-header">
+
+                    <h3>
+                        Journal opérationnel
+                    </h3>
+
+                </div>
+
+
+                <div class="panel-content">
+
+                    <div
+                        class="journal"
+                        id="journal"
+                    >
+
+                        <div>
+                            [18:32] FPT 01 engagé.
+                        </div>
+
+                        <div>
+                            [18:33] VSAV 01 engagé.
+                        </div>
+
+                        <div>
+                            [18:36] FPT 01 sur les lieux.
+                        </div>
+
+                        <div>
+                            [18:37] Reconnaissance en cours.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+    /*
+        DONNÉES DES INTERVENTIONS
+
+        Plus tard, ces données pourront
+        provenir du moteur Java.
+    */
+
+    const interventions = {
+
+        1: {
+
+            titre:
+                "🔥 Feu d'appartement",
+
+            adresse:
+                "📍 12 rue des Lilas",
+
+            description:
+                "Fumée importante signalée. Une personne pourrait être bloquée au deuxième étage.",
+
+            moyens:
+                [
+                    "FPT 01",
+                    "VSAV 01"
+                ]
+
+        },
+
+
+        2: {
+
+            titre:
+                "🚗 Accident de circulation",
+
+            adresse:
+                "📍 D47 - PK 18",
+
+            description:
+                "Deux véhicules impliqués. Une victime serait blessée.",
+
+            moyens:
+                [
+                    "VSR 01"
+                ]
+
+        },
+
+
+        3: {
+
+            titre:
+                "❤️ Malaise à domicile",
+
+            adresse:
+                "📍 8 avenue Victor-Hugo",
+
+            description:
+                "Homme de 67 ans conscient signalant une douleur thoracique.",
+
+            moyens:
+                []
+
+        }
+
+    };
+
+
+    let interventionSelectionnee = 1;
+
+
+    /*
+        HORLOGE
+    */
+
+    function mettreAJourHeure() {
+
+        const maintenant =
+            new Date();
+
+
+        document.getElementById(
+            "heure"
+        ).textContent =
+            maintenant.toLocaleTimeString(
+                "fr-FR"
+            );
+
+
+        document.getElementById(
+            "date"
+        ).textContent =
+            maintenant.toLocaleDateString(
+                "fr-FR",
+                {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                }
+            );
+
+    }
+
+
+    setInterval(
+        mettreAJourHeure,
+        1000
+    );
+
+
+    mettreAJourHeure();
+
+
+    /*
+        SELECTION INTERVENTION
+    */
+
+    function selectionnerIntervention(id) {
+
+        interventionSelectionnee =
+            id;
+
+
+        document
+            .querySelectorAll(
+                ".intervention"
+            )
+            .forEach(
+                element => {
+
+                    element.classList.remove(
+                        "selected"
+                    );
+
+                }
+            );
+
+
+        document
+            .getElementById(
+                "intervention-" + id
+            )
+            .classList.add(
+                "selected"
+            );
+
+
+        const intervention =
+            interventions[id];
+
+
+        document.getElementById(
+            "detailTitre"
+        ).textContent =
+            intervention.titre;
+
+
+        document.getElementById(
+            "detailAdresse"
+        ).textContent =
+            intervention.adresse;
+
+
+        document.getElementById(
+            "detailDescription"
+        ).textContent =
+            intervention.description;
+
+
+        afficherMoyens();
+
+    }
+
+
+    /*
+        AFFICHAGE MOYENS
+    */
+
+    function afficherMoyens() {
+
+        const intervention =
+            interventions[
+                interventionSelectionnee
+            ];
+
+
+        const zone =
+            document.getElementById(
+                "detailMoyens"
+            );
+
+
+        if (
+            intervention.moyens.length === 0
+        ) {
+
+            zone.textContent =
+                "Aucun moyen engagé";
+
+        }
+
+        else {
+
+            zone.textContent =
+                intervention.moyens.join(
+                    " • "
+                );
+
+        }
+
+    }
+
+
+    /*
+        ENGAGEMENT VEHICULE
+    */
+
+    function engagerVehicule() {
+
+        const select =
+            document.getElementById(
+                "vehiculeSelect"
+            );
+
+
+        const vehicule =
+            select.value;
+
+
+        const intervention =
+            interventions[
+                interventionSelectionnee
+            ];
+
+
+        if (
+            intervention.moyens.includes(
+                vehicule
+            )
+        ) {
+
+            ajouterJournal(
+                vehicule +
+                " est déjà engagé."
+            );
+
+            return;
+
+        }
+
+
+        intervention.moyens.push(
+            vehicule
+        );
+
+
+        afficherMoyens();
+
+
+        ajouterJournal(
+
+            vehicule +
+            " engagé sur " +
+            intervention.titre.replace(
+                /[^\p{L}\p{N}\s'-]/gu,
+                ""
+            )
+
+        );
+
+    }
+
+
+    /*
+        DEMANDE RENFORT
+    */
+
+    function demanderRenfort() {
+
+        const intervention =
+            interventions[
+                interventionSelectionnee
+            ];
+
+
+        ajouterJournal(
+
+            "Demande de renfort pour " +
+            intervention.titre
+
+        );
+
+    }
+
+
+    /*
+        JOURNAL
+    */
+
+    function ajouterJournal(message) {
+
+        const journal =
+            document.getElementById(
+                "journal"
+            );
+
+
+        const ligne =
+            document.createElement(
+                "div"
+            );
+
+
+        const heure =
+            new Date()
+                .toLocaleTimeString(
+                    "fr-FR",
+                    {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    }
+                );
+
+
+        ligne.textContent =
+            "[" +
+            heure +
+            "] " +
+            message;
+
+
+        journal.prepend(
+            ligne
+        );
+
+    }
+
+</script>
+
+</body>
+</html>
+```

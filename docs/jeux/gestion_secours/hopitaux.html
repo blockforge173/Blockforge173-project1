@@ -1,0 +1,2614 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hôpitaux - Gestion Secours</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --fond: #081018;
+            --panneau: #121f2a;
+            --panneau-2: #182733;
+            --bordure: #2b3e4c;
+
+            --texte: #f5f7f9;
+            --texte-secondaire: #94a8b7;
+
+            --rouge: #d63031;
+            --orange: #f39c12;
+            --vert: #27ae60;
+            --bleu: #3498db;
+            --violet: #8e44ad;
+            --gris: #7f8c8d;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--fond);
+            color: var(--texte);
+            min-height: 100vh;
+        }
+
+        /* =========================
+           HEADER
+        ========================== */
+
+        header {
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 12px 30px;
+
+            background: #0b141c;
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--rouge);
+            border-radius: 9px;
+
+            font-weight: bold;
+        }
+
+        .logo h1 {
+            font-size: 19px;
+        }
+
+        .logo p {
+            margin-top: 3px;
+
+            color: var(--texte-secondaire);
+            font-size: 12px;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #cbd6de;
+            text-decoration: none;
+
+            padding: 9px 13px;
+
+            border-radius: 6px;
+        }
+
+        nav a:hover {
+            background: var(--panneau-2);
+        }
+
+        .horloge {
+            text-align: right;
+        }
+
+        #heure {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #date {
+            color: var(--texte-secondaire);
+            font-size: 11px;
+        }
+
+        /* =========================
+           MAIN
+        ========================== */
+
+        main {
+            padding: 20px;
+        }
+
+        .titre-page {
+            margin-bottom: 20px;
+        }
+
+        .titre-page h2 {
+            font-size: 25px;
+        }
+
+        .titre-page p {
+            margin-top: 5px;
+
+            color: var(--texte-secondaire);
+        }
+
+        /* =========================
+           STATS
+        ========================== */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+            border-radius: 10px;
+
+            padding: 16px;
+        }
+
+        .stat-label {
+            color: var(--texte-secondaire);
+            font-size: 12px;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: bold;
+
+            margin-top: 6px;
+        }
+
+        /* =========================
+           TOOLBAR
+        ========================== */
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+
+            margin-bottom: 18px;
+        }
+
+        .toolbar input,
+        .toolbar select {
+            padding: 10px;
+
+            background: #0d1820;
+            color: white;
+
+            border: 1px solid var(--bordure);
+            border-radius: 7px;
+        }
+
+        .toolbar input {
+            min-width: 250px;
+            flex: 1;
+        }
+
+        .toolbar select {
+            min-width: 180px;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .btn {
+            border: none;
+
+            padding: 10px 14px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: var(--rouge);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #233746;
+            color: white;
+
+            border: 1px solid var(--bordure);
+        }
+
+        .btn-success {
+            background: var(--vert);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--orange);
+            color: #111;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================== */
+
+        .hopitaux-layout {
+            display: grid;
+            grid-template-columns: 1fr 390px;
+
+            gap: 15px;
+
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .panel-header h3 {
+            font-size: 16px;
+        }
+
+        .panel-content {
+            padding: 13px;
+        }
+
+        /* =========================
+           CARTES HOPITAUX
+        ========================== */
+
+        .hopitaux-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+            gap: 14px;
+        }
+
+        .hopital-card {
+            background: var(--panneau-2);
+
+            border: 1px solid var(--bordure);
+            border-radius: 10px;
+
+            padding: 15px;
+
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .hopital-card:hover {
+            border-color: var(--bleu);
+            transform: translateY(-2px);
+        }
+
+        .hopital-card.selected {
+            border-color: var(--bleu);
+            background: #203441;
+        }
+
+        .hopital-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .hopital-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hopital-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #28404e;
+
+            border-radius: 8px;
+
+            font-size: 22px;
+        }
+
+        .hopital-title h4 {
+            font-size: 14px;
+        }
+
+        .hopital-title p {
+            margin-top: 3px;
+
+            color: var(--texte-secondaire);
+            font-size: 11px;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 5px 8px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .badge-disponible {
+            color: #83e1a7;
+            background: rgba(39, 174, 96, 0.18);
+        }
+
+        .badge-charge {
+            color: #ffcb69;
+            background: rgba(243, 156, 18, 0.18);
+        }
+
+        .badge-sature {
+            color: #ff8b82;
+            background: rgba(214, 48, 49, 0.18);
+        }
+
+        .hopital-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 8px;
+        }
+
+        .info-box {
+            background: #0d1820;
+
+            border: 1px solid #273946;
+            border-radius: 7px;
+
+            padding: 9px;
+        }
+
+        .info-box span {
+            display: block;
+
+            color: var(--texte-secondaire);
+
+            font-size: 10px;
+            margin-bottom: 4px;
+        }
+
+        .info-box strong {
+            font-size: 12px;
+        }
+
+        /* =========================
+           PROGRESSION
+        ========================== */
+
+        .progress-zone {
+            margin-top: 12px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+
+            margin-bottom: 5px;
+
+            font-size: 10px;
+        }
+
+        .progress-label span {
+            color: var(--texte-secondaire);
+        }
+
+        .progress {
+            height: 7px;
+
+            background: #09131a;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--vert);
+        }
+
+        .progress-orange {
+            background: var(--orange);
+        }
+
+        .progress-red {
+            background: var(--rouge);
+        }
+
+        /* =========================
+           DETAILS
+        ========================== */
+
+        .detail-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .detail-icon {
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #28404e;
+
+            border-radius: 10px;
+
+            font-size: 29px;
+        }
+
+        .detail-title h3 {
+            font-size: 19px;
+        }
+
+        .detail-title p {
+            margin-top: 4px;
+
+            color: var(--texte-secondaire);
+            font-size: 12px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 8px;
+        }
+
+        .detail-box {
+            background: #0d1820;
+
+            border: 1px solid var(--bordure);
+            border-radius: 7px;
+
+            padding: 10px;
+        }
+
+        .detail-box span {
+            display: block;
+
+            color: var(--texte-secondaire);
+
+            font-size: 10px;
+            margin-bottom: 4px;
+        }
+
+        .detail-box strong {
+            font-size: 12px;
+        }
+
+        .separator {
+            height: 1px;
+
+            background: var(--bordure);
+
+            margin: 15px 0;
+        }
+
+        .detail-section h4 {
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .liste {
+            display: grid;
+            gap: 7px;
+        }
+
+        .liste-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 9px;
+
+            background: #0c171f;
+
+            border: 1px solid var(--bordure);
+            border-radius: 7px;
+
+            font-size: 11px;
+        }
+
+        .liste-item span {
+            color: var(--texte-secondaire);
+        }
+
+        .service-ok {
+            color: #7fe2a3 !important;
+        }
+
+        .service-charge {
+            color: #ffca67 !important;
+        }
+
+        .service-ferme {
+            color: #ff8980 !important;
+        }
+
+        .actions {
+            display: grid;
+            gap: 8px;
+
+            margin-top: 15px;
+        }
+
+        /* =========================
+           MODAL
+        ========================== */
+
+        .modal-overlay {
+            display: none;
+
+            position: fixed;
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.72);
+
+            align-items: center;
+            justify-content: center;
+
+            z-index: 100;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            width: 95%;
+            max-width: 530px;
+
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 14px;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .modal-content {
+            padding: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: var(--texte-secondaire);
+            font-size: 11px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+
+            padding: 10px;
+
+            background: #0c171f;
+            color: white;
+
+            border: 1px solid var(--bordure);
+            border-radius: 6px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+
+            margin-top: 15px;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 1100px) {
+
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .hopitaux-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 750px) {
+
+            header {
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .toolbar {
+                flex-direction: column;
+            }
+
+            .toolbar input,
+            .toolbar select {
+                width: 100%;
+            }
+
+            .detail-grid,
+            .hopital-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            18
+        </div>
+
+        <div>
+            <h1>
+                Gestion Secours
+            </h1>
+
+            <p>
+                Gestion des établissements hospitaliers
+            </p>
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a href="index.html">
+            Accueil
+        </a>
+
+        <a href="cta.html">
+            CTA
+        </a>
+
+        <a href="operations.html">
+            Opérations
+        </a>
+
+        <a href="vehicules.html">
+            Véhicules
+        </a>
+
+        <a href="casernes.html">
+            Casernes
+        </a>
+
+        <a href="personnel.html">
+            Personnel
+        </a>
+
+    </nav>
+
+
+    <div class="horloge">
+
+        <div id="heure">
+            00:00:00
+        </div>
+
+        <div id="date">
+            --
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <div class="titre-page">
+
+        <h2>
+            Hôpitaux et établissements de soins
+        </h2>
+
+        <p>
+            Consultez les capacités hospitalières et orientez les victimes vers l'établissement adapté.
+        </p>
+
+    </div>
+
+
+    <!-- =====================
+         STATISTIQUES
+    ====================== -->
+
+    <section class="stats">
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Établissements
+            </div>
+
+            <div class="stat-value" id="statTotal">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Disponibles
+            </div>
+
+            <div class="stat-value" id="statDisponibles">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                En forte charge
+            </div>
+
+            <div class="stat-value" id="statCharges">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Saturés
+            </div>
+
+            <div class="stat-value" id="statSatures">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Places disponibles
+            </div>
+
+            <div class="stat-value" id="statPlaces">
+                0
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================
+         TOOLBAR
+    ====================== -->
+
+    <section class="toolbar">
+
+        <input
+            type="text"
+            id="recherche"
+            placeholder="Rechercher un établissement..."
+            oninput="afficherHopitaux()"
+        >
+
+
+        <select
+            id="filtreType"
+            onchange="afficherHopitaux()"
+        >
+
+            <option value="">
+                Tous les établissements
+            </option>
+
+            <option value="CHU">
+                CHU
+            </option>
+
+            <option value="CH">
+                Centre hospitalier
+            </option>
+
+            <option value="CLINIQUE">
+                Clinique
+            </option>
+
+            <option value="TRAUMA">
+                Trauma center
+            </option>
+
+        </select>
+
+
+        <select
+            id="filtreStatut"
+            onchange="afficherHopitaux()"
+        >
+
+            <option value="">
+                Tous les statuts
+            </option>
+
+            <option value="DISPONIBLE">
+                Disponible
+            </option>
+
+            <option value="CHARGE">
+                Forte charge
+            </option>
+
+            <option value="SATURE">
+                Saturé
+            </option>
+
+        </select>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="ouvrirAjout()"
+        >
+            + Ajouter un établissement
+        </button>
+
+    </section>
+
+
+    <section class="hopitaux-layout">
+
+        <!-- =====================
+             LISTE HOPITAUX
+        ====================== -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Établissements
+                </h3>
+
+                <span id="resultats">
+                    0 résultat
+                </span>
+
+            </div>
+
+
+            <div class="panel-content">
+
+                <div
+                    class="hopitaux-grid"
+                    id="listeHopitaux"
+                >
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             DETAILS
+        ====================== -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Fiche établissement
+                </h3>
+
+            </div>
+
+
+            <div
+                class="panel-content"
+                id="detailHopital"
+            >
+
+                <p style="color:#94a8b7;">
+                    Sélectionnez un établissement.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     MODAL AJOUT
+========================== -->
+
+<div
+    class="modal-overlay"
+    id="modalAjout"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3>
+                Ajouter un établissement
+            </h3>
+
+            <button
+                class="btn btn-secondary"
+                onclick="fermerAjout()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <div class="modal-content">
+
+            <div class="form-group">
+
+                <label>
+                    Nom
+                </label>
+
+                <input
+                    type="text"
+                    id="nouveauNom"
+                    placeholder="Exemple : Centre hospitalier Nord"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Adresse
+                </label>
+
+                <input
+                    type="text"
+                    id="nouvelleAdresse"
+                    placeholder="Adresse"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Type
+                </label>
+
+                <select id="nouveauType">
+
+                    <option value="CHU">
+                        CHU
+                    </option>
+
+                    <option value="CH">
+                        Centre hospitalier
+                    </option>
+
+                    <option value="CLINIQUE">
+                        Clinique
+                    </option>
+
+                    <option value="TRAUMA">
+                        Trauma center
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Capacité totale
+                </label>
+
+                <input
+                    type="number"
+                    id="nouvelleCapacite"
+                    value="100"
+                    min="1"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Temps d'accès estimé
+                </label>
+
+                <input
+                    type="number"
+                    id="nouveauTemps"
+                    value="10"
+                    min="1"
+                >
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="fermerAjout()"
+                >
+                    Annuler
+                </button>
+
+
+                <button
+                    class="btn btn-primary"
+                    onclick="ajouterHopital()"
+                >
+                    Ajouter
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+        =====================================================
+        DONNÉES
+        =====================================================
+    */
+
+    let hopitaux = [
+
+        {
+            id: 1,
+
+            nom:
+                "CHU Central",
+
+            type:
+                "CHU",
+
+            adresse:
+                "20 boulevard Pasteur",
+
+            distance:
+                7.4,
+
+            temps:
+                11,
+
+            capacite:
+                320,
+
+            occupation:
+                228,
+
+            statut:
+                "DISPONIBLE",
+
+            services: [
+                {
+                    nom: "Urgences",
+                    statut: "OUVERT"
+                },
+                {
+                    nom: "Réanimation",
+                    statut: "OUVERT"
+                },
+                {
+                    nom: "Traumatologie",
+                    statut: "OUVERT"
+                },
+                {
+                    nom: "Cardiologie",
+                    statut: "OUVERT"
+                },
+                {
+                    nom: "Pédiatrie",
+                    statut: "CHARGE"
+                },
+                {
+                    nom: "Neurologie",
+                    statut: "OUVERT"
+                }
+            ]
+        },
+
+
+        {
+            id: 2,
+
+            nom:
+                "Centre hospitalier Ouest",
+
+            type:
+                "CH",
+
+            adresse:
+                "5 avenue du Général-Leclerc",
+
+            distance:
+                12.6,
+
+            temps:
+                17,
+
+            capacite:
+                180,
+
+            occupation:
+                153,
+
+            statut:
+                "CHARGE",
+
+            services: [
+                {
+                    nom: "Urgences",
+                    statut: "CHARGE"
+                },
+                {
+                    nom: "Réanimation",
+                    statut: "OUVERT"
+                },
+                {
+                    nom: "Cardiologie",
+                    statut: "OUVERT"
+                },
+                {
+                    nom: "Pédiatrie",
+                    statut: "OUVERT"
+                },
+                {
+                    nom: "Traumatologie",
+                    statut: "CHARGE"
+                }
+            ]
+        },
+
+
+        {
+            id: 3,
+
+            nom:
+                "Trauma Center Régional",
+
+            type:
+                "TRAUMA",
+
+            adresse:
+                "88 route de l'Aéroport",
+
+            distance:
+                23.4,
+
+            temps:
+                24,
+
+            capacite:
+                140,
+
+            occupation:
+                97,
+
+            statut:
+                "DISPONIBLE",
+
+            services: [
+                {
+                    nom: "Urgences",
+                    statut: "OUVERT"
+                },
+                {
+                    nom: "Traumatologie lourde",
+                    statut: "OUVERT"
+                },
+                {
+                    nom: "Neurochirurgie",
+                    statut: "OUVERT"
+                },
+                {
+                    nom: "Réanimation",
+                    statut: "OUVERT"
+                },
+                {
+                    nom: "Bloc opératoire",
+                    statut: "OUVERT"
+                }
+            ]
+        },
+
+
+        {
+            id: 4,
+
+            nom:
+                "Clinique Saint-Pierre",
+
+            type:
+                "CLINIQUE",
+
+            adresse:
+                "3 rue Saint-Pierre",
+
+            distance:
+                5.2,
+
+            temps:
+                9,
+
+            capacite:
+                90,
+
+            occupation:
+                88,
+
+            statut:
+                "SATURE",
+
+            services: [
+                {
+                    nom: "Urgences",
+                    statut: "FERME"
+                },
+                {
+                    nom: "Cardiologie",
+                    statut: "CHARGE"
+                },
+                {
+                    nom: "Chirurgie",
+                    statut: "CHARGE"
+                }
+            ]
+        }
+
+    ];
+
+
+    let hopitalSelectionne = null;
+
+
+    /*
+        =====================================================
+        HORLOGE
+        =====================================================
+    */
+
+    function mettreAJourHorloge() {
+
+        const maintenant =
+            new Date();
+
+
+        document.getElementById(
+            "heure"
+        ).textContent =
+            maintenant.toLocaleTimeString(
+                "fr-FR"
+            );
+
+
+        document.getElementById(
+            "date"
+        ).textContent =
+            maintenant.toLocaleDateString(
+                "fr-FR"
+            );
+
+    }
+
+
+    setInterval(
+        mettreAJourHorloge,
+        1000
+    );
+
+
+    mettreAJourHorloge();
+
+
+    /*
+        =====================================================
+        AFFICHAGE
+        =====================================================
+    */
+
+    function afficherHopitaux() {
+
+        const recherche =
+            document.getElementById(
+                "recherche"
+            )
+            .value
+            .toLowerCase();
+
+
+        const filtreType =
+            document.getElementById(
+                "filtreType"
+            ).value;
+
+
+        const filtreStatut =
+            document.getElementById(
+                "filtreStatut"
+            ).value;
+
+
+        const filtres =
+            hopitaux.filter(
+                hopital => {
+
+                    const correspondRecherche =
+
+                        hopital.nom
+                            .toLowerCase()
+                            .includes(
+                                recherche
+                            )
+
+                        ||
+
+                        hopital.adresse
+                            .toLowerCase()
+                            .includes(
+                                recherche
+                            );
+
+
+                    const correspondType =
+
+                        !filtreType
+
+                        ||
+
+                        hopital.type ===
+                            filtreType;
+
+
+                    const correspondStatut =
+
+                        !filtreStatut
+
+                        ||
+
+                        hopital.statut ===
+                            filtreStatut;
+
+
+                    return (
+                        correspondRecherche
+                        &&
+                        correspondType
+                        &&
+                        correspondStatut
+                    );
+
+                }
+            );
+
+
+        const zone =
+            document.getElementById(
+                "listeHopitaux"
+            );
+
+
+        zone.innerHTML = "";
+
+
+        filtres.forEach(
+            hopital => {
+
+                const carte =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                carte.className =
+                    "hopital-card";
+
+
+                if (
+                    hopitalSelectionne
+                    &&
+                    hopitalSelectionne.id ===
+                    hopital.id
+                ) {
+
+                    carte.classList.add(
+                        "selected"
+                    );
+
+                }
+
+
+                carte.onclick =
+                    () =>
+                        selectionnerHopital(
+                            hopital.id
+                        );
+
+
+                const occupation =
+                    calculerOccupation(
+                        hopital
+                    );
+
+
+                carte.innerHTML = `
+
+                    <div class="hopital-top">
+
+                        <div class="hopital-title">
+
+                            <div class="hopital-icon">
+                                🏥
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    ${hopital.nom}
+                                </h4>
+
+                                <p>
+                                    ${libelleType(
+                                        hopital.type
+                                    )}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        ${htmlStatut(
+                            hopital.statut
+                        )}
+
+                    </div>
+
+
+                    <div class="hopital-info">
+
+                        <div class="info-box">
+
+                            <span>
+                                Distance
+                            </span>
+
+                            <strong>
+                                ${hopital.distance} km
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <span>
+                                Temps estimé
+                            </span>
+
+                            <strong>
+                                ${hopital.temps} min
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <span>
+                                Occupation
+                            </span>
+
+                            <strong>
+                                ${hopital.occupation}
+                                /
+                                ${hopital.capacite}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <span>
+                                Services
+                            </span>
+
+                            <strong>
+                                ${hopital.services.length}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="progress-zone">
+
+                        <div class="progress-label">
+
+                            <span>
+                                Taux d'occupation
+                            </span>
+
+                            <strong>
+                                ${occupation} %
+                            </strong>
+
+                        </div>
+
+                        ${htmlProgression(
+                            occupation
+                        )}
+
+                    </div>
+
+                `;
+
+
+                zone.appendChild(
+                    carte
+                );
+
+            }
+        );
+
+
+        document.getElementById(
+            "resultats"
+        ).textContent =
+            filtres.length
+            +
+            (
+                filtres.length > 1
+                    ? " résultats"
+                    : " résultat"
+            );
+
+
+        mettreAJourStats();
+
+    }
+
+
+    /*
+        =====================================================
+        TYPES
+        =====================================================
+    */
+
+    function libelleType(type) {
+
+        const types = {
+
+            CHU:
+                "Centre hospitalier universitaire",
+
+            CH:
+                "Centre hospitalier",
+
+            CLINIQUE:
+                "Clinique",
+
+            TRAUMA:
+                "Trauma center"
+
+        };
+
+
+        return (
+            types[type]
+            ||
+            type
+        );
+
+    }
+
+
+    /*
+        =====================================================
+        STATUT
+        =====================================================
+    */
+
+    function htmlStatut(statut) {
+
+        if (
+            statut === "DISPONIBLE"
+        ) {
+
+            return `
+                <span class="badge badge-disponible">
+                    DISPONIBLE
+                </span>
+            `;
+
+        }
+
+
+        if (
+            statut === "CHARGE"
+        ) {
+
+            return `
+                <span class="badge badge-charge">
+                    FORTE CHARGE
+                </span>
+            `;
+
+        }
+
+
+        return `
+            <span class="badge badge-sature">
+                SATURÉ
+            </span>
+        `;
+
+    }
+
+
+    /*
+        =====================================================
+        OCCUPATION
+        =====================================================
+    */
+
+    function calculerOccupation(
+        hopital
+    ) {
+
+        return Math.round(
+            (
+                hopital.occupation
+                /
+                hopital.capacite
+            )
+            * 100
+        );
+
+    }
+
+
+    function htmlProgression(
+        valeur
+    ) {
+
+        let classe = "";
+
+
+        if (
+            valeur >= 95
+        ) {
+
+            classe =
+                "progress-red";
+
+        }
+
+        else if (
+            valeur >= 80
+        ) {
+
+            classe =
+                "progress-orange";
+
+        }
+
+
+        return `
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar ${classe}"
+                    style="width:${Math.min(
+                        valeur,
+                        100
+                    )}%"
+                ></div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /*
+        =====================================================
+        STATS
+        =====================================================
+    */
+
+    function mettreAJourStats() {
+
+        document.getElementById(
+            "statTotal"
+        ).textContent =
+            hopitaux.length;
+
+
+        document.getElementById(
+            "statDisponibles"
+        ).textContent =
+            hopitaux.filter(
+                h =>
+                    h.statut ===
+                    "DISPONIBLE"
+            ).length;
+
+
+        document.getElementById(
+            "statCharges"
+        ).textContent =
+            hopitaux.filter(
+                h =>
+                    h.statut ===
+                    "CHARGE"
+            ).length;
+
+
+        document.getElementById(
+            "statSatures"
+        ).textContent =
+            hopitaux.filter(
+                h =>
+                    h.statut ===
+                    "SATURE"
+            ).length;
+
+
+        const places =
+            hopitaux.reduce(
+                (
+                    total,
+                    h
+                ) =>
+                    total
+                    +
+                    Math.max(
+                        0,
+                        h.capacite
+                        -
+                        h.occupation
+                    ),
+                0
+            );
+
+
+        document.getElementById(
+            "statPlaces"
+        ).textContent =
+            places;
+
+    }
+
+
+    /*
+        =====================================================
+        SELECTION
+        =====================================================
+    */
+
+    function selectionnerHopital(id) {
+
+        hopitalSelectionne =
+            hopitaux.find(
+                hopital =>
+                    hopital.id === id
+            );
+
+
+        afficherHopitaux();
+
+        afficherDetail();
+
+    }
+
+
+    /*
+        =====================================================
+        SERVICES
+        =====================================================
+    */
+
+    function htmlService(
+        service
+    ) {
+
+        if (
+            service.statut === "OUVERT"
+        ) {
+
+            return `
+                <div class="liste-item">
+
+                    <strong>
+                        ${service.nom}
+                    </strong>
+
+                    <span class="service-ok">
+                        Disponible
+                    </span>
+
+                </div>
+            `;
+
+        }
+
+
+        if (
+            service.statut === "CHARGE"
+        ) {
+
+            return `
+                <div class="liste-item">
+
+                    <strong>
+                        ${service.nom}
+                    </strong>
+
+                    <span class="service-charge">
+                        Forte charge
+                    </span>
+
+                </div>
+            `;
+
+        }
+
+
+        return `
+            <div class="liste-item">
+
+                <strong>
+                    ${service.nom}
+                </strong>
+
+                <span class="service-ferme">
+                    Indisponible
+                </span>
+
+            </div>
+        `;
+
+    }
+
+
+    /*
+        =====================================================
+        DETAILS
+        =====================================================
+    */
+
+    function afficherDetail() {
+
+        if (
+            !hopitalSelectionne
+        ) {
+            return;
+        }
+
+
+        const h =
+            hopitalSelectionne;
+
+
+        const occupation =
+            calculerOccupation(
+                h
+            );
+
+
+        const services =
+            h.services
+                .map(
+                    service =>
+                        htmlService(
+                            service
+                        )
+                )
+                .join("");
+
+
+        const zone =
+            document.getElementById(
+                "detailHopital"
+            );
+
+
+        zone.innerHTML = `
+
+            <div class="detail-title">
+
+                <div class="detail-icon">
+                    🏥
+                </div>
+
+                <div>
+
+                    <h3>
+                        ${h.nom}
+                    </h3>
+
+                    <p>
+                        ${h.adresse}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            ${htmlStatut(
+                h.statut
+            )}
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-grid">
+
+                <div class="detail-box">
+
+                    <span>
+                        Type
+                    </span>
+
+                    <strong>
+                        ${libelleType(
+                            h.type
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Distance
+                    </span>
+
+                    <strong>
+                        ${h.distance} km
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Temps estimé
+                    </span>
+
+                    <strong>
+                        ${h.temps} min
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Places restantes
+                    </span>
+
+                    <strong>
+                        ${Math.max(
+                            0,
+                            h.capacite
+                            -
+                            h.occupation
+                        )}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Occupation
+                </h4>
+
+                <div class="progress-label">
+
+                    <span>
+                        Patients / capacité
+                    </span>
+
+                    <strong>
+                        ${h.occupation}
+                        /
+                        ${h.capacite}
+                        —
+                        ${occupation} %
+                    </strong>
+
+                </div>
+
+                ${htmlProgression(
+                    occupation
+                )}
+
+            </div>
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Services
+                </h4>
+
+                <div class="liste">
+                    ${services}
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <button
+                    class="btn btn-success"
+                    onclick="admettreVictime()"
+                >
+                    🚑 Admettre une victime
+                </button>
+
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="sortirPatient()"
+                >
+                    ➖ Libérer une place
+                </button>
+
+
+                <button
+                    class="btn btn-warning"
+                    onclick="modifierStatut()"
+                >
+                    Modifier le statut
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /*
+        =====================================================
+        ACTIONS
+        =====================================================
+    */
+
+    function admettreVictime() {
+
+        if (
+            !hopitalSelectionne
+        ) {
+            return;
+        }
+
+
+        if (
+            hopitalSelectionne.occupation
+            >=
+            hopitalSelectionne.capacite
+        ) {
+
+            alert(
+                "L'établissement est complet."
+            );
+
+            return;
+        }
+
+
+        hopitalSelectionne.occupation++;
+
+
+        recalculerStatut(
+            hopitalSelectionne
+        );
+
+
+        sauvegarder();
+
+        afficherHopitaux();
+
+        afficherDetail();
+
+    }
+
+
+    function sortirPatient() {
+
+        if (
+            !hopitalSelectionne
+        ) {
+            return;
+        }
+
+
+        hopitalSelectionne.occupation =
+            Math.max(
+                0,
+                hopitalSelectionne.occupation - 1
+            );
+
+
+        recalculerStatut(
+            hopitalSelectionne
+        );
+
+
+        sauvegarder();
+
+        afficherHopitaux();
+
+        afficherDetail();
+
+    }
+
+
+    function recalculerStatut(
+        hopital
+    ) {
+
+        const occupation =
+            calculerOccupation(
+                hopital
+            );
+
+
+        if (
+            occupation >= 95
+        ) {
+
+            hopital.statut =
+                "SATURE";
+
+        }
+
+        else if (
+            occupation >= 80
+        ) {
+
+            hopital.statut =
+                "CHARGE";
+
+        }
+
+        else {
+
+            hopital.statut =
+                "DISPONIBLE";
+
+        }
+
+    }
+
+
+    function modifierStatut() {
+
+        if (
+            !hopitalSelectionne
+        ) {
+            return;
+        }
+
+
+        const choix =
+            prompt(
+                "Nouveau statut : DISPONIBLE, CHARGE ou SATURE",
+                hopitalSelectionne.statut
+            );
+
+
+        if (
+            !choix
+        ) {
+            return;
+        }
+
+
+        const statut =
+            choix.toUpperCase();
+
+
+        if (
+            ![
+                "DISPONIBLE",
+                "CHARGE",
+                "SATURE"
+            ].includes(
+                statut
+            )
+        ) {
+
+            alert(
+                "Statut invalide."
+            );
+
+            return;
+        }
+
+
+        hopitalSelectionne.statut =
+            statut;
+
+
+        sauvegarder();
+
+        afficherHopitaux();
+
+        afficherDetail();
+
+    }
+
+
+    /*
+        =====================================================
+        AJOUT
+        =====================================================
+    */
+
+    function ouvrirAjout() {
+
+        document.getElementById(
+            "modalAjout"
+        ).classList.add(
+            "active"
+        );
+
+    }
+
+
+    function fermerAjout() {
+
+        document.getElementById(
+            "modalAjout"
+        ).classList.remove(
+            "active"
+        );
+
+    }
+
+
+    function ajouterHopital() {
+
+        const nom =
+            document.getElementById(
+                "nouveauNom"
+            )
+            .value
+            .trim();
+
+
+        const adresse =
+            document.getElementById(
+                "nouvelleAdresse"
+            )
+            .value
+            .trim();
+
+
+        const type =
+            document.getElementById(
+                "nouveauType"
+            ).value;
+
+
+        const capacite =
+            Number(
+                document.getElementById(
+                    "nouvelleCapacite"
+                ).value
+            );
+
+
+        const temps =
+            Number(
+                document.getElementById(
+                    "nouveauTemps"
+                ).value
+            );
+
+
+        if (
+            !nom
+            ||
+            !adresse
+        ) {
+
+            alert(
+                "Complétez le nom et l'adresse."
+            );
+
+            return;
+        }
+
+
+        hopitaux.push({
+
+            id:
+                Date.now(),
+
+            nom:
+                nom,
+
+            type:
+                type,
+
+            adresse:
+                adresse,
+
+            distance:
+                10,
+
+            temps:
+                temps,
+
+            capacite:
+                capacite,
+
+            occupation:
+                0,
+
+            statut:
+                "DISPONIBLE",
+
+            services: [
+                {
+                    nom: "Urgences",
+                    statut: "OUVERT"
+                }
+            ]
+
+        });
+
+
+        document.getElementById(
+            "nouveauNom"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "nouvelleAdresse"
+        ).value =
+            "";
+
+
+        sauvegarder();
+
+        fermerAjout();
+
+        afficherHopitaux();
+
+    }
+
+
+    /*
+        =====================================================
+        SAUVEGARDE
+        =====================================================
+    */
+
+    function sauvegarder() {
+
+        localStorage.setItem(
+
+            "hopitauxSecours",
+
+            JSON.stringify(
+                hopitaux
+            )
+
+        );
+
+    }
+
+
+    function chargerSauvegarde() {
+
+        const sauvegarde =
+            localStorage.getItem(
+                "hopitauxSecours"
+            );
+
+
+        if (
+            !sauvegarde
+        ) {
+            return;
+        }
+
+
+        try {
+
+            const donnees =
+                JSON.parse(
+                    sauvegarde
+                );
+
+
+            if (
+                Array.isArray(
+                    donnees
+                )
+            ) {
+
+                hopitaux =
+                    donnees;
+
+            }
+
+        }
+
+        catch (
+            erreur
+        ) {
+
+            console.error(
+                "Erreur de chargement des hôpitaux :",
+                erreur
+            );
+
+        }
+
+    }
+
+
+    /*
+        =====================================================
+        DEMARRAGE
+        =====================================================
+    */
+
+    chargerSauvegarde();
+
+    afficherHopitaux();
+
+
+    if (
+        hopitaux.length > 0
+    ) {
+
+        selectionnerHopital(
+            hopitaux[0].id
+        );
+
+    }
+
+</script>
+
+</body>
+</html>
+```

@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tutoriel - Gestion Secours</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --fond: #081018;
+            --panneau: #121f2a;
+            --panneau-2: #182733;
+            --bordure: #2b3e4c;
+
+            --texte: #f5f7f9;
+            --texte-secondaire: #94a8b7;
+
+            --rouge: #d63031;
+            --orange: #f39c12;
+            --vert: #27ae60;
+            --bleu: #3498db;
+            --violet: #8e44ad;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--fond);
+            color: var(--texte);
+            min-height: 100vh;
+        }
+
+        header {
+            min-height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 12px 30px;
+
+            background: #0b141c;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--rouge);
+
+            border-radius: 9px;
+
+            font-weight: bold;
+        }
+
+        .logo h1 {
+            font-size: 19px;
+        }
+
+        .logo p {
+            margin-top: 3px;
+
+            color: var(--texte-secondaire);
+            font-size: 12px;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #cbd6de;
+            text-decoration: none;
+
+            padding: 9px 13px;
+
+            border-radius: 6px;
+        }
+
+        nav a:hover {
+            background: var(--panneau-2);
+        }
+
+        .horloge {
+            text-align: right;
+        }
+
+        #heure {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #date {
+            color: var(--texte-secondaire);
+            font-size: 11px;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .hero {
+            max-width: 1000px;
+
+            margin: 0 auto 25px auto;
+
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+
+            margin-bottom: 15px;
+
+            padding: 6px 12px;
+
+            background: rgba(52, 152, 219, 0.16);
+
+            border: 1px solid rgba(52, 152, 219, 0.45);
+
+            border-radius: 20px;
+
+            color: #79c8ff;
+
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .hero h2 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            max-width: 780px;
+
+            margin: auto;
+
+            color: var(--texte-secondaire);
+
+            line-height: 1.6;
+        }
+
+        .tutorial-layout {
+            display: grid;
+
+            grid-template-columns: 270px 1fr;
+
+            gap: 15px;
+
+            max-width: 1200px;
+
+            margin: auto;
+        }
+
+        .panel {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 14px;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .panel-header h3 {
+            font-size: 15px;
+        }
+
+        .panel-content {
+            padding: 14px;
+        }
+
+        .steps-list {
+            display: grid;
+            gap: 8px;
+        }
+
+        .step-button {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 11px;
+
+            background: var(--panneau-2);
+
+            border: 1px solid transparent;
+
+            border-radius: 7px;
+
+            color: white;
+
+            cursor: pointer;
+
+            text-align: left;
+
+            transition: 0.2s;
+        }
+
+        .step-button:hover {
+            border-color: var(--bleu);
+        }
+
+        .step-button.active {
+            border-color: var(--rouge);
+
+            background: #203441;
+        }
+
+        .step-number {
+            min-width: 29px;
+            height: 29px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #263c49;
+
+            border-radius: 50%;
+
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .step-button.active .step-number {
+            background: var(--rouge);
+        }
+
+        .step-button strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .step-button span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: var(--texte-secondaire);
+
+            font-size: 10px;
+        }
+
+        .tutorial-card {
+            padding: 22px;
+        }
+
+        .step-heading {
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+
+            margin-bottom: 18px;
+        }
+
+        .big-icon {
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #253b49;
+
+            border-radius: 10px;
+
+            font-size: 28px;
+        }
+
+        .step-heading h3 {
+            font-size: 22px;
+        }
+
+        .step-heading p {
+            margin-top: 4px;
+
+            color: var(--texte-secondaire);
+
+            font-size: 12px;
+        }
+
+        .tutorial-text {
+            line-height: 1.65;
+
+            color: #d7e0e6;
+
+            margin-bottom: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 18px;
+        }
+
+        .info-box {
+            padding: 12px;
+
+            background: #0d1820;
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 8px;
+        }
+
+        .info-box strong {
+            display: block;
+
+            margin-bottom: 5px;
+
+            font-size: 12px;
+        }
+
+        .info-box p {
+            color: var(--texte-secondaire);
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+        .warning {
+            padding: 12px;
+
+            background: rgba(243, 156, 18, 0.10);
+
+            border: 1px solid rgba(243, 156, 18, 0.35);
+
+            border-radius: 8px;
+
+            margin-bottom: 18px;
+
+            color: #ffd180;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+        .success {
+            padding: 12px;
+
+            background: rgba(39, 174, 96, 0.10);
+
+            border: 1px solid rgba(39, 174, 96, 0.35);
+
+            border-radius: 8px;
+
+            margin-bottom: 18px;
+
+            color: #91e6af;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+        .example {
+            background: #09131a;
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 8px;
+
+            padding: 13px;
+
+            margin-bottom: 18px;
+        }
+
+        .example h4 {
+            margin-bottom: 8px;
+
+            font-size: 12px;
+        }
+
+        .example p {
+            color: var(--texte-secondaire);
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+        .btn {
+            border: none;
+
+            padding: 11px 15px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: var(--rouge);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #233746;
+            color: white;
+
+            border: 1px solid var(--bordure);
+        }
+
+        .btn-success {
+            background: var(--vert);
+            color: white;
+        }
+
+        .progress-area {
+            max-width: 1200px;
+
+            margin: 0 auto 15px auto;
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .progress {
+            flex: 1;
+
+            height: 8px;
+
+            background: #09131a;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+
+            background: var(--rouge);
+
+            transition: width 0.25s;
+        }
+
+        #progressText {
+            color: var(--texte-secondaire);
+
+            font-size: 11px;
+        }
+
+        @media (max-width: 850px) {
+
+            header {
+                flex-direction: column;
+
+                gap: 14px;
+            }
+
+            .tutorial-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            18
+        </div>
+
+        <div>
+
+            <h1>
+                Gestion Secours
+            </h1>
+
+            <p>
+                Tutoriel opérationnel
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a href="index.html">
+            Accueil
+        </a>
+
+        <a href="cta.html">
+            CTA
+        </a>
+
+        <a href="operations.html">
+            Opérations
+        </a>
+
+        <a href="carte.html">
+            Carte
+        </a>
+
+    </nav>
+
+
+    <div class="horloge">
+
+        <div id="heure">
+            00:00:00
+        </div>
+
+        <div id="date">
+            --
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <section class="hero">
+
+        <div class="hero-badge">
+            FORMATION INITIALE
+        </div>
+
+        <h2>
+            Tutoriel Gestion Secours
+        </h2>
+
+        <p>
+            Découvrez le fonctionnement du jeu et apprenez à gérer une intervention depuis l'appel initial jusqu'au retour des moyens.
+        </p>
+
+    </section>
+
+
+    <div class="progress-area">
+
+        <div class="progress">
+
+            <div
+                class="progress-bar"
+                id="progressBar"
+            ></div>
+
+        </div>
+
+        <span id="progressText">
+            1 / 8
+        </span>
+
+    </div>
+
+
+    <section class="tutorial-layout">
+
+        <!-- ======================
+             LISTE ETAPES
+        ======================= -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Étapes du tutoriel
+                </h3>
+
+            </div>
+
+
+            <div class="panel-content">
+
+                <div
+                    class="steps-list"
+                    id="stepsList"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======================
+             CONTENU
+        ======================= -->
+
+        <div class="panel">
+
+            <div
+                class="tutorial-card"
+                id="tutorialContent"
+            ></div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+    const etapes = [
+
+        {
+            titre:
+                "Prendre un appel",
+
+            sousTitre:
+                "Centre de traitement des appels",
+
+            icone:
+                "📞",
+
+            texte:
+                "Toute intervention commence au CTA. Le joueur doit prendre l'appel et recueillir les informations indispensables avant d'envoyer les secours.",
+
+            infos: [
+
+                {
+                    titre:
+                        "Localisation",
+
+                    texte:
+                        "Obtenez l'adresse précise ou la localisation de l'événement."
+                },
+
+                {
+                    titre:
+                        "Nature",
+
+                    texte:
+                        "Déterminez s'il s'agit d'un incendie, d'un secours à personne, d'un accident ou d'une autre situation."
+                },
+
+                {
+                    titre:
+                        "Victimes",
+
+                    texte:
+                        "Identifiez le nombre de victimes, leur conscience et leur respiration."
+                },
+
+                {
+                    titre:
+                        "Dangers",
+
+                    texte:
+                        "Recherchez les risques : feu, fumée, circulation, gaz ou environnement dangereux."
+                }
+
+            ],
+
+            exemple:
+                "Un témoin appelle pour de la fumée dans un appartement. Vous devez récupérer l'adresse, savoir si des personnes sont présentes et déterminer si la cage d'escalier est déjà enfumée.",
+
+            conseil:
+                "Ne déclenchez pas une réponse complète avec des informations trop imprécises lorsque quelques questions supplémentaires peuvent modifier fortement les moyens nécessaires."
+        },
+
+
+        {
+            titre:
+                "Qualifier l'intervention",
+
+            sousTitre:
+                "Nature et priorité",
+
+            icone:
+                "📝",
+
+            texte:
+                "Une fois les informations recueillies, vous devez qualifier l'intervention. La nature et le niveau d'urgence détermineront la réponse initiale.",
+
+            infos: [
+
+                {
+                    titre:
+                        "Normal",
+
+                    texte:
+                        "Situation nécessitant une réponse mais sans détresse immédiate identifiée."
+                },
+
+                {
+                    titre:
+                        "Urgent",
+
+                    texte:
+                        "Situation potentiellement grave nécessitant une intervention rapide."
+                },
+
+                {
+                    titre:
+                        "Urgence absolue",
+
+                    texte:
+                        "Danger vital ou événement majeur imposant une réponse immédiate."
+                },
+
+                {
+                    titre:
+                        "Réévaluation",
+
+                    texte:
+                        "La qualification peut évoluer si de nouvelles informations arrivent."
+                }
+
+            ],
+
+            exemple:
+                "Une douleur thoracique avec difficulté respiratoire sera considérée comme plus urgente qu'une ouverture de porte sans victime en danger.",
+
+            conseil:
+                "Le but n'est pas d'envoyer le maximum de moyens, mais d'envoyer une réponse proportionnée."
+        },
+
+
+        {
+            titre:
+                "Choisir les moyens",
+
+            sousTitre:
+                "Engagement opérationnel",
+
+            icone:
+                "🚒",
+
+            texte:
+                "Sélectionnez les véhicules adaptés à la nature de l'intervention. Chaque moyen possède une fonction, une disponibilité, un équipage et un état technique.",
+
+            infos: [
+
+                {
+                    titre:
+                        "VSAV",
+
+                    texte:
+                        "Secours et assistance aux victimes."
+                },
+
+                {
+                    titre:
+                        "FPT",
+
+                    texte:
+                        "Moyen principal pour les incendies urbains."
+                },
+
+                {
+                    titre:
+                        "VSR",
+
+                    texte:
+                        "Secours routier et désincarcération."
+                },
+
+                {
+                    titre:
+                        "EPA",
+
+                    texte:
+                        "Accès en hauteur et sauvetages par l'extérieur."
+                }
+
+            ],
+
+            exemple:
+                "Pour un accident avec victime bloquée : VSAV + VSR. Pour un feu d'appartement avec personne signalée : FPT + VSAV, puis éventuellement EPA et commandement.",
+
+            conseil:
+                "Un véhicule indisponible, en maintenance ou sans équipage ne devrait pas pouvoir être engagé."
+        },
+
+
+        {
+            titre:
+                "Suivre le départ",
+
+            sousTitre:
+                "Salle opérationnelle",
+
+            icone:
+                "🚨",
+
+            texte:
+                "Une fois les moyens déclenchés, l'intervention apparaît dans la salle opérationnelle. Vous devez suivre l'évolution de chaque véhicule.",
+
+            infos: [
+
+                {
+                    titre:
+                        "Départ",
+
+                    texte:
+                        "Le véhicule quitte sa caserne."
+                },
+
+                {
+                    titre:
+                        "En transit",
+
+                    texte:
+                        "Le moyen se dirige vers l'intervention."
+                },
+
+                {
+                    titre:
+                        "Sur les lieux",
+
+                    texte:
+                        "Le premier bilan opérationnel peut commencer."
+                },
+
+                {
+                    titre:
+                        "Renforts",
+
+                    texte:
+                        "Le chef d'agrès peut demander des moyens supplémentaires."
+                }
+
+            ],
+
+            exemple:
+                "Le FPT arrive sur un feu d'appartement et découvre un feu propagé à deux logements. Le joueur doit alors engager une EPA et un second FPT.",
+
+            conseil:
+                "Les décisions prises après l'arrivée des premiers secours doivent dépendre du bilan réel, pas uniquement de l'appel initial."
+        },
+
+
+        {
+            titre:
+                "Gérer l'intervention",
+
+            sousTitre:
+                "Commandement sur les lieux",
+
+            icone:
+                "🧑‍🚒",
+
+            texte:
+                "L'intervention peut évoluer. Le joueur doit gérer les victimes, les dangers, les renforts, les ressources disponibles et les différentes phases opérationnelles.",
+
+            infos: [
+
+                {
+                    titre:
+                        "Reconnaissance",
+
+                    texte:
+                        "Identifier précisément la situation et les risques."
+                },
+
+                {
+                    titre:
+                        "Sauvetage",
+
+                    texte:
+                        "Prioriser les personnes directement menacées."
+                },
+
+                {
+                    titre:
+                        "Traitement",
+
+                    texte:
+                        "Extinction, secours médical, désincarcération ou autre mission."
+                },
+
+                {
+                    titre:
+                        "Commandement",
+
+                    texte:
+                        "Coordonner les équipes lorsque l'intervention devient importante."
+                }
+
+            ],
+
+            exemple:
+                "Sur un accident routier, une seconde victime est découverte incarcérée. Vous devez adapter le dispositif et prévoir éventuellement une médicalisation.",
+
+            conseil:
+                "Une intervention peut nécessiter plusieurs décisions successives. Le premier engagement ne résout pas automatiquement la situation."
+        },
+
+
+        {
+            titre:
+                "Orienter les victimes",
+
+            sousTitre:
+                "Transport hospitalier",
+
+            icone:
+                "🏥",
+
+            texte:
+                "Lorsque le transport est nécessaire, choisissez un établissement compatible avec l'état de la victime.",
+
+            infos: [
+
+                {
+                    titre:
+                        "Distance",
+
+                    texte:
+                        "Un établissement proche réduit le temps de transport."
+                },
+
+                {
+                    titre:
+                        "Spécialité",
+
+                    texte:
+                        "Certaines victimes nécessitent cardiologie, traumatologie, pédiatrie ou réanimation."
+                },
+
+                {
+                    titre:
+                        "Saturation",
+
+                    texte:
+                        "Un hôpital fortement chargé peut être moins adapté."
+                },
+
+                {
+                    titre:
+                        "Gravité",
+
+                    texte:
+                        "Les victimes les plus graves nécessitent parfois un établissement plus éloigné mais mieux équipé."
+                }
+
+            ],
+
+            exemple:
+                "Une victime polytraumatisée peut nécessiter un trauma center même s'il est plus éloigné qu'un petit centre hospitalier.",
+
+            conseil:
+                "Le meilleur hôpital n'est pas toujours le plus proche."
+        },
+
+
+        {
+            titre:
+                "Retour des moyens",
+
+            sousTitre:
+                "Remise en disponibilité",
+
+            icone:
+                "🏢",
+
+            texte:
+                "Après l'intervention, les moyens reviennent en caserne. Ils doivent parfois être ravitaillés, nettoyés, réarmés ou placés en maintenance.",
+
+            infos: [
+
+                {
+                    titre:
+                        "Carburant",
+
+                    texte:
+                        "Les véhicules doivent rester suffisamment ravitaillés."
+                },
+
+                {
+                    titre:
+                        "Matériel",
+
+                    texte:
+                        "Le matériel consommé doit être remplacé."
+                },
+
+                {
+                    titre:
+                        "Personnel",
+
+                    texte:
+                        "La fatigue augmente après les interventions."
+                },
+
+                {
+                    titre:
+                        "Maintenance",
+
+                    texte:
+                        "Un véhicule endommagé peut devenir indisponible."
+                }
+
+            ],
+
+            exemple:
+                "Après une longue intervention incendie, le FPT peut avoir besoin d'un réarmement et l'équipage d'une période de récupération.",
+
+            conseil:
+                "La disponibilité réelle du service dépend aussi de ce qui se passe après l'intervention."
+        },
+
+
+        {
+            titre:
+                "Analyser les résultats",
+
+            sousTitre:
+                "Rapports et progression",
+
+            icone:
+                "📊",
+
+            texte:
+                "Les rapports permettent d'analyser vos performances et d'améliorer progressivement l'organisation du service.",
+
+            infos: [
+
+                {
+                    titre:
+                        "Délais",
+
+                    texte:
+                        "Analysez les temps de départ et d'arrivée."
+                },
+
+                {
+                    titre:
+                        "Activité",
+
+                    texte:
+                        "Identifiez les types d'interventions les plus fréquents."
+                },
+
+                {
+                    titre:
+                        "Moyens",
+
+                    texte:
+                        "Repérez les véhicules les plus sollicités."
+                },
+
+                {
+                    titre:
+                        "Développement",
+
+                    texte:
+                        "Construisez ou améliorez vos casernes selon les besoins."
+                }
+
+            ],
+
+            exemple:
+                "Si un secteur possède beaucoup d'interventions mais des délais élevés, construire une nouvelle caserne peut devenir prioritaire.",
+
+            conseil:
+                "Le jeu ne se limite pas à réussir une intervention : vous devez aussi construire un dispositif de secours efficace sur le long terme."
+        }
+
+    ];
+
+
+    let etapeActuelle =
+        0;
+
+
+    function mettreAJourHorloge() {
+
+        const maintenant =
+            new Date();
+
+
+        document.getElementById(
+            "heure"
+        ).textContent =
+            maintenant.toLocaleTimeString(
+                "fr-FR"
+            );
+
+
+        document.getElementById(
+            "date"
+        ).textContent =
+            maintenant.toLocaleDateString(
+                "fr-FR"
+            );
+
+    }
+
+
+    setInterval(
+        mettreAJourHorloge,
+        1000
+    );
+
+
+    mettreAJourHorloge();
+
+
+    function afficherListeEtapes() {
+
+        const zone =
+            document.getElementById(
+                "stepsList"
+            );
+
+
+        zone.innerHTML =
+            "";
+
+
+        etapes.forEach(
+            (
+                etape,
+                index
+            ) => {
+
+                const bouton =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                bouton.className =
+                    "step-button";
+
+
+                if (
+                    index ===
+                    etapeActuelle
+                ) {
+
+                    bouton.classList.add(
+                        "active"
+                    );
+
+                }
+
+
+                bouton.innerHTML = `
+
+                    <div class="step-number">
+                        ${index + 1}
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            ${etape.titre}
+                        </strong>
+
+                        <span>
+                            ${etape.sousTitre}
+                        </span>
+
+                    </div>
+
+                `;
+
+
+                bouton.onclick =
+                    () =>
+                        allerEtape(
+                            index
+                        );
+
+
+                zone.appendChild(
+                    bouton
+                );
+
+            }
+        );
+
+    }
+
+
+    function afficherEtape() {
+
+        const etape =
+            etapes[
+                etapeActuelle
+            ];
+
+
+        const infosHTML =
+            etape.infos
+                .map(
+                    info => `
+
+                        <div class="info-box">
+
+                            <strong>
+                                ${info.titre}
+                            </strong>
+
+                            <p>
+                                ${info.texte}
+                            </p>
+
+                        </div>
+
+                    `
+                )
+                .join(
+                    ""
+                );
+
+
+        const precedentDisabled =
+            etapeActuelle ===
+            0;
+
+
+        const derniereEtape =
+            etapeActuelle ===
+            etapes.length - 1;
+
+
+        document.getElementById(
+            "tutorialContent"
+        ).innerHTML = `
+
+            <div class="step-heading">
+
+                <div class="big-icon">
+                    ${etape.icone}
+                </div>
+
+                <div>
+
+                    <h3>
+                        Étape ${etapeActuelle + 1}
+                        —
+                        ${etape.titre}
+                    </h3>
+
+                    <p>
+                        ${etape.sousTitre}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <p class="tutorial-text">
+
+                ${etape.texte}
+
+            </p>
+
+
+            <div class="info-grid">
+
+                ${infosHTML}
+
+            </div>
+
+
+            <div class="example">
+
+                <h4>
+                    Exemple
+                </h4>
+
+                <p>
+                    ${etape.exemple}
+                </p>
+
+            </div>
+
+
+            <div class="warning">
+
+                <strong>
+                    Conseil :
+                </strong>
+
+                ${etape.conseil}
+
+            </div>
+
+
+            ${
+                derniereEtape
+
+                ?
+
+                `
+                    <div class="success">
+
+                        <strong>
+                            Tutoriel terminé.
+                        </strong>
+
+                        Vous connaissez maintenant les principales étapes de la chaîne de secours.
+
+                    </div>
+                `
+
+                :
+
+                ""
+            }
+
+
+            <div class="navigation-buttons">
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="etapePrecedente()"
+                    ${precedentDisabled ? "disabled" : ""}
+                >
+                    ← Précédent
+                </button>
+
+
+                ${
+                    derniereEtape
+
+                    ?
+
+                    `
+                        <button
+                            class="btn btn-success"
+                            onclick="terminerTutoriel()"
+                        >
+                            Démarrer la garde
+                        </button>
+                    `
+
+                    :
+
+                    `
+                        <button
+                            class="btn btn-primary"
+                            onclick="etapeSuivante()"
+                        >
+                            Suivant →
+                        </button>
+                    `
+                }
+
+            </div>
+
+        `;
+
+
+        mettreAJourProgression();
+
+        afficherListeEtapes();
+
+    }
+
+
+    function mettreAJourProgression() {
+
+        const progression =
+            (
+                (
+                    etapeActuelle + 1
+                )
+                /
+                etapes.length
+            )
+            * 100;
+
+
+        document.getElementById(
+            "progressBar"
+        ).style.width =
+            progression
+            +
+            "%";
+
+
+        document.getElementById(
+            "progressText"
+        ).textContent =
+            (
+                etapeActuelle + 1
+            )
+            +
+            " / "
+            +
+            etapes.length;
+
+    }
+
+
+    function allerEtape(
+        index
+    ) {
+
+        if (
+            index < 0
+            ||
+            index >=
+            etapes.length
+        ) {
+            return;
+        }
+
+
+        etapeActuelle =
+            index;
+
+
+        afficherEtape();
+
+    }
+
+
+    function etapeSuivante() {
+
+        if (
+            etapeActuelle <
+            etapes.length - 1
+        ) {
+
+            etapeActuelle++;
+
+            afficherEtape();
+
+        }
+
+    }
+
+
+    function etapePrecedente() {
+
+        if (
+            etapeActuelle > 0
+        ) {
+
+            etapeActuelle--;
+
+            afficherEtape();
+
+        }
+
+    }
+
+
+    function terminerTutoriel() {
+
+        localStorage.setItem(
+            "tutorielGestionSecoursTermine",
+            "true"
+        );
+
+
+        window.location.href =
+            "operations.html";
+
+    }
+
+
+    afficherEtape();
+
+</script>
+
+</body>
+</html>

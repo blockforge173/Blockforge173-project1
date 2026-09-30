@@ -1,0 +1,2771 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Véhicules - Gestion Secours</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --fond: #081018;
+            --fond-secondaire: #0d1720;
+
+            --panneau: #121f2a;
+            --panneau-2: #182733;
+            --panneau-3: #20313e;
+
+            --bordure: #2b3e4c;
+
+            --texte: #f5f7f9;
+            --texte-secondaire: #94a8b7;
+
+            --rouge: #d63031;
+            --orange: #f39c12;
+            --vert: #27ae60;
+            --bleu: #3498db;
+            --gris: #7f8c8d;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+
+            background: var(--fond);
+
+            color: var(--texte);
+
+            min-height: 100vh;
+        }
+
+        /* =========================
+           HEADER
+        ========================== */
+
+        header {
+            min-height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 12px 30px;
+
+            background: #0b141c;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background: var(--rouge);
+
+            border-radius: 9px;
+
+            font-weight: bold;
+        }
+
+        .logo h1 {
+            font-size: 19px;
+        }
+
+        .logo p {
+            margin-top: 3px;
+
+            color: var(--texte-secondaire);
+
+            font-size: 12px;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #cbd6de;
+
+            text-decoration: none;
+
+            padding: 9px 13px;
+
+            border-radius: 6px;
+
+            transition: 0.2s;
+        }
+
+        nav a:hover {
+            background: var(--panneau-2);
+        }
+
+        .horloge {
+            text-align: right;
+        }
+
+        #heure {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #date {
+            color: var(--texte-secondaire);
+
+            font-size: 11px;
+        }
+
+        /* =========================
+           MAIN
+        ========================== */
+
+        main {
+            padding: 20px;
+        }
+
+        .titre-page {
+            margin-bottom: 20px;
+        }
+
+        .titre-page h2 {
+            font-size: 25px;
+        }
+
+        .titre-page p {
+            color: var(--texte-secondaire);
+
+            margin-top: 5px;
+        }
+
+        /* =========================
+           STATS
+        ========================== */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            padding: 16px;
+
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 10px;
+        }
+
+        .stat-label {
+            color: var(--texte-secondaire);
+
+            font-size: 12px;
+        }
+
+        .stat-value {
+            font-size: 26px;
+
+            font-weight: bold;
+
+            margin-top: 6px;
+        }
+
+        /* =========================
+           BARRE OUTILS
+        ========================== */
+
+        .toolbar {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 18px;
+        }
+
+        .toolbar input,
+        .toolbar select {
+            padding: 10px 11px;
+
+            background: #0d1820;
+
+            color: white;
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 7px;
+
+            outline: none;
+        }
+
+        .toolbar input {
+            min-width: 240px;
+
+            flex: 1;
+        }
+
+        .toolbar select {
+            min-width: 180px;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .btn {
+            border: none;
+
+            padding: 10px 14px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: var(--rouge);
+
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ec3b3c;
+        }
+
+        .btn-secondary {
+            background: #233746;
+
+            color: white;
+
+            border: 1px solid var(--bordure);
+        }
+
+        .btn-danger {
+            background: #7a2424;
+
+            color: white;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================== */
+
+        .vehicules-layout {
+            display: grid;
+
+            grid-template-columns:
+                1fr 380px;
+
+            gap: 15px;
+
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 14px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 10px;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .panel-header h3 {
+            font-size: 16px;
+        }
+
+        .panel-content {
+            padding: 13px;
+        }
+
+        /* =========================
+           TABLE VEHICULES
+        ========================== */
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+
+            padding: 11px;
+
+            color: var(--texte-secondaire);
+
+            font-size: 11px;
+
+            border-bottom: 1px solid var(--bordure);
+
+            background: #101c25;
+        }
+
+        td {
+            padding: 12px 11px;
+
+            border-bottom: 1px solid #22343f;
+
+            font-size: 12px;
+        }
+
+        tr {
+            cursor: pointer;
+
+            transition: 0.15s;
+        }
+
+        tbody tr:hover {
+            background: var(--panneau-2);
+        }
+
+        tbody tr.selected {
+            background: #203441;
+        }
+
+        .vehicule-nom {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .vehicule-icon {
+            width: 36px;
+            height: 36px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #263c4a;
+
+            border-radius: 7px;
+
+            font-size: 18px;
+        }
+
+        .vehicule-nom strong {
+            display: block;
+
+            font-size: 13px;
+        }
+
+        .vehicule-nom small {
+            color: var(--texte-secondaire);
+        }
+
+        /* =========================
+           STATUS
+        ========================== */
+
+        .status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            padding: 5px 8px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: bold;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+        }
+
+        .status-disponible {
+            color: #84e4a8;
+
+            background: rgba(39, 174, 96, 0.17);
+        }
+
+        .status-disponible .status-dot {
+            background: var(--vert);
+        }
+
+        .status-intervention {
+            color: #ffcb68;
+
+            background: rgba(243, 156, 18, 0.17);
+        }
+
+        .status-intervention .status-dot {
+            background: var(--orange);
+        }
+
+        .status-maintenance {
+            color: #ff8b82;
+
+            background: rgba(214, 48, 49, 0.17);
+        }
+
+        .status-maintenance .status-dot {
+            background: var(--rouge);
+        }
+
+        .status-indisponible {
+            color: #c4cbd0;
+
+            background: rgba(127, 140, 141, 0.17);
+        }
+
+        .status-indisponible .status-dot {
+            background: var(--gris);
+        }
+
+        /* =========================
+           PROGRESS
+        ========================== */
+
+        .progress {
+            width: 120px;
+            height: 7px;
+
+            background: #081219;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            margin-top: 4px;
+        }
+
+        .progress-bar {
+            height: 100%;
+
+            border-radius: 20px;
+
+            background: var(--vert);
+        }
+
+        .progress-warning {
+            background: var(--orange);
+        }
+
+        .progress-danger {
+            background: var(--rouge);
+        }
+
+        /* =========================
+           DETAIL VEHICULE
+        ========================== */
+
+        .detail-title {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 16px;
+        }
+
+        .detail-icon {
+            width: 55px;
+            height: 55px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            background: #263c4a;
+
+            border-radius: 10px;
+
+            font-size: 28px;
+        }
+
+        .detail-title h3 {
+            font-size: 19px;
+        }
+
+        .detail-title p {
+            margin-top: 4px;
+
+            color: var(--texte-secondaire);
+
+            font-size: 12px;
+        }
+
+        .detail-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 9px;
+
+            margin-bottom: 16px;
+        }
+
+        .detail-box {
+            background: #0c171f;
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 7px;
+
+            padding: 10px;
+        }
+
+        .detail-box span {
+            display: block;
+
+            color: var(--texte-secondaire);
+
+            font-size: 10px;
+
+            margin-bottom: 4px;
+        }
+
+        .detail-box strong {
+            font-size: 12px;
+        }
+
+        .separator {
+            height: 1px;
+
+            background: var(--bordure);
+
+            margin: 15px 0;
+        }
+
+        .detail-section h4 {
+            margin-bottom: 10px;
+
+            font-size: 13px;
+        }
+
+        .detail-section p {
+            font-size: 12px;
+
+            color: var(--texte-secondaire);
+
+            line-height: 1.5;
+        }
+
+        .large-progress {
+            width: 100%;
+        }
+
+        .progress-label {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 5px;
+
+            font-size: 11px;
+        }
+
+        .progress-label span {
+            color: var(--texte-secondaire);
+        }
+
+        /* =========================
+           MODAL
+        ========================== */
+
+        .modal-overlay {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.70);
+
+            align-items: center;
+
+            justify-content: center;
+
+            z-index: 100;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            width: 95%;
+
+            max-width: 520px;
+
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .modal-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 14px;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .modal-content {
+            padding: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+
+            color: var(--texte-secondaire);
+
+            margin-bottom: 5px;
+
+            font-size: 11px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+
+            padding: 10px;
+
+            background: #0c171f;
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 6px;
+
+            color: white;
+        }
+
+        .modal-actions {
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 15px;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 1100px) {
+
+            .stats {
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+            .vehicules-layout {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 750px) {
+
+            header {
+                flex-direction: column;
+
+                gap: 14px;
+            }
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .toolbar {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            .toolbar input,
+            .toolbar select {
+                width: 100%;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            18
+        </div>
+
+        <div>
+
+            <h1>
+                Gestion Secours
+            </h1>
+
+            <p>
+                Gestion du parc de véhicules
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a href="index.html">
+            Accueil
+        </a>
+
+        <a href="cta.html">
+            CTA
+        </a>
+
+        <a href="operations.html">
+            Opérations
+        </a>
+
+        <a href="casernes.html">
+            Casernes
+        </a>
+
+        <a href="personnel.html">
+            Personnel
+        </a>
+
+    </nav>
+
+
+    <div class="horloge">
+
+        <div id="heure">
+            00:00:00
+        </div>
+
+        <div id="date">
+            --
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <div class="titre-page">
+
+        <h2>
+            Parc de véhicules
+        </h2>
+
+        <p>
+            Consultez la disponibilité, l'affectation et l'état technique de tous vos moyens de secours.
+        </p>
+
+    </div>
+
+
+    <!-- STATISTIQUES -->
+
+    <section class="stats">
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Véhicules
+            </div>
+
+            <div
+                class="stat-value"
+                id="statTotal"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Disponibles
+            </div>
+
+            <div
+                class="stat-value"
+                id="statDisponibles"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                En intervention
+            </div>
+
+            <div
+                class="stat-value"
+                id="statIntervention"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Maintenance
+            </div>
+
+            <div
+                class="stat-value"
+                id="statMaintenance"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Indisponibles
+            </div>
+
+            <div
+                class="stat-value"
+                id="statIndisponibles"
+            >
+                0
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- BARRE DE RECHERCHE -->
+
+    <section class="toolbar">
+
+        <input
+            type="text"
+            id="recherche"
+            placeholder="Rechercher un véhicule..."
+            oninput="afficherVehicules()"
+        >
+
+
+        <select
+            id="filtreType"
+            onchange="afficherVehicules()"
+        >
+
+            <option value="">
+                Tous les types
+            </option>
+
+            <option value="INCENDIE">
+                Incendie
+            </option>
+
+            <option value="SAP">
+                Secours à personne
+            </option>
+
+            <option value="ROUTIER">
+                Secours routier
+            </option>
+
+            <option value="AERIEN">
+                Moyen aérien
+            </option>
+
+            <option value="COMMANDEMENT">
+                Commandement
+            </option>
+
+            <option value="FORET">
+                Feux de forêt
+            </option>
+
+        </select>
+
+
+        <select
+            id="filtreStatut"
+            onchange="afficherVehicules()"
+        >
+
+            <option value="">
+                Tous les statuts
+            </option>
+
+            <option value="DISPONIBLE">
+                Disponible
+            </option>
+
+            <option value="INTERVENTION">
+                En intervention
+            </option>
+
+            <option value="MAINTENANCE">
+                Maintenance
+            </option>
+
+            <option value="INDISPONIBLE">
+                Indisponible
+            </option>
+
+        </select>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="ouvrirAjout()"
+        >
+            + Ajouter un véhicule
+        </button>
+
+    </section>
+
+
+    <section class="vehicules-layout">
+
+        <!-- LISTE -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Véhicules
+                </h3>
+
+                <span id="resultats">
+                    0 résultat
+                </span>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Véhicule
+                            </th>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th>
+                                Caserne
+                            </th>
+
+                            <th>
+                                Statut
+                            </th>
+
+                            <th>
+                                Carburant
+                            </th>
+
+                            <th>
+                                État
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tableVehicules">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- DETAILS -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Fiche véhicule
+                </h3>
+
+            </div>
+
+
+            <div
+                class="panel-content"
+                id="detailVehicule"
+            >
+
+                <p style="color:#94a8b7;">
+                    Sélectionnez un véhicule.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     MODAL AJOUT
+========================== -->
+
+<div
+    class="modal-overlay"
+    id="modalAjout"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3>
+                Ajouter un véhicule
+            </h3>
+
+            <button
+                class="btn btn-secondary"
+                onclick="fermerAjout()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <div class="modal-content">
+
+            <div class="form-group">
+
+                <label>
+                    Indicatif
+                </label>
+
+                <input
+                    type="text"
+                    id="nouvelIndicatif"
+                    placeholder="Exemple : FPT 03"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Nom
+                </label>
+
+                <input
+                    type="text"
+                    id="nouveauNom"
+                    placeholder="Fourgon Pompe Tonne"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Type
+                </label>
+
+                <select id="nouveauType">
+
+                    <option value="INCENDIE">
+                        Incendie
+                    </option>
+
+                    <option value="SAP">
+                        Secours à personne
+                    </option>
+
+                    <option value="ROUTIER">
+                        Secours routier
+                    </option>
+
+                    <option value="AERIEN">
+                        Moyen aérien
+                    </option>
+
+                    <option value="COMMANDEMENT">
+                        Commandement
+                    </option>
+
+                    <option value="FORET">
+                        Feux de forêt
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Caserne
+                </label>
+
+                <select id="nouvelleCaserne">
+
+                    <option>
+                        Centre de secours principal
+                    </option>
+
+                    <option>
+                        Centre de secours secondaire
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="fermerAjout()"
+                >
+                    Annuler
+                </button>
+
+
+                <button
+                    class="btn btn-primary"
+                    onclick="ajouterVehicule()"
+                >
+                    Ajouter
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+        =====================================================
+        DONNÉES DU PARC
+        =====================================================
+    */
+
+    let vehicules = [
+
+        {
+            id: 1,
+
+            indicatif:
+                "FPT 01",
+
+            nom:
+                "Fourgon Pompe Tonne",
+
+            type:
+                "INCENDIE",
+
+            caserne:
+                "Centre de secours principal",
+
+            statut:
+                "INTERVENTION",
+
+            equipage:
+                "6 / 6",
+
+            carburant:
+                78,
+
+            etat:
+                91,
+
+            kilometrage:
+                48620,
+
+            maintenance:
+                "18/09/2026",
+
+            icone:
+                "🚒"
+        },
+
+
+        {
+            id: 2,
+
+            indicatif:
+                "FPT 02",
+
+            nom:
+                "Fourgon Pompe Tonne",
+
+            type:
+                "INCENDIE",
+
+            caserne:
+                "Centre de secours principal",
+
+            statut:
+                "DISPONIBLE",
+
+            equipage:
+                "6 / 6",
+
+            carburant:
+                94,
+
+            etat:
+                87,
+
+            kilometrage:
+                53110,
+
+            maintenance:
+                "05/10/2026",
+
+            icone:
+                "🚒"
+        },
+
+
+        {
+            id: 3,
+
+            indicatif:
+                "VSAV 01",
+
+            nom:
+                "Véhicule de Secours et d'Assistance aux Victimes",
+
+            type:
+                "SAP",
+
+            caserne:
+                "Centre de secours principal",
+
+            statut:
+                "INTERVENTION",
+
+            equipage:
+                "3 / 3",
+
+            carburant:
+                63,
+
+            etat:
+                96,
+
+            kilometrage:
+                67280,
+
+            maintenance:
+                "12/09/2026",
+
+            icone:
+                "🚑"
+        },
+
+
+        {
+            id: 4,
+
+            indicatif:
+                "VSAV 02",
+
+            nom:
+                "Véhicule de Secours et d'Assistance aux Victimes",
+
+            type:
+                "SAP",
+
+            caserne:
+                "Centre de secours secondaire",
+
+            statut:
+                "DISPONIBLE",
+
+            equipage:
+                "3 / 3",
+
+            carburant:
+                88,
+
+            etat:
+                93,
+
+            kilometrage:
+                34870,
+
+            maintenance:
+                "22/10/2026",
+
+            icone:
+                "🚑"
+        },
+
+
+        {
+            id: 5,
+
+            indicatif:
+                "VSR 01",
+
+            nom:
+                "Véhicule de Secours Routier",
+
+            type:
+                "ROUTIER",
+
+            caserne:
+                "Centre de secours principal",
+
+            statut:
+                "DISPONIBLE",
+
+            equipage:
+                "3 / 3",
+
+            carburant:
+                81,
+
+            etat:
+                85,
+
+            kilometrage:
+                39200,
+
+            maintenance:
+                "02/10/2026",
+
+            icone:
+                "🚒"
+        },
+
+
+        {
+            id: 6,
+
+            indicatif:
+                "EPA 01",
+
+            nom:
+                "Échelle Pivotante Automatique",
+
+            type:
+                "AERIEN",
+
+            caserne:
+                "Centre de secours principal",
+
+            statut:
+                "DISPONIBLE",
+
+            equipage:
+                "2 / 2",
+
+            carburant:
+                72,
+
+            etat:
+                79,
+
+            kilometrage:
+                28710,
+
+            maintenance:
+                "04/09/2026",
+
+            icone:
+                "🪜"
+        },
+
+
+        {
+            id: 7,
+
+            indicatif:
+                "VLCDG 01",
+
+            nom:
+                "Véhicule Léger Chef de Groupe",
+
+            type:
+                "COMMANDEMENT",
+
+            caserne:
+                "Centre de secours principal",
+
+            statut:
+                "DISPONIBLE",
+
+            equipage:
+                "1 / 1",
+
+            carburant:
+                97,
+
+            etat:
+                98,
+
+            kilometrage:
+                19800,
+
+            maintenance:
+                "14/11/2026",
+
+            icone:
+                "🚙"
+        },
+
+
+        {
+            id: 8,
+
+            indicatif:
+                "CCF 01",
+
+            nom:
+                "Camion-Citerne Feux de Forêts",
+
+            type:
+                "FORET",
+
+            caserne:
+                "Centre de secours secondaire",
+
+            statut:
+                "MAINTENANCE",
+
+            equipage:
+                "0 / 4",
+
+            carburant:
+                45,
+
+            etat:
+                54,
+
+            kilometrage:
+                81290,
+
+            maintenance:
+                "En cours",
+
+            icone:
+                "🚒"
+        },
+
+
+        {
+            id: 9,
+
+            indicatif:
+                "VSAV 03",
+
+            nom:
+                "Véhicule de Secours et d'Assistance aux Victimes",
+
+            type:
+                "SAP",
+
+            caserne:
+                "Centre de secours principal",
+
+            statut:
+                "INDISPONIBLE",
+
+            equipage:
+                "0 / 3",
+
+            carburant:
+                100,
+
+            etat:
+                92,
+
+            kilometrage:
+                43960,
+
+            maintenance:
+                "Personnel insuffisant",
+
+            icone:
+                "🚑"
+        }
+
+    ];
+
+
+    let vehiculeSelectionne = null;
+
+
+    /*
+        =====================================================
+        HORLOGE
+        =====================================================
+    */
+
+    function mettreAJourHorloge() {
+
+        const maintenant =
+            new Date();
+
+
+        document.getElementById(
+            "heure"
+        ).textContent =
+            maintenant.toLocaleTimeString(
+                "fr-FR"
+            );
+
+
+        document.getElementById(
+            "date"
+        ).textContent =
+            maintenant.toLocaleDateString(
+                "fr-FR"
+            );
+
+    }
+
+
+    setInterval(
+        mettreAJourHorloge,
+        1000
+    );
+
+
+    mettreAJourHorloge();
+
+
+    /*
+        =====================================================
+        AFFICHAGE
+        =====================================================
+    */
+
+    function afficherVehicules() {
+
+        const recherche =
+            document.getElementById(
+                "recherche"
+            ).value
+            .toLowerCase();
+
+
+        const filtreType =
+            document.getElementById(
+                "filtreType"
+            ).value;
+
+
+        const filtreStatut =
+            document.getElementById(
+                "filtreStatut"
+            ).value;
+
+
+        const filtres =
+            vehicules.filter(
+                vehicule => {
+
+                    const correspondRecherche =
+
+                        vehicule.indicatif
+                            .toLowerCase()
+                            .includes(
+                                recherche
+                            )
+
+                        ||
+
+                        vehicule.nom
+                            .toLowerCase()
+                            .includes(
+                                recherche
+                            );
+
+
+                    const correspondType =
+
+                        !filtreType
+
+                        ||
+
+                        vehicule.type ===
+                            filtreType;
+
+
+                    const correspondStatut =
+
+                        !filtreStatut
+
+                        ||
+
+                        vehicule.statut ===
+                            filtreStatut;
+
+
+                    return (
+
+                        correspondRecherche
+
+                        &&
+
+                        correspondType
+
+                        &&
+
+                        correspondStatut
+
+                    );
+
+                }
+            );
+
+
+        const tableau =
+            document.getElementById(
+                "tableVehicules"
+            );
+
+
+        tableau.innerHTML = "";
+
+
+        filtres.forEach(
+            vehicule => {
+
+                const ligne =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                if (
+                    vehiculeSelectionne &&
+                    vehiculeSelectionne.id ===
+                    vehicule.id
+                ) {
+
+                    ligne.classList.add(
+                        "selected"
+                    );
+
+                }
+
+
+                ligne.onclick =
+                    () =>
+                        selectionnerVehicule(
+                            vehicule.id
+                        );
+
+
+                ligne.innerHTML = `
+
+                    <td>
+
+                        <div class="vehicule-nom">
+
+                            <div class="vehicule-icon">
+                                ${vehicule.icone}
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    ${vehicule.indicatif}
+                                </strong>
+
+                                <small>
+                                    ${vehicule.nom}
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        ${libelleType(
+                            vehicule.type
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${vehicule.caserne}
+
+                    </td>
+
+
+                    <td>
+
+                        ${htmlStatut(
+                            vehicule.statut
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${vehicule.carburant} %
+
+                        ${htmlProgression(
+                            vehicule.carburant
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${vehicule.etat} %
+
+                        ${htmlProgression(
+                            vehicule.etat
+                        )}
+
+                    </td>
+
+                `;
+
+
+                tableau.appendChild(
+                    ligne
+                );
+
+            }
+        );
+
+
+        document.getElementById(
+            "resultats"
+        ).textContent =
+            filtres.length +
+            (
+                filtres.length > 1
+                    ? " résultats"
+                    : " résultat"
+            );
+
+
+        mettreAJourStats();
+
+    }
+
+
+    /*
+        =====================================================
+        TYPES
+        =====================================================
+    */
+
+    function libelleType(type) {
+
+        const types = {
+
+            INCENDIE:
+                "Incendie",
+
+            SAP:
+                "Secours à personne",
+
+            ROUTIER:
+                "Secours routier",
+
+            AERIEN:
+                "Moyen aérien",
+
+            COMMANDEMENT:
+                "Commandement",
+
+            FORET:
+                "Feux de forêt"
+
+        };
+
+
+        return (
+            types[type]
+            ||
+            type
+        );
+
+    }
+
+
+    /*
+        =====================================================
+        STATUT
+        =====================================================
+    */
+
+    function htmlStatut(statut) {
+
+        if (
+            statut === "DISPONIBLE"
+        ) {
+
+            return `
+
+                <span class="status status-disponible">
+
+                    <span class="status-dot"></span>
+
+                    Disponible
+
+                </span>
+
+            `;
+
+        }
+
+
+        if (
+            statut === "INTERVENTION"
+        ) {
+
+            return `
+
+                <span class="status status-intervention">
+
+                    <span class="status-dot"></span>
+
+                    Intervention
+
+                </span>
+
+            `;
+
+        }
+
+
+        if (
+            statut === "MAINTENANCE"
+        ) {
+
+            return `
+
+                <span class="status status-maintenance">
+
+                    <span class="status-dot"></span>
+
+                    Maintenance
+
+                </span>
+
+            `;
+
+        }
+
+
+        return `
+
+            <span class="status status-indisponible">
+
+                <span class="status-dot"></span>
+
+                Indisponible
+
+            </span>
+
+        `;
+
+    }
+
+
+    /*
+        =====================================================
+        BARRES
+        =====================================================
+    */
+
+    function htmlProgression(valeur) {
+
+        let classe =
+            "";
+
+
+        if (
+            valeur <= 30
+        ) {
+
+            classe =
+                "progress-danger";
+
+        }
+
+        else if (
+            valeur <= 60
+        ) {
+
+            classe =
+                "progress-warning";
+
+        }
+
+
+        return `
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar ${classe}"
+                    style="width:${valeur}%"
+                ></div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /*
+        =====================================================
+        STATISTIQUES
+        =====================================================
+    */
+
+    function mettreAJourStats() {
+
+        document.getElementById(
+            "statTotal"
+        ).textContent =
+            vehicules.length;
+
+
+        document.getElementById(
+            "statDisponibles"
+        ).textContent =
+            vehicules.filter(
+                v =>
+                    v.statut ===
+                    "DISPONIBLE"
+            ).length;
+
+
+        document.getElementById(
+            "statIntervention"
+        ).textContent =
+            vehicules.filter(
+                v =>
+                    v.statut ===
+                    "INTERVENTION"
+            ).length;
+
+
+        document.getElementById(
+            "statMaintenance"
+        ).textContent =
+            vehicules.filter(
+                v =>
+                    v.statut ===
+                    "MAINTENANCE"
+            ).length;
+
+
+        document.getElementById(
+            "statIndisponibles"
+        ).textContent =
+            vehicules.filter(
+                v =>
+                    v.statut ===
+                    "INDISPONIBLE"
+            ).length;
+
+    }
+
+
+    /*
+        =====================================================
+        SELECTION VEHICULE
+        =====================================================
+    */
+
+    function selectionnerVehicule(id) {
+
+        vehiculeSelectionne =
+            vehicules.find(
+                vehicule =>
+                    vehicule.id === id
+            );
+
+
+        afficherVehicules();
+
+        afficherDetail();
+
+    }
+
+
+    /*
+        =====================================================
+        DETAILS
+        =====================================================
+    */
+
+    function afficherDetail() {
+
+        if (!vehiculeSelectionne) {
+            return;
+        }
+
+
+        const v =
+            vehiculeSelectionne;
+
+
+        const zone =
+            document.getElementById(
+                "detailVehicule"
+            );
+
+
+        zone.innerHTML = `
+
+            <div class="detail-title">
+
+                <div class="detail-icon">
+
+                    ${v.icone}
+
+                </div>
+
+                <div>
+
+                    <h3>
+
+                        ${v.indicatif}
+
+                    </h3>
+
+                    <p>
+
+                        ${v.nom}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            ${htmlStatut(
+                v.statut
+            )}
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-grid">
+
+                <div class="detail-box">
+
+                    <span>
+                        Type
+                    </span>
+
+                    <strong>
+
+                        ${libelleType(
+                            v.type
+                        )}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Équipage
+                    </span>
+
+                    <strong>
+
+                        ${v.equipage}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Caserne
+                    </span>
+
+                    <strong>
+
+                        ${v.caserne}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Kilométrage
+                    </span>
+
+                    <strong>
+
+                        ${v.kilometrage.toLocaleString(
+                            "fr-FR"
+                        )} km
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Carburant
+                </h4>
+
+                <div class="progress-label">
+
+                    <span>
+                        Niveau
+                    </span>
+
+                    <strong>
+                        ${v.carburant} %
+                    </strong>
+
+                </div>
+
+                <div class="progress large-progress">
+
+                    <div
+                        class="progress-bar"
+                        style="width:${v.carburant}%"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    État mécanique
+                </h4>
+
+                <div class="progress-label">
+
+                    <span>
+                        État général
+                    </span>
+
+                    <strong>
+                        ${v.etat} %
+                    </strong>
+
+                </div>
+
+                <div class="progress large-progress">
+
+                    <div
+                        class="progress-bar"
+                        style="width:${v.etat}%"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Maintenance
+                </h4>
+
+                <p>
+
+                    Prochaine maintenance :
+                    <strong>
+                        ${v.maintenance}
+                    </strong>
+
+                </p>
+
+            </div>
+
+
+            <div class="separator"></div>
+
+
+            <button
+                class="btn btn-secondary"
+                style="width:100%;"
+                onclick="changerDisponibilite()"
+            >
+                Changer le statut
+            </button>
+
+
+            <button
+                class="btn btn-secondary"
+                style="width:100%; margin-top:8px;"
+                onclick="ravitailler()"
+            >
+                ⛽ Faire le plein
+            </button>
+
+
+            <button
+                class="btn btn-danger"
+                style="width:100%; margin-top:8px;"
+                onclick="envoyerMaintenance()"
+            >
+                🔧 Envoyer en maintenance
+            </button>
+
+        `;
+
+    }
+
+
+    /*
+        =====================================================
+        ACTIONS
+        =====================================================
+    */
+
+    function ravitailler() {
+
+        if (!vehiculeSelectionne) {
+            return;
+        }
+
+
+        vehiculeSelectionne.carburant =
+            100;
+
+
+        sauvegarder();
+
+        afficherVehicules();
+
+        afficherDetail();
+
+    }
+
+
+    function envoyerMaintenance() {
+
+        if (!vehiculeSelectionne) {
+            return;
+        }
+
+
+        if (
+            vehiculeSelectionne.statut ===
+            "INTERVENTION"
+        ) {
+
+            alert(
+                "Impossible : ce véhicule est actuellement engagé."
+            );
+
+            return;
+
+        }
+
+
+        vehiculeSelectionne.statut =
+            "MAINTENANCE";
+
+
+        vehiculeSelectionne.equipage =
+            "0 / 0";
+
+
+        vehiculeSelectionne.maintenance =
+            "En cours";
+
+
+        sauvegarder();
+
+        afficherVehicules();
+
+        afficherDetail();
+
+    }
+
+
+    function changerDisponibilite() {
+
+        if (!vehiculeSelectionne) {
+            return;
+        }
+
+
+        const choix =
+            prompt(
+                "Nouveau statut : DISPONIBLE, INDISPONIBLE, MAINTENANCE ou INTERVENTION",
+                vehiculeSelectionne.statut
+            );
+
+
+        if (!choix) {
+            return;
+        }
+
+
+        const nouveau =
+            choix.toUpperCase();
+
+
+        const statuts = [
+
+            "DISPONIBLE",
+            "INDISPONIBLE",
+            "MAINTENANCE",
+            "INTERVENTION"
+
+        ];
+
+
+        if (
+            !statuts.includes(
+                nouveau
+            )
+        ) {
+
+            alert(
+                "Statut invalide."
+            );
+
+            return;
+
+        }
+
+
+        vehiculeSelectionne.statut =
+            nouveau;
+
+
+        sauvegarder();
+
+        afficherVehicules();
+
+        afficherDetail();
+
+    }
+
+
+    /*
+        =====================================================
+        AJOUT VEHICULE
+        =====================================================
+    */
+
+    function ouvrirAjout() {
+
+        document.getElementById(
+            "modalAjout"
+        ).classList.add(
+            "active"
+        );
+
+    }
+
+
+    function fermerAjout() {
+
+        document.getElementById(
+            "modalAjout"
+        ).classList.remove(
+            "active"
+        );
+
+    }
+
+
+    function ajouterVehicule() {
+
+        const indicatif =
+            document.getElementById(
+                "nouvelIndicatif"
+            ).value.trim();
+
+
+        const nom =
+            document.getElementById(
+                "nouveauNom"
+            ).value.trim();
+
+
+        const type =
+            document.getElementById(
+                "nouveauType"
+            ).value;
+
+
+        const caserne =
+            document.getElementById(
+                "nouvelleCaserne"
+            ).value;
+
+
+        if (
+            !indicatif ||
+            !nom
+        ) {
+
+            alert(
+                "Complétez l'indicatif et le nom."
+            );
+
+            return;
+
+        }
+
+
+        vehicules.push({
+
+            id:
+                Date.now(),
+
+            indicatif:
+                indicatif,
+
+            nom:
+                nom,
+
+            type:
+                type,
+
+            caserne:
+                caserne,
+
+            statut:
+                "DISPONIBLE",
+
+            equipage:
+                "0 / 0",
+
+            carburant:
+                100,
+
+            etat:
+                100,
+
+            kilometrage:
+                0,
+
+            maintenance:
+                "Non planifiée",
+
+            icone:
+                iconeType(
+                    type
+                )
+
+        });
+
+
+        document.getElementById(
+            "nouvelIndicatif"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "nouveauNom"
+        ).value =
+            "";
+
+
+        sauvegarder();
+
+        fermerAjout();
+
+        afficherVehicules();
+
+    }
+
+
+    /*
+        =====================================================
+        ICONES
+        =====================================================
+    */
+
+    function iconeType(type) {
+
+        if (
+            type === "SAP"
+        ) {
+
+            return "🚑";
+
+        }
+
+
+        if (
+            type === "COMMANDEMENT"
+        ) {
+
+            return "🚙";
+
+        }
+
+
+        if (
+            type === "AERIEN"
+        ) {
+
+            return "🪜";
+
+        }
+
+
+        return "🚒";
+
+    }
+
+
+    /*
+        =====================================================
+        SAUVEGARDE LOCALE
+        =====================================================
+    */
+
+    function sauvegarder() {
+
+        localStorage.setItem(
+
+            "vehiculesSecours",
+
+            JSON.stringify(
+                vehicules
+            )
+
+        );
+
+    }
+
+
+    function chargerSauvegarde() {
+
+        const sauvegarde =
+            localStorage.getItem(
+                "vehiculesSecours"
+            );
+
+
+        if (!sauvegarde) {
+            return;
+        }
+
+
+        try {
+
+            const donnees =
+                JSON.parse(
+                    sauvegarde
+                );
+
+
+            if (
+                Array.isArray(
+                    donnees
+                )
+            ) {
+
+                vehicules =
+                    donnees;
+
+            }
+
+        }
+
+        catch (erreur) {
+
+            console.error(
+                "Erreur de chargement du parc :",
+                erreur
+            );
+
+        }
+
+    }
+
+
+    /*
+        =====================================================
+        DEMARRAGE
+        =====================================================
+    */
+
+    chargerSauvegarde();
+
+    afficherVehicules();
+
+
+    if (
+        vehicules.length > 0
+    ) {
+
+        selectionnerVehicule(
+            vehicules[0].id
+        );
+
+    }
+
+</script>
+
+</body>
+</html>
+```

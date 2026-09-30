@@ -3,6 +3,7 @@
 /*=========================================================
     FRIENDZONÉ REBORN
     dialogue.js
+    Dialogue Manager V4
 
     Gestion :
     - des dialogues ;
@@ -14,7 +15,17 @@
     - des choix importants ;
     - des nouvelles informations ;
     - des fonds définis dans les dialogues ;
-    - de la galerie multimédia.
+    - de la galerie multimédia ;
+    - du volume artistique local des sons de dialogue.
+
+    AUDIO V4
+    --------
+    volumeSon est un multiplicateur artistique local.
+
+    volume final effet =
+        volume utilisateur effets
+        × volumeMixEffets de la scène
+        × volumeSon du dialogue
 =========================================================*/
 
 const dialogueManager = {
@@ -106,7 +117,7 @@ const dialogueManager = {
 
 
         console.log(
-            "dialogueManager initialisé."
+            "dialogueManager V4 initialisé."
         );
 
     },
@@ -129,6 +140,84 @@ const dialogueManager = {
                 .jouerSon ===
                 "function"
 
+        );
+
+    },
+
+
+    /*=====================================================
+        NORMALISER LE VOLUME LOCAL D'UN SON
+
+        Avec Audio Manager V4, cette valeur n'est pas
+        le volume utilisateur final.
+
+        Elle représente uniquement le multiplicateur
+        artistique local du son du dialogue.
+
+        Exemple :
+
+        volume utilisateur effets = 0.70
+        volumeMixEffets scène      = 0.80
+        volumeSon dialogue         = 0.50
+
+        volume final = 0.70 × 0.80 × 0.50 = 0.28
+    =====================================================*/
+
+    normaliserVolumeSon(
+        valeur,
+        valeurParDefaut = 1
+    ) {
+
+        if (
+            valeur === undefined ||
+            valeur === null ||
+            valeur === ""
+        ) {
+
+            return Math.max(
+                0,
+                Math.min(
+                    1,
+                    Number(
+                        valeurParDefaut
+                    ) || 0
+                )
+            );
+
+        }
+
+
+        const nombre =
+            Number(
+                valeur
+            );
+
+
+        if (
+            !Number.isFinite(
+                nombre
+            )
+        ) {
+
+            return Math.max(
+                0,
+                Math.min(
+                    1,
+                    Number(
+                        valeurParDefaut
+                    ) || 0
+                )
+            );
+
+        }
+
+
+        return Math.max(
+            0,
+            Math.min(
+                1,
+                nombre
+            )
         );
 
     },
@@ -390,9 +479,11 @@ const dialogueManager = {
         volume = undefined
     ) {
 
-        if (!this.audioDisponible()) {
+        if (
+            !this.audioDisponible()
+        ) {
 
-            return;
+            return false;
 
         }
 
@@ -400,12 +491,11 @@ const dialogueManager = {
         if (
             typeof nomSon !==
                 "string" ||
-
             nomSon.trim() ===
                 ""
         ) {
 
-            return;
+            return false;
 
         }
 
@@ -415,47 +505,46 @@ const dialogueManager = {
 
 
         /*
-            Si un volume est fourni, il est transmis
-            à audioManager.
+            Audio Manager V4 attend ici un multiplicateur
+            artistique local.
 
-            Sinon audioManager utilise son volume
-            d'effets sonores par défaut.
+            Il ne faut surtout pas multiplier manuellement
+            par le réglage utilisateur : audioManager le fait
+            lui-même avec volumeEffets et volumeMixEffets.
         */
 
-        if (
-            typeof volume ===
-                "number" &&
-
-            Number.isFinite(
-                volume
-            )
-        ) {
-
-            audioManager.jouerSon(
-
-                nom,
-
-                Math.max(
-
-                    0,
-
-                    Math.min(
-                        1,
-                        volume
-                    )
-
-                )
-
+        const volumeLocal =
+            this.normaliserVolumeSon(
+                volume,
+                1
             );
 
-            return;
+
+        try {
+
+            audioManager
+                .jouerSon(
+                    nom,
+                    volumeLocal
+                );
+
+
+            return true;
 
         }
+        catch (
+            erreur
+        ) {
+
+            console.error(
+                "dialogue.js : impossible de jouer l'effet sonore :",
+                erreur
+            );
 
 
-        audioManager.jouerSon(
-            nom
-        );
+            return false;
+
+        }
 
     },
 
@@ -767,9 +856,7 @@ const dialogueManager = {
         }
 
     },
-
-
-    /*=====================================================
+        /*=====================================================
         NORMALISER LE PERSONNAGE
     =====================================================*/
 
@@ -1048,7 +1135,9 @@ const dialogueManager = {
         return resultat;
 
     },
-        /*=====================================================
+
+
+    /*=====================================================
         OBTENIR LA RELATION D'UN PERSONNAGE
     =====================================================*/
 
@@ -1482,9 +1571,7 @@ const dialogueManager = {
         return texte;
 
     },
-
-
-    /*=====================================================
+        /*=====================================================
         VIDER LA CONVERSATION
     =====================================================*/
 
@@ -1532,49 +1619,46 @@ const dialogueManager = {
     =====================================================*/
 
     async afficherScene(
-        scene
+        scene,
+        joueur = null
     ) {
 
-        if (!scene) {
+        if (
+            !scene ||
+            typeof scene !==
+                "object"
+        ) {
 
             console.error(
-                "dialogues.js : scène invalide."
+                "dialogue.js : scène invalide."
             );
 
-            return;
+
+            return false;
 
         }
 
 
         /*
-            Chaque nouvelle scène reçoit son propre numéro.
+            afficherScene() devient le point d'entrée unique
+            utilisé par moteur.js.
 
-            Si une autre scène démarre pendant les délais,
-            l'ancienne séquence s'arrête automatiquement.
-        */
+            Toute la logique détaillée reste centralisée dans
+            afficherListe() :
 
-        const sequence =
-            ++this.sequenceAffichage;
+            - conditions de dialogue ;
+            - fonds ;
+            - texte selon relation / confiance ;
+            - écriture progressive ;
+            - indicateur d'écriture ;
+            - délais ;
+            - sons ;
+            - galerie ;
+            - effets ;
+            - annulation de séquence.
 
-
-        /*
-            Nouveau format :
-
-            {
-                "dialogues": [
-                    {
-                        "personnage": "eva",
-                        "texte": "Salut."
-                    }
-                ]
-            }
-
-            Ancien format :
-
-            {
-                "personnage": "eva",
-                "texte": "Salut."
-            }
+            Cela évite de maintenir deux moteurs de dialogue
+            différents dans le même fichier.
         */
 
         const dialogues =
@@ -1587,271 +1671,31 @@ const dialogueManager = {
                 : scene.texte
 
                     ? [
-
                         {
-
                             ...scene,
 
                             texte:
                                 scene.texte,
 
                             personnage:
-
                                 scene.personnage ||
-
                                 "narrateur"
-
                         }
-
                     ]
 
                     : [];
 
 
-        /*
-            Les messages sont parcourus avec une boucle
-            asynchrone pour qu'ils apparaissent dans l'ordre.
-        */
-
-        for (
-            const message
-            of dialogues
-        ) {
-
-            /*
-                Une nouvelle scène a commencé :
-                on abandonne cette ancienne séquence.
-            */
-
-            if (
-                sequence !==
-                this.sequenceAffichage
-            ) {
-
-                return;
-
-            }
-
-
-            if (!message) {
-
-                continue;
-
-            }
-
-
-            /*
-                Applique le fond défini directement
-                dans le dialogue avant l'indicateur
-                d'écriture et avant l'apparition
-                de la bulle.
-
-                Exemple JSON :
-
-                {
-                    "personnage": "narrateur",
-                    "texte": "Tu arrives à la cafétéria.",
-                    "fond": "cafeteria_arrivee"
-                }
-            */
-
-            if (
-                typeof moteur !==
-                    "undefined" &&
-
-                typeof moteur
-                    .gererFondDialogue ===
-                    "function"
-            ) {
-
-                moteur.gererFondDialogue(
-                    message
-                );
-
-            }
-
-
-            const texteMessage =
-                this.preparerTexteMessage(
-                    message
-                );
-
-
-            if (!texteMessage) {
-
-                continue;
-
-            }
-
-
-            const personnage =
-
-                message.personnage ||
-
-                message.type ||
-
-                "narrateur";
-
-
-            const type =
-                this.normaliserPersonnage(
-                    personnage
-                );
-
-
-            /*
-                L'indicateur d'écriture est affiché
-                automatiquement pour les personnages.
-
-                Il ne s'affiche pas par défaut pour :
-
-                - la narration ;
-                - les pensées ;
-                - le système.
-
-                Le JSON peut forcer ou désactiver ce
-                comportement avec :
-
-                "afficherEcriture": true
-
-                ou :
-
-                "afficherEcriture": false
-            */
-
-            const afficherEcriture =
-
-                message.afficherEcriture ===
-                    true ||
-
-                (
-
-                    message.afficherEcriture !==
-                        false &&
-
-                    type !==
-                        "narration" &&
-
-                    type !==
-                        "pensee" &&
-
-                    type !==
-                        "systeme"
-
-                );
-
-
-            if (
-                afficherEcriture
-            ) {
-
-                const duree =
-                    this.calculerDureeEcriture(
-
-                        texteMessage,
-
-                        message
-
-                    );
-
-
-                const termine =
-                    await this
-                        .afficherIndicateurEcriture(
-
-                            personnage,
-
-                            duree,
-
-                            sequence
-
-                        );
-
-
-                /*
-                    L'indicateur a été interrompu par
-                    le chargement d'une nouvelle scène.
-                */
-
-                if (!termine) {
-
-                    return;
-
-                }
-
-            }
-
-
-            /*
-                Vérification supplémentaire avant
-                l'ajout du véritable message.
-            */
-
-            if (
-                sequence !==
-                this.sequenceAffichage
-            ) {
-
-                return;
-
-            }
-
-
-            this.ajouterMessage(
-
-                texteMessage,
-
-                personnage,
-
-                message
-
+        return await this
+            .afficherListe(
+                dialogues,
+                joueur
             );
 
-
-            /*
-                Petite pause après le message avant que
-                le personnage suivant commence à écrire.
-
-                Personnalisation possible dans le JSON :
-
-                "pauseApres": 500
-            */
-
-            const pause =
-                Number.isFinite(
-
-                    Number(
-                        message.pauseApres
-                    )
-
-                )
-                    ? Math.max(
-
-                        0,
-
-                        Number(
-                            message.pauseApres
-                        )
-
-                    )
-
-                    : this.pauseEntreMessages;
-
-
-            if (
-                pause > 0
-            ) {
-
-                await this.attendre(
-                    pause
-                );
-
-            }
-
-        }
-
     },
-        /*=====================================================
+
+
+    /*=====================================================
         CALCULER LE TEMPS D'ÉCRITURE
     =====================================================*/
 
@@ -2568,9 +2412,6 @@ const dialogueManager = {
 
         /*---------------------------------------------
          ÉVÉNEMENT PERSONNALISÉ
-
-         Permet à d'autres systèmes d'écouter
-         l'apparition d'un message.
         ---------------------------------------------*/
 
         try {
@@ -2616,7 +2457,9 @@ const dialogueManager = {
         return message;
 
     },
-        /*=====================================================
+
+
+    /*=====================================================
         AJOUTER UNE NARRATION
     =====================================================*/
 
@@ -3966,9 +3809,9 @@ const dialogueManager = {
         }
 
 
-        /*
-         Désactivation explicite.
-        */
+        /*---------------------------------------------
+         DÉSACTIVATION EXPLICITE
+        ---------------------------------------------*/
 
         if (
             message.actif ===
@@ -3980,10 +3823,9 @@ const dialogueManager = {
         }
 
 
-        /*
-         Condition facultative directement placée
-         sur le dialogue.
-        */
+        /*---------------------------------------------
+         CONDITION FACULTATIVE
+        ---------------------------------------------*/
 
         if (
             message.condition
@@ -4005,22 +3847,25 @@ const dialogueManager = {
     /*=====================================================
         APPLIQUER LES EFFETS D'UN MESSAGE
 
-        Cette fonction permet éventuellement à un
-        dialogue de modifier une variable après son
-        affichage.
+        Formats acceptés :
 
-        Exemple :
-
-        {
-            "personnage": "eva",
-            "texte": "Merci.",
-            "effet": {
-                "relationEva": 1
-            }
+        "effet": {
+            "relationEva": 1
         }
 
-        Les choix restent cependant le système principal
-        pour modifier les variables du joueur.
+        ou :
+
+        "effets": [
+            {
+                "relationEva": 1
+            },
+            {
+                "confianceEva": 1
+            }
+        ]
+
+        Les choix restent le mécanisme principal
+        pour les conséquences importantes.
     =====================================================*/
 
     appliquerEffetsMessage(
@@ -4030,9 +3875,6 @@ const dialogueManager = {
         if (
             !message ||
             typeof message !==
-                "object" ||
-            !message.effet ||
-            typeof message.effet !==
                 "object"
         ) {
 
@@ -4056,17 +3898,93 @@ const dialogueManager = {
         }
 
 
+        const groupesEffets =
+            [];
+
+
+        /*---------------------------------------------
+         EFFET UNIQUE
+        ---------------------------------------------*/
+
+        if (
+            message.effet &&
+            typeof message.effet ===
+                "object" &&
+            !Array.isArray(
+                message.effet
+            )
+        ) {
+
+            groupesEffets.push(
+                message.effet
+            );
+
+        }
+
+
+        /*---------------------------------------------
+         PLUSIEURS EFFETS
+        ---------------------------------------------*/
+
+        if (
+            Array.isArray(
+                message.effets
+            )
+        ) {
+
+            message.effets
+                .forEach(
+                    effet => {
+
+                        if (
+                            effet &&
+                            typeof effet ===
+                                "object" &&
+                            !Array.isArray(
+                                effet
+                            )
+                        ) {
+
+                            groupesEffets.push(
+                                effet
+                            );
+
+                        }
+
+                    }
+                );
+
+        }
+
+
+        if (
+            groupesEffets.length ===
+                0
+        ) {
+
+            return false;
+
+        }
+
+
         try {
 
-            moteur
-                .appliquerEffets(
-                    message.effet
+            groupesEffets
+                .forEach(
+                    effets => {
+
+                        moteur
+                            .appliquerEffets(
+                                effets
+                            );
+
+                    }
                 );
 
 
             /*
-             Les succès sont vérifiés immédiatement
-             après l'application des effets.
+             Les succès sont revérifiés après
+             l'ensemble des effets du message.
             */
 
             if (
@@ -4082,7 +4000,8 @@ const dialogueManager = {
 
 
             /*
-             Sauvegarde après modification.
+             Sauvegarde immédiatement après
+             les modifications du joueur.
             */
 
             if (
@@ -4120,13 +4039,27 @@ const dialogueManager = {
     /*=====================================================
         AFFICHER UNE LISTE DE DIALOGUES
 
-        Compatible avec moteur.js :
+        C'est maintenant le moteur central de dialogue.
 
-        dialogueManager.afficherListe(
-            dialogues,
-            joueur,
-            callback
-        );
+        Utilisé par :
+
+        afficherScene()
+        afficherDialogues()
+        certaines fonctions de test
+
+        Il gère notamment :
+
+        - annulation de l'ancienne scène ;
+        - conditions ;
+        - fonds ;
+        - relation / confiance ;
+        - écriture progressive ;
+        - indicateur d'écriture ;
+        - délais ;
+        - sons ;
+        - galerie ;
+        - effets ;
+        - callback final.
     =====================================================*/
 
     async afficherListe(
@@ -4150,10 +4083,19 @@ const dialogueManager = {
 
             }
 
-            return;
+
+            return false;
 
         }
 
+
+        /*
+         Chaque nouvelle liste devient une nouvelle
+         séquence.
+
+         Une ancienne liste encore en attente détectera
+         que son numéro ne correspond plus et s'arrêtera.
+        */
 
         const sequence =
             ++this.sequenceAffichage;
@@ -4173,7 +4115,7 @@ const dialogueManager = {
                     this.sequenceAffichage
             ) {
 
-                return;
+                return false;
 
             }
 
@@ -4237,6 +4179,7 @@ const dialogueManager = {
                     ) {
 
                         const duree =
+
                             typeof moteur
                                 .obtenirDureeTransitionFond ===
                                 "function"
@@ -4273,7 +4216,7 @@ const dialogueManager = {
 
 
             /*---------------------------------------------
-             TEXTE
+             TEXTE FINAL
             ---------------------------------------------*/
 
             const texte =
@@ -4287,8 +4230,14 @@ const dialogueManager = {
             ) {
 
                 /*
-                 Un message sans texte peut quand même
-                 porter un effet.
+                 Un dialogue sans texte peut quand même
+                 servir de déclencheur invisible :
+
+                 {
+                     "effet": {
+                         "indiceTrouve": true
+                     }
+                 }
                 */
 
                 this.appliquerEffetsMessage(
@@ -4337,20 +4286,33 @@ const dialogueManager = {
                     );
 
 
+                /*
+                 Une nouvelle scène a pu commencer
+                 pendant l'écriture.
+                */
+
                 if (
                     sequence !==
                         this.sequenceAffichage
                 ) {
 
-                    return;
+                    return false;
 
                 }
 
+
+                /*-----------------------------------------
+                 EFFETS APRÈS AFFICHAGE
+                -----------------------------------------*/
 
                 this.appliquerEffetsMessage(
                     message
                 );
 
+
+                /*-----------------------------------------
+                 PAUSE APRÈS MESSAGE
+                -----------------------------------------*/
 
                 const pauseProgressive =
                     this.obtenirPauseApresMessage(
@@ -4366,6 +4328,16 @@ const dialogueManager = {
                     await this.attendre(
                         pauseProgressive
                     );
+
+
+                    if (
+                        sequence !==
+                            this.sequenceAffichage
+                    ) {
+
+                        return false;
+
+                    }
 
                 }
 
@@ -4428,7 +4400,7 @@ const dialogueManager = {
                     !termine
                 ) {
 
-                    return;
+                    return false;
 
                 }
 
@@ -4436,13 +4408,11 @@ const dialogueManager = {
 
 
             /*---------------------------------------------
-             DÉLAI DE NARRATION
+             DÉLAI AVANT LE MESSAGE
 
-             Un délai peut être défini explicitement :
+             Exemples JSON :
 
              "delai": 1200
-
-             ou :
 
              "delaiNarration": 1200
             ---------------------------------------------*/
@@ -4469,7 +4439,7 @@ const dialogueManager = {
                         this.sequenceAffichage
                 ) {
 
-                    return;
+                    return false;
 
                 }
 
@@ -4515,6 +4485,26 @@ const dialogueManager = {
                     pause
                 );
 
+
+                /*
+                 Cette vérification supplémentaire est
+                 importante.
+
+                 Dans l'ancienne version, une scène
+                 interrompue pendant cette dernière pause
+                 pouvait continuer sa boucle après le
+                 changement de scène.
+                */
+
+                if (
+                    sequence !==
+                        this.sequenceAffichage
+                ) {
+
+                    return false;
+
+                }
+
             }
 
         }
@@ -4529,7 +4519,7 @@ const dialogueManager = {
                 this.sequenceAffichage
         ) {
 
-            return;
+            return false;
 
         }
 
@@ -4557,14 +4547,24 @@ const dialogueManager = {
 
         }
 
+
+        return true;
+
     },
-
-
-    /*=====================================================
+        /*=====================================================
         AFFICHER PLUSIEURS DIALOGUES
 
-        Variante Promise utilisée par certaines
-        versions du moteur.
+        Cette fonction est utilisée par certaines
+        parties du moteur qui attendent explicitement
+        la fin complète d'une liste de dialogues.
+
+        V4 :
+        afficherListe() renvoie déjà une Promise car
+        elle est async.
+
+        On évite donc l'ancien wrapper new Promise(),
+        qui pouvait rester bloqué lorsqu'une séquence
+        était interrompue avant l'appel du callback.
     =====================================================*/
 
     async afficherDialogues(
@@ -4572,17 +4572,22 @@ const dialogueManager = {
         joueur = null
     ) {
 
-        return new Promise(
-            resolve => {
+        if (
+            !Array.isArray(
+                dialogues
+            )
+        ) {
 
-                this.afficherListe(
-                    dialogues,
-                    joueur,
-                    resolve
-                );
+            return false;
 
-            }
-        );
+        }
+
+
+        return await this
+            .afficherListe(
+                dialogues,
+                joueur
+            );
 
     },
 
@@ -4596,6 +4601,10 @@ const dialogueManager = {
             message,
             joueur
         );
+
+        Cette fonction est notamment utilisée par
+        moteur.js pour certains messages associés
+        aux choix.
     =====================================================*/
 
     async afficher(
@@ -4656,7 +4665,16 @@ const dialogueManager = {
 
 
         /*---------------------------------------------
-         TEXTE
+         FOND
+        ---------------------------------------------*/
+
+        this.gererFondMessage(
+            message
+        );
+
+
+        /*---------------------------------------------
+         TEXTE FINAL
         ---------------------------------------------*/
 
         const texte =
@@ -4664,6 +4682,11 @@ const dialogueManager = {
                 message
             );
 
+
+        /*
+         Un message sans texte peut malgré tout
+         servir à appliquer un effet invisible.
+        */
 
         if (
             !texte
@@ -4710,12 +4733,138 @@ const dialogueManager = {
                     );
 
 
+            /*
+             Si l'écriture a été annulée par une
+             nouvelle scène, on n'applique pas les
+             effets du message interrompu.
+            */
+
+            if (
+                !resultat
+            ) {
+
+                return null;
+
+            }
+
+
             this.appliquerEffetsMessage(
                 message
             );
 
 
             return resultat;
+
+        }
+
+
+        /*---------------------------------------------
+         INDICATEUR D'ÉCRITURE FACULTATIF
+
+         afficher() est également capable d'afficher
+         l'indicateur comme afficherListe(), mais sans
+         imposer ce comportement aux narrations.
+        ---------------------------------------------*/
+
+        const type =
+            this.normaliserPersonnage(
+                personnage
+            );
+
+
+        const afficherEcriture =
+
+            message.afficherEcriture ===
+                true ||
+
+            (
+
+                message.afficherEcriture !==
+                    false &&
+
+                type !==
+                    "narrateur" &&
+
+                type !==
+                    "narration" &&
+
+                type !==
+                    "pensee" &&
+
+                type !==
+                    "systeme"
+
+            );
+
+
+        if (
+            afficherEcriture
+        ) {
+
+            const sequence =
+                this.sequenceAffichage;
+
+
+            const duree =
+                this.calculerDureeEcriture(
+                    texte,
+                    message
+                );
+
+
+            const termine =
+                await this
+                    .afficherIndicateurEcriture(
+                        personnage,
+                        duree,
+                        sequence
+                    );
+
+
+            if (
+                !termine
+            ) {
+
+                return null;
+
+            }
+
+        }
+
+
+        /*---------------------------------------------
+         DÉLAI AVANT MESSAGE
+        ---------------------------------------------*/
+
+        const delaiAvant =
+            this.obtenirDelaiAvantMessage(
+                message,
+                type
+            );
+
+
+        if (
+            delaiAvant >
+            0
+        ) {
+
+            const sequenceAvant =
+                this.sequenceAffichage;
+
+
+            await this.attendre(
+                delaiAvant
+            );
+
+
+            if (
+                sequenceAvant !==
+                    this.sequenceAffichage
+            ) {
+
+                return null;
+
+            }
 
         }
 
@@ -4732,6 +4881,19 @@ const dialogueManager = {
             );
 
 
+        if (
+            !resultat
+        ) {
+
+            return null;
+
+        }
+
+
+        /*---------------------------------------------
+         EFFETS
+        ---------------------------------------------*/
+
         this.appliquerEffetsMessage(
             message
         );
@@ -4740,8 +4902,21 @@ const dialogueManager = {
         return resultat;
 
     },
-        /*=====================================================
+
+
+    /*=====================================================
         OBTENIR LE DÉLAI AVANT UN MESSAGE
+
+        Formats acceptés :
+
+        "delaiAvant": 1000
+        "delai": 1000
+        "delay": 1000
+        "tempsAvant": 1000
+
+        Pour une narration :
+
+        "delaiNarration": 1000
     =====================================================*/
 
     obtenirDelaiAvantMessage(
@@ -4779,10 +4954,9 @@ const dialogueManager = {
             );
 
 
-        /*
-         Les narrations peuvent posséder
-         leur propre propriété.
-        */
+        /*---------------------------------------------
+         DÉLAI SPÉCIFIQUE AUX NARRATIONS
+        ---------------------------------------------*/
 
         if (
             type ===
@@ -4803,6 +4977,23 @@ const dialogueManager = {
             of valeurs
         ) {
 
+            /*
+             On ignore complètement les propriétés
+             absentes plutôt que de convertir undefined
+             en une valeur arbitraire.
+            */
+
+            if (
+                valeur === undefined ||
+                valeur === null ||
+                valeur === ""
+            ) {
+
+                continue;
+
+            }
+
+
             const nombre =
                 Number(
                     valeur
@@ -4813,7 +5004,8 @@ const dialogueManager = {
                 Number.isFinite(
                     nombre
                 ) &&
-                nombre >= 0
+                nombre >=
+                    0
             ) {
 
                 return nombre;
@@ -4830,6 +5022,16 @@ const dialogueManager = {
 
     /*=====================================================
         OBTENIR LA PAUSE APRÈS UN MESSAGE
+
+        Formats acceptés :
+
+        "pauseApres": 500
+        "delaiApres": 500
+        "pause": 500
+        "afterDelay": 500
+
+        En l'absence de valeur :
+        pauseEntreMessages est utilisée.
     =====================================================*/
 
     obtenirPauseApresMessage(
@@ -4866,6 +5068,17 @@ const dialogueManager = {
             of valeurs
         ) {
 
+            if (
+                valeur === undefined ||
+                valeur === null ||
+                valeur === ""
+            ) {
+
+                continue;
+
+            }
+
+
             const nombre =
                 Number(
                     valeur
@@ -4876,7 +5089,8 @@ const dialogueManager = {
                 Number.isFinite(
                     nombre
                 ) &&
-                nombre >= 0
+                nombre >=
+                    0
             ) {
 
                 return nombre;
@@ -4896,7 +5110,9 @@ const dialogueManager = {
         GÉRER LE FOND D'UN MESSAGE
 
         Cette fonction peut être utilisée directement
-        si le moteur ne possède pas gererFondDialogue().
+        si le message n'est pas passé par afficherListe().
+
+        Le moteur reste responsable du système de fonds.
     =====================================================*/
 
     gererFondMessage(
@@ -4929,6 +5145,10 @@ const dialogueManager = {
 
         try {
 
+            /*-----------------------------------------
+             API PRINCIPALE DU NOUVEAU MOTEUR
+            -----------------------------------------*/
+
             if (
                 typeof moteur
                     .gererFondDialogue ===
@@ -4945,6 +5165,10 @@ const dialogueManager = {
 
             }
 
+
+            /*-----------------------------------------
+             COMPATIBILITÉ ANCIEN MOTEUR
+            -----------------------------------------*/
 
             if (
                 typeof moteur
@@ -4974,7 +5198,8 @@ const dialogueManager = {
                 moteur
                     .changerFond(
                         message.fond,
-                        duree
+                        duree,
+                        message
                     );
 
 
@@ -5004,14 +5229,19 @@ const dialogueManager = {
         TRAITER UN MESSAGE COMPLET
 
         Fonction utilitaire regroupant :
+
         - condition ;
         - fond ;
         - affichage ;
         - effets.
+
+        afficher() se charge lui-même de l'effet pour
+        éviter qu'il soit appliqué deux fois.
     =====================================================*/
 
     async traiterMessage(
-        message
+        message,
+        joueur = null
     ) {
 
         if (
@@ -5041,33 +5271,33 @@ const dialogueManager = {
         );
 
 
-        const resultat =
-            await this.afficher(
-                message
-            );
-
-
-        return resultat;
+        return await this.afficher(
+            message,
+            joueur
+        );
 
     },
 
 
     /*=====================================================
-        AFFICHER UNE SCÈNE ET SIGNALER SA FIN
+        AFFICHER UNE SCÈNE ET ATTENDRE SA FIN
 
-        Variante utilitaire pour les moteurs utilisant
-        une Promise plutôt qu'un callback.
+        Variante utilitaire utilisant directement
+        afficherDialogues().
     =====================================================*/
 
     async jouerScene(
-        scene
+        scene,
+        joueur = null
     ) {
 
         if (
-            !scene
+            !scene ||
+            typeof scene !==
+                "object"
         ) {
 
-            return;
+            return false;
 
         }
 
@@ -5076,13 +5306,17 @@ const dialogueManager = {
             Array.isArray(
                 scene.dialogues
             )
+
                 ? scene.dialogues
+
                 : [];
 
 
-        await this.afficherDialogues(
-            dialogues
-        );
+        return await this
+            .afficherDialogues(
+                dialogues,
+                joueur
+            );
 
     },
 
@@ -5092,14 +5326,21 @@ const dialogueManager = {
 
         Incrémente sequenceAffichage afin de rendre
         obsolètes :
-        - les indicateurs d'écriture en attente ;
+
+        - les indicateurs d'écriture ;
         - les écritures progressives ;
-        - les pauses entre messages.
+        - les délais avant messages ;
+        - les pauses entre messages ;
+        - toute ancienne boucle afficherListe().
     =====================================================*/
 
     annulerSequence() {
 
-        this.sequenceAffichage += 1;
+        this.sequenceAffichage +=
+            1;
+
+
+        return this.sequenceAffichage;
 
     },
 
@@ -5113,10 +5354,9 @@ const dialogueManager = {
         this.annulerSequence();
 
 
-        /*
-         Supprime les éventuels indicateurs d'écriture
-         encore présents dans le DOM.
-        */
+        /*---------------------------------------------
+         SUPPRIMER LES INDICATEURS D'ÉCRITURE
+        ---------------------------------------------*/
 
         document
             .querySelectorAll(
@@ -5134,17 +5374,21 @@ const dialogueManager = {
                         erreur
                     ) {
 
-                        /* Rien */
+                        /*
+                         L'élément peut avoir déjà
+                         disparu entre-temps.
+                        */
 
                     }
 
                 }
             );
 
+
+        return true;
+
     },
-
-
-    /*=====================================================
+        /*=====================================================
         NETTOYER LE GESTIONNAIRE
     =====================================================*/
 
@@ -5156,11 +5400,21 @@ const dialogueManager = {
         this.dernierPersonnageSonore =
             null;
 
+
+        return true;
+
     },
 
 
     /*=====================================================
         RÉINITIALISER COMPLÈTEMENT
+
+        Annule :
+        - les dialogues en cours ;
+        - les indicateurs d'écriture ;
+        - les anciennes séquences ;
+
+        puis vide la conversation.
     =====================================================*/
 
     reinitialiser() {
@@ -5186,11 +5440,18 @@ const dialogueManager = {
 
         }
 
+
+        this.dernierPersonnageSonore =
+            null;
+
+
+        return true;
+
     },
 
 
     /*=====================================================
-        VÉRIFIER SI LE CONTENEUR EXISTE
+        VÉRIFIER SI LE GESTIONNAIRE EST INITIALISÉ
     =====================================================*/
 
     estInitialise() {
@@ -5224,6 +5485,9 @@ const dialogueManager = {
 
     /*=====================================================
         OBTENIR LA SÉQUENCE ACTIVE
+
+        Fonction principalement utile pour
+        le développement et le diagnostic.
     =====================================================*/
 
     obtenirSequence() {
@@ -5234,7 +5498,7 @@ const dialogueManager = {
 
 
     /*=====================================================
-        VÉRIFIER UNE SÉQUENCE
+        VÉRIFIER SI UNE SÉQUENCE EST ENCORE VALIDE
     =====================================================*/
 
     sequenceValide(
@@ -5253,7 +5517,11 @@ const dialogueManager = {
         OBTENIR LA RELATION
 
         Fonction publique pratique pour le moteur
-        ou pour les tests.
+        ou pour les tests console.
+
+        Exemple :
+
+        dialogueManager.obtenirRelation("eva");
     =====================================================*/
 
     obtenirRelation(
@@ -5270,6 +5538,10 @@ const dialogueManager = {
 
     /*=====================================================
         OBTENIR LA CONFIANCE
+
+        Exemple :
+
+        dialogueManager.obtenirConfiance("eva");
     =====================================================*/
 
     obtenirConfiance(
@@ -5286,6 +5558,24 @@ const dialogueManager = {
 
     /*=====================================================
         OBTENIR LES INFORMATIONS D'UN PERSONNAGE
+
+        Exemple :
+
+        dialogueManager
+            .obtenirInformationsPersonnage(
+                "eva"
+            );
+
+        Retour possible :
+
+        {
+            personnage: "eva",
+            nom: "Eva",
+            relation: 7,
+            niveauRelation: "amicale",
+            confiance: 5,
+            niveauConfiance: "moyenne"
+        }
     =====================================================*/
 
     obtenirInformationsPersonnage(
@@ -5376,16 +5666,24 @@ const dialogueManager = {
 
     /*=====================================================
         TESTER L'ÉCRITURE PROGRESSIVE
+
+        Exemple :
+
+        dialogueManager.testProgressif(
+            "eva",
+            "Je dois te parler..."
+        );
     =====================================================*/
 
     async testProgressif(
         personnage =
             "eva",
+
         texte =
             "Ceci est un message progressif de test."
     ) {
 
-        return this
+        return await this
             .ecrireProgressivement(
                 texte,
                 personnage,
@@ -5397,9 +5695,43 @@ const dialogueManager = {
 
 
     /*=====================================================
+        TESTER LE VOLUME LOCAL D'UN SON
+
+        Très utile avec Audio Manager V4.
+
+        Exemple :
+
+        dialogueManager.testSon(
+            "notification",
+            0.5
+        );
+
+        volume final =
+            volume utilisateur effets
+            × volumeMixEffets
+            × 0.5
+    =====================================================*/
+
+    testSon(
+        nomSon =
+            "notification",
+
+        volume =
+            1
+    ) {
+
+        return this.jouerEffetSonore(
+            nomSon,
+            volume
+        );
+
+    },
+
+
+    /*=====================================================
         TESTER LA GALERIE DEPUIS UN DIALOGUE
 
-        Exemple console :
+        Exemple :
 
         dialogueManager.testGalerie(
             "chap11BaiserFrontAccepte"
@@ -5422,8 +5754,10 @@ const dialogueManager = {
         return this
             .gererGalerieDialogue(
                 {
+
                     galerie:
                         id
+
                 }
             );
 
@@ -5485,12 +5819,13 @@ const dialogueManager = {
     /*=====================================================
         AFFICHER DIRECTEMENT UN DIALOGUE JSON
 
-        Pratique pour les tests :
+        Exemple :
 
         dialogueManager.testJSON({
             personnage: "eva",
             texte: "Salut.",
-            galerie: "mediaTest"
+            son: "notification",
+            volumeSon: 0.5
         });
     =====================================================*/
 
@@ -5514,7 +5849,7 @@ const dialogueManager = {
         }
 
 
-        return this
+        return await this
             .afficher(
                 message
             );
@@ -5523,12 +5858,15 @@ const dialogueManager = {
 
 
     /*=====================================================
-        FORCER LE DÉFILEMENT
+        FORCER LE DÉFILEMENT VERS LE BAS
     =====================================================*/
 
     allerEnBas() {
 
         this.defiler();
+
+
+        return true;
 
     },
 
@@ -5603,8 +5941,7 @@ const dialogueManager = {
     /*=====================================================
         TRAITER UNE GALERIE SANS AFFICHER DE TEXTE
 
-        Cette méthode peut être utile pour un événement
-        narratif sans bulle :
+        Exemple :
 
         dialogueManager.debloquerGalerie(
             "appelInconnuPremierContact"
@@ -5618,8 +5955,10 @@ const dialogueManager = {
         return this
             .gererGalerieDialogue(
                 {
+
                     galerie:
                         galerie
+
                 }
             );
 
@@ -5629,10 +5968,10 @@ const dialogueManager = {
     /*=====================================================
         COMPATIBILITÉ AVEC CERTAINS ANCIENS APPELS
 
-        afficherMessage(
+        dialogueManager.afficherMessage(
             message,
             joueur
-        )
+        );
     =====================================================*/
 
     async afficherMessage(
@@ -5640,7 +5979,7 @@ const dialogueManager = {
         joueur = null
     ) {
 
-        return this.afficher(
+        return await this.afficher(
             message,
             joueur
         );
@@ -5694,11 +6033,100 @@ const dialogueManager = {
                 options
             );
 
+    },
+
+
+    /*=====================================================
+        DIAGNOSTIC DU DIALOGUE MANAGER
+
+        Console :
+
+        dialogueManager.verifier();
+
+        Permet notamment de vérifier la connexion
+        avec Audio Manager V4 et le moteur.
+    =====================================================*/
+
+    verifier() {
+
+        const etat = {
+
+            initialise:
+                this.estInitialise(),
+
+            sequence:
+                this.sequenceAffichage,
+
+            conteneur:
+                Boolean(
+                    this.conteneur
+                ),
+
+            moteurDisponible:
+
+                typeof moteur !==
+                    "undefined" &&
+
+                moteur !== null,
+
+            audioDisponible:
+                this.audioDisponible(),
+
+            galerieDisponible:
+                this.galerieDisponible(),
+
+            dernierPersonnageSonore:
+                this.dernierPersonnageSonore,
+
+            audio:
+                null
+
+        };
+
+
+        if (
+            this.audioDisponible()
+        ) {
+
+            etat.audio = {
+
+                volumeUtilisateurEffets:
+                    audioManager.volumeEffets,
+
+                volumeMixEffets:
+                    audioManager.volumeMixEffets,
+
+                sonsActifs:
+
+                    audioManager.sonsActifs instanceof
+                        Set
+
+                        ? audioManager
+                            .sonsActifs
+                            .size
+
+                        : null
+
+            };
+
+        }
+
+
+        console.log(
+            "dialogueManager V4 : état :",
+            etat
+        );
+
+
+        return etat;
+
     }
 
 };
+
+
 /*=========================================================
- INITIALISATION AUTOMATIQUE
+    INITIALISATION AUTOMATIQUE
 =========================================================*/
 
 document.addEventListener(
@@ -5727,7 +6155,7 @@ document.addEventListener(
 
 
 /*=========================================================
- NETTOYAGE AVANT CHANGEMENT DE PAGE
+    NETTOYAGE AVANT CHANGEMENT DE PAGE
 =========================================================*/
 
 window.addEventListener(
@@ -5745,8 +6173,9 @@ window.addEventListener(
         ) {
 
             /*
-             Ne jamais bloquer le changement
-             ou la fermeture de la page.
+                Une erreur de nettoyage ne doit jamais
+                empêcher la fermeture ou le changement
+                de page.
             */
 
         }

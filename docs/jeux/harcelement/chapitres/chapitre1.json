@@ -1,0 +1,687 @@
+{
+  "titre": "Chapitre 1 - Un matin ordinaire",
+  "musique": "chapitre1",
+  "debut": "le-dessin",
+
+  "scenes": {
+    "le-dessin": {
+      "fond": "chambre_zoe",
+      "ambiance": "matin",
+      "volumeAmbiance": 0.1,
+
+      "dialogues": [
+        {
+          "personnage": "Narrateur",
+          "texte": "Dehors, le jour ne s'est pas encore complètement levé."
+        },
+        {
+          "personnage": "Narrateur",
+          "texte": "Une faible lumière traverse les rideaux de la chambre de Zoé."
+        },
+        {
+          "personnage": "Narrateur",
+          "texte": "Sur son bureau, entre quelques crayons mal rangés et un cahier d'école ouvert, une petite lampe éclaire une feuille presque terminée."
+        },
+        {
+          "personnage": "Narrateur",
+          "texte": "Zoé est déjà habillée. Elle devrait probablement être dans la cuisine, mais il ne lui reste qu'un dernier détail à ajouter à son dessin."
+        },
+        {
+          "personnage": "Narrateur",
+          "texte": "Sur la feuille, une danseuse se tient au milieu d'une grande scène. Autour d'elle, Zoé a dessiné des dizaines de petites lumières colorées."
+        },
+        {
+          "personnage": "Claire",
+          "texte": "Zoé ! Le petit déjeuner est prêt !"
+        },
+        {
+          "personnage": "Zoé",
+          "texte": "J'arrive, maman !"
+        },
+        {
+          "personnage": "Narrateur",
+          "texte": "Zoé choisit un crayon bleu et observe attentivement son dessin."
+        }
+      ],
+
+      "choix": [
+        {
+          "texte": "Une étoile au-dessus de la scène",
+          "next": "etoile"
+        },
+        {
+          "texte": "Un petit chat caché derrière le rideau",
+          "next": "chat"
+        },
+        {
+          "texte": "Bryan assis parmi les spectateurs",
+          "next": "bryan"
+        }
+      ]
+    },
+
+    "etoile": {
+      "fond": "chambre_zoe",
+      "dialogues": [
+        {
+          "personnage": "Narrateur",
+          "texte": "Zoé dessine une petite étoile au-dessus de la danseuse."
+        },
+        {
+          "personnage": "Zoé",
+          "texte": "Voilà. Maintenant, c'est terminé."
+        }
+      ],
+      "next": "arrivee-bryan"
+    },
+
+    "chat": {
+      "fond": "chambre_zoe",
+      "dialogues": [
+        {
+          "personnage": "Narrateur",
+          "texte": "Zoé ajoute un petit chat caché derrière l'un des rideaux."
+        },
+        {
+          "personnage": "Zoé",
+          "texte": "Personne ne le verra tout de suite."
+        }
+      ],
+      "next": "arrivee-bryan"
+    },
+
+    "bryan": {
+      "fond": "chambre_zoe",
+      "dialogues": [
+        {
+          "personnage": "Narrateur",
+          "texte": "Zoé dessine rapidement son petit frère au premier rang."
+        },
+        {
+          "personnage": "Zoé",
+          "texte": "Il va encore dire que je lui ai fait de grandes oreilles."
+        }
+      ],
+      "next": "arrivee-bryan"
+    },
+
+    "arrivee-bryan": {
+      "fond": "chambre_zoe",
+      "dialogues": [
+        {
+          "personnage": "Narrateur",
+          "texte": "Dans le couloir, de petits pas précipités se rapprochent."
+        },
+        {
+          "personnage": "Narrateur",
+          "texte": "La porte s'ouvre brusquement."
+        },
+        {
+          "personnage": "Bryan",
+          "texte": "Zoé !"
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"à quatre ans, Bryan ne frappe presque jamais avant d'entrer. Il tient son pull dans une main et une petite voiture dans l'aurtre."
+        },
+        {
+          "personnage":"zoe",
+          "texte":"Qu'est-ce qu'il y a ?"
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"Maman a dit que tu doit venir."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"J'arrive. Je range juste mon dessin."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Bryan s'approche du bureau et regarde la feuille."
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"C'est toi, la dame qui danse ?"
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"C'est pas une dame, elle n'est pas vieille !"
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"Alors, c'est toi ?"
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Peut-être."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Les enfants ! Si vous ne venez pas maintenant, je mange tout !"
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Bryan ouvre de grands yeux avant de courir hors  de la chambre."
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"Non ! Attends-moi !"
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé rit, pose son dessin sur le bureau et le suit."
+        }
+      ],
+      "next":"petit-dejeuner"
+    },
+    "petit-dejeuner":{
+      "dialogues":[
+        {
+          "personnage":"Narrateur",
+          "texte":"Dans la cuisine, Claire termine de préparer les bols."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Elle porte encore son gilet et ses cheveux sont attachés rapidement.sur la table, trois bols attendant à côté d'un paquet de céréales, d'une bouteille de  lait et de plusieurs tartines."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Bryan grimpe sur sa chaise"
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"Maman, tu allait vraiment tout manger ?"
+        },
+        {
+          "personnage":"Claire",
+          "texte":"évidemment. Même les céréales que je n'aime pas."
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"Tu n'a pas le droit, c'est les miennes !"
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Alors d'épêche-toi avant que je change d'avis."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé s'ssoit en face de lui."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Bonjour, maman."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Bonjour, ma grande."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Claire dépose un baiser sur le sommet de son crâne avant de s'assoir à son tour."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Tu dessinais encore ?"
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"J'avais presque terminé. C'est une danseuse sur une scène avec plein de lumières. Je veux le montrer à Inès aujourd'hui."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"J'aimerais bien le voir aussi."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Je te le montrerai ce soir. Il est dans ma chambre."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Bryan remplit sa cuillère de céréales. La mmoitié retombe immédiatement sur la table."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Doucement, Bryan;"
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"C'est tombé tout seul."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Bien sûr. Les céréales ont sauté hors du bol."
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"Oui"
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Claire regarde c'est deux enfants et retien un sourire."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Quel est le programme aujourd'hui ?"
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé commence à raconter sa journée avant même d'avoir terminé sa première tartine."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Ce matin, on a mathématiques. Après, on doit continuer notre exposé sur les animeaux. A midin je mange avec Inès et cet après-midi, on a sport? Et après l'école j'ai dance."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Une journée plutôt chargée."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Oui, mais on répète la chorégraphie pour le spectacle."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Celle que tu répètes tous les soirs dans le salons ?"
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Je ne la répète pas tous les soirs."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Claire et Bryan la regarde en silence."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Bon... presque tous les soirs."
+        }
+      ],
+      "next":"Où-est-le-dessin?"
+    },
+    "Où-est-le-dessin?":{
+      "dialogues":[
+        {
+          "personnage":"Narrateur",
+          "texte":"Après le petit déjeuner, Claire débarrasse rapidement la table."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Zoén prépare ton cartable, s'il te plaît. Bryan, viens mettre tes chaussures."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé retourne dans sa chambre."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Elle prend son cahier de texte, vérifie sa trousse et cherche le livre qu'elle doit rapporter à l'école? Lorsqu'elle se tourne vers son bureau, elle s'arrpete."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"La feuille n'est plus là."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé regarde sous son chahier, puis entre les livres."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Rien"
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Maman ! Tu as pris mon dessin ?"
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Non, je ne suis pas  entrée dans ta chambre !"
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé regarde sous son lit."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Toujours rien."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Elle rejoint le couloir. Bryan est assis par terre pendant que Claire essaie de lui mettre ses chaussures."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Une feuille dépasse légèrement du petit sac de Bryan."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé la reconnaît immédiatement"
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Bryan... pourquoi on dessin est dans ton sac ?"
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Bryan serre son sac contre lui."
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"Je voulais le montrer."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Mais c'est mon dessin. Tu ne peux pas le prendre sens me demander."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Bryan baisse les yeux."
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"Il est joli."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé reste silencieuse quelques secondes. Elle n'aime pas que son frère prenne ses affaires, mais elle voit qu'il ne voulait pas l'abîmer."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"elle lui demande calmement de lui rendre le dessin.",
+          "message":{
+            "personnage":"Zoé",
+            "texte":"Bryan rend moi mon dessin s'il te plaîs."
+          },
+          "next":"réponse-zoé"
+        },
+        {
+          "texte":"Elle lui propose de lui en faire un autre ce soir.",
+          "message":{
+            "personnage":"Zoé",
+            "texte":"Je t'en ferais un ce soir après l'école."
+          },
+          "next":"réponse-zoé"
+        },
+        {
+          "texte":"Elle luit explique qu'il doit demander avant de prendre ses affaires.",
+          "message":{
+            "personnage":"Zoé",
+            "texte":"Je préfère que tu demande avant de prendre mes affaire comme ça Bryan."
+          },
+          "next":"réponse-zoé"  
+        }
+      ]
+    },
+    "réponse-zoé":{
+      "dialogues":[
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé récupère délicatement la feuille."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Tu peux regarder mes dessins, mais tu dois me demander avent de les prendre. Celuit-là, je veux le montrer à mon école."
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"Tu peux m'en faire un ?"
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Oui, mais pas maintenant. Sinon, on va être en retard."
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"Avec une voiture ?"
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Une voiture de course."
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"Une rouge !"
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Marché conclu. Maintenant, les chaussures."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé glisse soignesement son dessin dans une pochette de son cartable."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Claire se relève et lui tand son manteau."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Merci d'avoir pris le temps de lui expliquer."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"IL aurait pu demander."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Oui, et tu as eu raison de lui dire."
+        }
+      ],
+      "next":"Le-chemin-de-l'ecole"
+    },
+    "Le-chemin-de-l'ecole":{
+      "dialogues":[
+        {
+          "personnage":"Narrateur",
+          "texte":"Quelques minutes plus tard, ils quittent l'appartement."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"L'air froid surprend Zoé lorsqu'elle passe la porte de l'immeuble. Elle remonte aussitôt la fermeture de son manteau jusqu'au menton."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Bryan tient la main de Claire. Zoé marche de l'autre côté en évitant les petites flaques laissées par la pluie de la veille."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Tu as pris tes affaires de danse ?"
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé s'arrête brusquement."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Mon sac !"
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Claire lève le sac qu'elle tient sur son épaule."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Heureusement que l'une de nous deux pense à tout."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"J'y pensais."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Bien sûr."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"J'allais justeent te demander si tu l'avais."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Claire sourit."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Sur le chemin, Zoé lui raconte la chorégraphie qu'elle apprend. Elle essaie même de reproduire un mouvement avec ses bras avant de manquer de marcher dans une flaque."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Regarde devant, toi la danseuse."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Ce mouvement est plus facile dans la salle."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Et probablement moins dangereux."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Ils arrivent d'abord devant l'école maternelle de Bryan."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Avant d'entrer, il tire doucement sur la manche de Zoé."
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"Tu oublies pas ma voiture rouge ?"
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Je n'oublirai pas."
+        },
+        {
+          "personnage":"Bryan",
+          "texte":"Promis ?"
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Promis."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Bryan lui fait un câlin rapide, puis rejoint son enseignante."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé et Claire reprennent leur chemin."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Pendant quelques minutes, elles sont seules."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Tout va ien en ce moment, à l'école ?"
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Oui. On a beaucoup de devoirs, mais ça va. Et j'ai eu neuf sur dix à ma dictée."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"C'est vrai. Je suis fière de toi."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé sourit"
+        }
+      ],
+      "next":"Devant-lecole"
+    },
+    "Devant-lecole":{
+      "dialogues":[
+        {
+          "personnage":"Narrateur",
+          "texte":"Elles arrivent devant l'école élémentaire."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Des enfants discutent près du portail pendant que leurs parents leur rappellent de ne pas oublier leurs affaires. Zoé aperçoit Inès un peu plus loin."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Elle est là !"
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Claire remet correctement l'écharpe de sa fille."
+        },
+        {
+          "personnage":"Claire",
+          "texte":"Je viens te chercher après la danse. Tu me raconteras ta journée ?"
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Comme toujours."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé embrasse sa mère avant de rejoindre son amie."
+        },
+        {
+          "personnage":"Inès",
+          "texte":"Tu l'as terminé ?"
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé ouvre son cartable et sort fièrement la pochette contenant son dessin."
+        },
+        {
+          "personnage":"Zoé",
+          "texte":"Oui. J'ai même ajouté quelque chose ce matin."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Les deux filles se penchent sur la feuille pendant que Claire s'éloigne."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"La sonnerie retantit."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Zoé range son dessin et entre dans l'école avec les autres élèves."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Pour elle, cette journée est une journée comme toutes les autres."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Une matinée d'hiver. Des céréales renversées, un dessin retrouvé ett une promesse faite à son petit frère."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Rien de plus."
+        },
+        {
+          "personnage":"Narrateur",
+          "texte":"Et, pour le moment, c'est très bien ansi."
+        }
+      ],
+      "next":"fin-chapitre1"
+    },
+    "fin-chapitre1":{
+      "dialogues":[
+        {
+          "personnage":"Narrateur",
+          "texte":"Chapitre 1 terminé."
+        }
+      ],
+      "choix":[
+        {
+          "texte":"continuer vers le chapitre 2.",
+          "message":{
+            "personnage":"Narrateur",
+            "texte":"l'histoire continue."
+          },
+          "next":"chapitre2"
+        }
+      ]
+    }  
+  }
+}

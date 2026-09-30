@@ -1,0 +1,2830 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CTA - Gestion Secours</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --fond: #081018;
+            --fond-secondaire: #0d1720;
+            --panneau: #121f2a;
+            --panneau-2: #182733;
+            --bordure: #2b3e4c;
+
+            --texte: #f4f7f9;
+            --texte-secondaire: #94a8b7;
+
+            --rouge: #d63031;
+            --rouge-clair: #ff7675;
+
+            --orange: #f39c12;
+            --vert: #27ae60;
+            --bleu: #3498db;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--fond);
+            color: var(--texte);
+            min-height: 100vh;
+        }
+
+        /* =========================
+           HEADER
+        ========================== */
+
+        header {
+            min-height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 12px 30px;
+
+            background: #0b141c;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--rouge);
+
+            border-radius: 9px;
+
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .logo h1 {
+            font-size: 19px;
+        }
+
+        .logo p {
+            color: var(--texte-secondaire);
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #cbd6de;
+
+            text-decoration: none;
+
+            padding: 9px 13px;
+
+            border-radius: 6px;
+
+            transition: 0.2s;
+        }
+
+        nav a:hover {
+            background: var(--panneau-2);
+        }
+
+        .horloge {
+            text-align: right;
+        }
+
+        #heure {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #date {
+            color: var(--texte-secondaire);
+            font-size: 11px;
+        }
+
+        /* =========================
+           MAIN
+        ========================== */
+
+        main {
+            padding: 20px;
+        }
+
+        .titre-page {
+            margin-bottom: 20px;
+        }
+
+        .titre-page h2 {
+            font-size: 25px;
+        }
+
+        .titre-page p {
+            color: var(--texte-secondaire);
+            margin-top: 5px;
+        }
+
+        /* =========================
+           STATS
+        ========================== */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 10px;
+
+            padding: 16px;
+        }
+
+        .stat-label {
+            color: var(--texte-secondaire);
+            font-size: 12px;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: bold;
+            margin-top: 6px;
+        }
+
+        /* =========================
+           GRILLE CTA
+        ========================== */
+
+        .cta-grid {
+            display: grid;
+
+            grid-template-columns:
+                320px 1fr 360px;
+
+            gap: 15px;
+
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 14px;
+
+            border-bottom: 1px solid var(--bordure);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .panel-header h3 {
+            font-size: 16px;
+        }
+
+        .panel-content {
+            padding: 13px;
+        }
+
+        /* =========================
+           FILE D'APPELS
+        ========================== */
+
+        .appel {
+            padding: 13px;
+
+            border-radius: 8px;
+
+            background: var(--panneau-2);
+
+            margin-bottom: 10px;
+
+            border: 1px solid transparent;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .appel:hover {
+            border-color: var(--rouge);
+        }
+
+        .appel.selected {
+            border-color: var(--rouge);
+        }
+
+        .appel-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+
+            margin-bottom: 8px;
+        }
+
+        .appel h4 {
+            font-size: 14px;
+        }
+
+        .appel p {
+            font-size: 12px;
+            color: var(--texte-secondaire);
+            margin-top: 5px;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 4px 7px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: bold;
+        }
+
+        .badge-rouge {
+            color: #ff8a80;
+            background: rgba(214, 48, 49, 0.20);
+        }
+
+        .badge-orange {
+            color: #ffca67;
+            background: rgba(243, 156, 18, 0.20);
+        }
+
+        .badge-bleu {
+            color: #74b9ff;
+            background: rgba(52, 152, 219, 0.20);
+        }
+
+        .badge-vert {
+            color: #81e0a5;
+            background: rgba(39, 174, 96, 0.20);
+        }
+
+        /* =========================
+           APPEL EN COURS
+        ========================== */
+
+        .call-screen {
+            min-height: 660px;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .call-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 15px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(214,48,49,.15),
+                    transparent
+                );
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .call-status-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .phone-circle {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 50%;
+
+            background: var(--rouge);
+
+            font-size: 21px;
+        }
+
+        .caller-info h3 {
+            font-size: 16px;
+        }
+
+        .caller-info p {
+            color: var(--texte-secondaire);
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .conversation {
+            flex: 1;
+
+            padding: 16px;
+
+            overflow-y: auto;
+
+            min-height: 350px;
+            max-height: 420px;
+
+            background: #0c161e;
+        }
+
+        .message {
+            max-width: 78%;
+
+            margin-bottom: 12px;
+
+            padding: 11px 13px;
+
+            border-radius: 10px;
+
+            line-height: 1.45;
+
+            font-size: 13px;
+        }
+
+        .message-appelant {
+            background: #263746;
+
+            border-bottom-left-radius: 3px;
+        }
+
+        .message-operateur {
+            margin-left: auto;
+
+            background: #7e2425;
+
+            border-bottom-right-radius: 3px;
+        }
+
+        .message-systeme {
+            max-width: 100%;
+
+            text-align: center;
+
+            color: var(--texte-secondaire);
+
+            background: transparent;
+
+            font-size: 11px;
+
+            padding: 5px;
+        }
+
+        /* =========================
+           QUESTIONS
+        ========================== */
+
+        .questions {
+            padding: 14px;
+
+            border-top: 1px solid var(--bordure);
+        }
+
+        .questions h4 {
+            margin-bottom: 10px;
+
+            font-size: 13px;
+        }
+
+        .question-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 8px;
+        }
+
+        .question-btn {
+            background: var(--panneau-2);
+
+            border: 1px solid var(--bordure);
+
+            color: white;
+
+            padding: 10px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            text-align: left;
+
+            font-size: 12px;
+
+            transition: 0.2s;
+        }
+
+        .question-btn:hover {
+            border-color: var(--bleu);
+            background: #203443;
+        }
+
+        .question-btn:disabled {
+            opacity: 0.45;
+            cursor: default;
+        }
+
+        /* =========================
+           FICHE APPEL
+        ========================== */
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+
+            color: var(--texte-secondaire);
+
+            font-size: 11px;
+
+            margin-bottom: 5px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+
+            padding: 10px;
+
+            border-radius: 6px;
+
+            border: 1px solid var(--bordure);
+
+            background: #0a141c;
+
+            color: white;
+
+            outline: none;
+        }
+
+        textarea {
+            min-height: 75px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--bleu);
+        }
+
+        .separator {
+            height: 1px;
+
+            background: var(--bordure);
+
+            margin: 15px 0;
+        }
+
+        /* =========================
+           MOYENS
+        ========================== */
+
+        .moyen {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 10px;
+
+            background: var(--panneau-2);
+
+            border-radius: 7px;
+
+            margin-bottom: 7px;
+        }
+
+        .moyen-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .moyen-left strong {
+            font-size: 12px;
+        }
+
+        .moyen-left span {
+            color: var(--texte-secondaire);
+
+            font-size: 10px;
+
+            margin-top: 3px;
+        }
+
+        .moyen input {
+            width: auto;
+        }
+
+        /* =========================
+           BOUTONS
+        ========================== */
+
+        button {
+            font: inherit;
+        }
+
+        .btn {
+            width: 100%;
+
+            border: none;
+
+            border-radius: 7px;
+
+            padding: 11px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            margin-top: 8px;
+        }
+
+        .btn-danger {
+            background: var(--rouge);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #ea3b3d;
+        }
+
+        .btn-success {
+            background: var(--vert);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #243846;
+            color: white;
+        }
+
+        .btn-new {
+            border: 1px solid var(--bordure);
+
+            background: var(--panneau-2);
+
+            color: white;
+
+            padding: 8px 10px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+        }
+
+        /* =========================
+           INFORMATIONS RECUEILLIES
+        ========================== */
+
+        .info-list {
+            display: grid;
+
+            gap: 7px;
+
+            margin-top: 10px;
+        }
+
+        .info-item {
+            background: #0d1820;
+
+            border: 1px solid var(--bordure);
+
+            padding: 9px;
+
+            border-radius: 6px;
+
+            font-size: 11px;
+        }
+
+        .info-item strong {
+            color: #ffffff;
+        }
+
+        .info-item span {
+            color: var(--texte-secondaire);
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 1200px) {
+
+            .cta-grid {
+                grid-template-columns:
+                    300px 1fr;
+            }
+
+            .fiche-column {
+                grid-column: 1 / -1;
+            }
+
+        }
+
+        @media (max-width: 800px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .cta-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .question-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            112
+        </div>
+
+        <div>
+
+            <h1>
+                Gestion Secours
+            </h1>
+
+            <p>
+                Centre de traitement des appels
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a href="index.html">
+            Accueil
+        </a>
+
+        <a href="operations.html">
+            Opérations
+        </a>
+
+        <a href="vehicules.html">
+            Véhicules
+        </a>
+
+        <a href="casernes.html">
+            Casernes
+        </a>
+
+    </nav>
+
+
+    <div class="horloge">
+
+        <div id="heure">
+            00:00:00
+        </div>
+
+        <div id="date">
+            --
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <div class="titre-page">
+
+        <h2>
+            Centre de traitement des appels
+        </h2>
+
+        <p>
+            Réceptionnez les demandes de secours, recueillez les informations et engagez les premiers moyens.
+        </p>
+
+    </div>
+
+
+    <!-- STATISTIQUES -->
+
+    <section class="stats">
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Appels en attente
+            </div>
+
+            <div
+                class="stat-value"
+                id="statAttente"
+            >
+                3
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Appel en cours
+            </div>
+
+            <div
+                class="stat-value"
+                id="statCours"
+            >
+                1
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Appels traités
+            </div>
+
+            <div
+                class="stat-value"
+                id="statTraites"
+            >
+                12
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Temps moyen
+            </div>
+
+            <div class="stat-value">
+                01:42
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="cta-grid">
+
+        <!-- ======================
+             FILE DES APPELS
+        ======================= -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    File d'attente
+                </h3>
+
+                <button
+                    class="btn-new"
+                    onclick="genererAppel()"
+                >
+                    + Simuler
+                </button>
+
+            </div>
+
+
+            <div
+                class="panel-content"
+                id="listeAppels"
+            >
+
+            </div>
+
+        </div>
+
+
+        <!-- ======================
+             APPEL EN COURS
+        ======================= -->
+
+        <div class="panel call-screen">
+
+            <div class="call-status">
+
+                <div class="call-status-left">
+
+                    <div class="phone-circle">
+                        📞
+                    </div>
+
+                    <div class="caller-info">
+
+                        <h3 id="appelTitre">
+                            Appel entrant
+                        </h3>
+
+                        <p id="appelNumero">
+                            Numéro : inconnu
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span
+                    class="badge badge-rouge"
+                    id="appelEtat"
+                >
+                    EN LIGNE
+                </span>
+
+            </div>
+
+
+            <div
+                class="conversation"
+                id="conversation"
+            >
+
+            </div>
+
+
+            <div class="questions">
+
+                <h4>
+                    Questions à poser
+                </h4>
+
+
+                <div
+                    class="question-grid"
+                    id="questions"
+                >
+
+                    <button
+                        class="question-btn"
+                        onclick="poserQuestion('adresse', this)"
+                    >
+                        📍 Où êtes-vous exactement ?
+                    </button>
+
+
+                    <button
+                        class="question-btn"
+                        onclick="poserQuestion('situation', this)"
+                    >
+                        🚨 Que s'est-il passé ?
+                    </button>
+
+
+                    <button
+                        class="question-btn"
+                        onclick="poserQuestion('victimes', this)"
+                    >
+                        👥 Combien y a-t-il de victimes ?
+                    </button>
+
+
+                    <button
+                        class="question-btn"
+                        onclick="poserQuestion('conscience', this)"
+                    >
+                        🧠 La victime est-elle consciente ?
+                    </button>
+
+
+                    <button
+                        class="question-btn"
+                        onclick="poserQuestion('respiration', this)"
+                    >
+                        ❤️ Respire-t-elle normalement ?
+                    </button>
+
+
+                    <button
+                        class="question-btn"
+                        onclick="poserQuestion('danger', this)"
+                    >
+                        ⚠️ Y a-t-il un danger immédiat ?
+                    </button>
+
+
+                    <button
+                        class="question-btn"
+                        onclick="poserQuestion('feu', this)"
+                    >
+                        🔥 Voyez-vous des flammes ou de la fumée ?
+                    </button>
+
+
+                    <button
+                        class="question-btn"
+                        onclick="poserQuestion('acces', this)"
+                    >
+                        🚪 Comment les secours peuvent-ils accéder ?
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======================
+             FICHE DE TRAITEMENT
+        ======================= -->
+
+        <div class="fiche-column">
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <h3>
+                        Fiche d'appel
+                    </h3>
+
+                    <span
+                        class="badge badge-orange"
+                        id="niveauBadge"
+                    >
+                        À QUALIFIER
+                    </span>
+
+                </div>
+
+
+                <div class="panel-content">
+
+                    <div class="form-group">
+
+                        <label>
+                            Adresse
+                        </label>
+
+                        <input
+                            type="text"
+                            id="adresse"
+                            placeholder="Adresse de l'intervention"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Commune
+                        </label>
+
+                        <input
+                            type="text"
+                            id="commune"
+                            placeholder="Commune"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Nature de l'intervention
+                        </label>
+
+                        <select
+                            id="nature"
+                            onchange="mettreAJourQualification()"
+                        >
+
+                            <option value="">
+                                Sélectionner...
+                            </option>
+
+                            <option value="INCENDIE">
+                                Incendie
+                            </option>
+
+                            <option value="SAP">
+                                Secours à personne
+                            </option>
+
+                            <option value="AVP">
+                                Accident de circulation
+                            </option>
+
+                            <option value="GAZ">
+                                Fuite de gaz
+                            </option>
+
+                            <option value="DIVERS">
+                                Opération diverse
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Niveau d'urgence
+                        </label>
+
+                        <select
+                            id="urgence"
+                            onchange="mettreAJourQualification()"
+                        >
+
+                            <option value="">
+                                Non défini
+                            </option>
+
+                            <option value="NORMAL">
+                                Normal
+                            </option>
+
+                            <option value="URGENT">
+                                Urgent
+                            </option>
+
+                            <option value="ABSOLUE">
+                                Urgence absolue
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Informations complémentaires
+                        </label>
+
+                        <textarea
+                            id="notes"
+                            placeholder="Informations importantes recueillies pendant l'appel..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="separator"></div>
+
+
+                    <h4>
+                        Informations recueillies
+                    </h4>
+
+
+                    <div
+                        class="info-list"
+                        id="infosRecueillies"
+                    >
+
+                        <div class="info-item">
+
+                            <strong>
+                                Situation :
+                            </strong>
+
+                            <span id="infoSituation">
+                                inconnue
+                            </span>
+
+                        </div>
+
+
+                        <div class="info-item">
+
+                            <strong>
+                                Victimes :
+                            </strong>
+
+                            <span id="infoVictimes">
+                                inconnu
+                            </span>
+
+                        </div>
+
+
+                        <div class="info-item">
+
+                            <strong>
+                                Conscience :
+                            </strong>
+
+                            <span id="infoConscience">
+                                inconnu
+                            </span>
+
+                        </div>
+
+
+                        <div class="info-item">
+
+                            <strong>
+                                Respiration :
+                            </strong>
+
+                            <span id="infoRespiration">
+                                inconnu
+                            </span>
+
+                        </div>
+
+
+                        <div class="info-item">
+
+                            <strong>
+                                Danger :
+                            </strong>
+
+                            <span id="infoDanger">
+                                inconnu
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="separator"></div>
+
+
+                    <h4>
+                        Premiers moyens
+                    </h4>
+
+
+                    <div class="moyen">
+
+                        <div class="moyen-left">
+
+                            <strong>
+                                VSAV
+                            </strong>
+
+                            <span>
+                                Secours à personne
+                            </span>
+
+                        </div>
+
+                        <input
+                            type="checkbox"
+                            value="VSAV"
+                            class="moyen-checkbox"
+                        >
+
+                    </div>
+
+
+                    <div class="moyen">
+
+                        <div class="moyen-left">
+
+                            <strong>
+                                FPT
+                            </strong>
+
+                            <span>
+                                Incendie
+                            </span>
+
+                        </div>
+
+                        <input
+                            type="checkbox"
+                            value="FPT"
+                            class="moyen-checkbox"
+                        >
+
+                    </div>
+
+
+                    <div class="moyen">
+
+                        <div class="moyen-left">
+
+                            <strong>
+                                EPA
+                            </strong>
+
+                            <span>
+                                Moyen aérien
+                            </span>
+
+                        </div>
+
+                        <input
+                            type="checkbox"
+                            value="EPA"
+                            class="moyen-checkbox"
+                        >
+
+                    </div>
+
+
+                    <div class="moyen">
+
+                        <div class="moyen-left">
+
+                            <strong>
+                                VSR
+                            </strong>
+
+                            <span>
+                                Secours routier
+                            </span>
+
+                        </div>
+
+                        <input
+                            type="checkbox"
+                            value="VSR"
+                            class="moyen-checkbox"
+                        >
+
+                    </div>
+
+
+                    <div class="moyen">
+
+                        <div class="moyen-left">
+
+                            <strong>
+                                VLCDG
+                            </strong>
+
+                            <span>
+                                Commandement
+                            </span>
+
+                        </div>
+
+                        <input
+                            type="checkbox"
+                            value="VLCDG"
+                            class="moyen-checkbox"
+                        >
+
+                    </div>
+
+
+                    <button
+                        class="btn btn-danger"
+                        onclick="declencherSecours()"
+                    >
+                        🚨 Déclencher les secours
+                    </button>
+
+
+                    <button
+                        class="btn btn-secondary"
+                        onclick="terminerSansEngagement()"
+                    >
+                        Classer sans engagement
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+    /*
+        ======================================================
+        DONNÉES DES APPELS
+        ======================================================
+    */
+
+    let appels = [
+
+        {
+            id: 1,
+
+            titre:
+                "Fumée dans un immeuble",
+
+            numero:
+                "06 ** ** 42 18",
+
+            couleur:
+                "rouge",
+
+            introduction:
+                "Bonjour ! Il y a beaucoup de fumée qui sort d'un appartement dans mon immeuble !",
+
+            reponses: {
+
+                adresse:
+                    "Je suis au 12 rue des Lilas, au troisième étage.",
+
+                situation:
+                    "De la fumée sort de l'appartement en face du mien. Je ne sais pas si quelqu'un est à l'intérieur.",
+
+                victimes:
+                    "Je ne sais pas. Une dame habite normalement dans cet appartement.",
+
+                conscience:
+                    "Je ne vois personne pour le moment.",
+
+                respiration:
+                    "Je ne peux pas vous dire, je ne vois pas la personne.",
+
+                danger:
+                    "La cage d'escalier commence à être enfumée.",
+
+                feu:
+                    "Je ne vois pas les flammes, mais il y a beaucoup de fumée.",
+
+                acces:
+                    "L'entrée principale est rue des Lilas. Le portail est ouvert."
+
+            },
+
+            fiche: {
+
+                adresse:
+                    "12 rue des Lilas",
+
+                commune:
+                    "Ville",
+
+                situation:
+                    "Fumée importante dans un appartement",
+
+                victimes:
+                    "1 personne potentiellement impliquée",
+
+                conscience:
+                    "Inconnue",
+
+                respiration:
+                    "Inconnue",
+
+                danger:
+                    "Fumée dans les parties communes"
+
+            }
+
+        },
+
+
+        {
+            id: 2,
+
+            titre:
+                "Accident de circulation",
+
+            numero:
+                "07 ** ** 15 66",
+
+            couleur:
+                "orange",
+
+            introduction:
+                "Je viens de voir deux voitures se rentrer dedans sur la départementale.",
+
+            reponses: {
+
+                adresse:
+                    "Sur la D47, juste après le rond-point de la zone commerciale.",
+
+                situation:
+                    "Deux voitures sont accidentées. Une est au milieu de la route.",
+
+                victimes:
+                    "Je vois au moins deux personnes.",
+
+                conscience:
+                    "Une personne me parle. Je ne sais pas pour l'autre conducteur.",
+
+                respiration:
+                    "La personne avec moi respire normalement.",
+
+                danger:
+                    "Oui, les voitures sont toujours sur la chaussée.",
+
+                feu:
+                    "Non, je ne vois ni feu ni fumée.",
+
+                acces:
+                    "Les secours peuvent venir par la D47 depuis le rond-point."
+
+            },
+
+            fiche: {
+
+                adresse:
+                    "D47 - zone commerciale",
+
+                commune:
+                    "Ville",
+
+                situation:
+                    "Accident de circulation",
+
+                victimes:
+                    "Au moins 2",
+
+                conscience:
+                    "1 consciente / 1 inconnue",
+
+                respiration:
+                    "Normale pour une victime",
+
+                danger:
+                    "Chaussée partiellement obstruée"
+
+            }
+
+        },
+
+
+        {
+            id: 3,
+
+            titre:
+                "Malaise à domicile",
+
+            numero:
+                "01 ** ** 71 20",
+
+            couleur:
+                "bleu",
+
+            introduction:
+                "Mon père ne se sent vraiment pas bien et il a très mal dans la poitrine.",
+
+            reponses: {
+
+                adresse:
+                    "Nous sommes au 8 avenue Victor-Hugo.",
+
+                situation:
+                    "Il a commencé à avoir très mal à la poitrine il y a quelques minutes.",
+
+                victimes:
+                    "Il n'y a que mon père.",
+
+                conscience:
+                    "Oui, il est conscient et il me répond.",
+
+                respiration:
+                    "Oui, mais il dit qu'il a du mal à respirer.",
+
+                danger:
+                    "Non, il n'y a pas de danger autour de nous.",
+
+                feu:
+                    "Non, rien du tout.",
+
+                acces:
+                    "Nous sommes au rez-de-chaussée. La porte d'entrée sera ouverte."
+
+            },
+
+            fiche: {
+
+                adresse:
+                    "8 avenue Victor-Hugo",
+
+                commune:
+                    "Ville",
+
+                situation:
+                    "Douleur thoracique",
+
+                victimes:
+                    "1",
+
+                conscience:
+                    "Consciente",
+
+                respiration:
+                    "Difficulté respiratoire",
+
+                danger:
+                    "Aucun danger signalé"
+
+            }
+
+        }
+
+    ];
+
+
+    let appelActuel = null;
+
+    let appelsTraites = 12;
+
+
+    /*
+        ======================================================
+        HORLOGE
+        ======================================================
+    */
+
+    function mettreAJourHorloge() {
+
+        const maintenant =
+            new Date();
+
+
+        document.getElementById(
+            "heure"
+        ).textContent =
+            maintenant.toLocaleTimeString(
+                "fr-FR"
+            );
+
+
+        document.getElementById(
+            "date"
+        ).textContent =
+            maintenant.toLocaleDateString(
+                "fr-FR"
+            );
+
+    }
+
+
+    setInterval(
+        mettreAJourHorloge,
+        1000
+    );
+
+
+    mettreAJourHorloge();
+
+
+    /*
+        ======================================================
+        AFFICHAGE DE LA FILE D'APPELS
+        ======================================================
+    */
+
+    function afficherAppels() {
+
+        const liste =
+            document.getElementById(
+                "listeAppels"
+            );
+
+
+        liste.innerHTML = "";
+
+
+        appels.forEach(
+            appel => {
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                div.className =
+                    "appel";
+
+
+                if (
+                    appelActuel &&
+                    appelActuel.id === appel.id
+                ) {
+
+                    div.classList.add(
+                        "selected"
+                    );
+
+                }
+
+
+                let badge =
+                    "badge-bleu";
+
+
+                if (
+                    appel.couleur === "rouge"
+                ) {
+
+                    badge =
+                        "badge-rouge";
+
+                }
+
+                else if (
+                    appel.couleur === "orange"
+                ) {
+
+                    badge =
+                        "badge-orange";
+
+                }
+
+
+                div.innerHTML = `
+
+                    <div class="appel-top">
+
+                        <h4>
+                            📞 ${appel.titre}
+                        </h4>
+
+                        <span class="badge ${badge}">
+                            EN ATTENTE
+                        </span>
+
+                    </div>
+
+                    <p>
+                        ${appel.numero}
+                    </p>
+
+                `;
+
+
+                div.onclick =
+                    () => prendreAppel(
+                        appel.id
+                    );
+
+
+                liste.appendChild(
+                    div
+                );
+
+            }
+        );
+
+
+        document.getElementById(
+            "statAttente"
+        ).textContent =
+            appels.length;
+
+
+        document.getElementById(
+            "statTraites"
+        ).textContent =
+            appelsTraites;
+
+    }
+
+
+    /*
+        ======================================================
+        PRENDRE UN APPEL
+        ======================================================
+    */
+
+    function prendreAppel(id) {
+
+        appelActuel =
+            appels.find(
+                appel =>
+                    appel.id === id
+            );
+
+
+        if (!appelActuel) {
+            return;
+        }
+
+
+        document.getElementById(
+            "appelTitre"
+        ).textContent =
+            appelActuel.titre;
+
+
+        document.getElementById(
+            "appelNumero"
+        ).textContent =
+            "Numéro : " +
+            appelActuel.numero;
+
+
+        document.getElementById(
+            "appelEtat"
+        ).textContent =
+            "EN LIGNE";
+
+
+        document.getElementById(
+            "conversation"
+        ).innerHTML =
+            "";
+
+
+        ajouterMessage(
+
+            "Système",
+
+            "Appel connecté.",
+
+            "systeme"
+
+        );
+
+
+        ajouterMessage(
+
+            "Appelant",
+
+            appelActuel.introduction,
+
+            "appelant"
+
+        );
+
+
+        reinitialiserQuestions();
+
+        reinitialiserFiche();
+
+        afficherAppels();
+
+    }
+
+
+    /*
+        ======================================================
+        MESSAGES
+        ======================================================
+    */
+
+    function ajouterMessage(
+        auteur,
+        texte,
+        type
+    ) {
+
+        const conversation =
+            document.getElementById(
+                "conversation"
+            );
+
+
+        const message =
+            document.createElement(
+                "div"
+            );
+
+
+        if (
+            type === "appelant"
+        ) {
+
+            message.className =
+                "message message-appelant";
+
+        }
+
+        else if (
+            type === "operateur"
+        ) {
+
+            message.className =
+                "message message-operateur";
+
+        }
+
+        else {
+
+            message.className =
+                "message message-systeme";
+
+        }
+
+
+        message.textContent =
+            texte;
+
+
+        conversation.appendChild(
+            message
+        );
+
+
+        conversation.scrollTop =
+            conversation.scrollHeight;
+
+    }
+
+
+    /*
+        ======================================================
+        QUESTIONS
+        ======================================================
+    */
+
+    function poserQuestion(
+        type,
+        bouton
+    ) {
+
+        if (!appelActuel) {
+
+            ajouterMessage(
+
+                "Système",
+
+                "Aucun appel sélectionné.",
+
+                "systeme"
+
+            );
+
+            return;
+
+        }
+
+
+        const textesQuestions = {
+
+            adresse:
+                "Pouvez-vous me donner l'adresse exacte ?",
+
+            situation:
+                "Expliquez-moi exactement ce qu'il s'est passé.",
+
+            victimes:
+                "Combien y a-t-il de victimes ?",
+
+            conscience:
+                "La victime est-elle consciente ?",
+
+            respiration:
+                "Est-ce qu'elle respire normalement ?",
+
+            danger:
+                "Est-ce qu'il existe un danger immédiat ?",
+
+            feu:
+                "Voyez-vous des flammes ou de la fumée ?",
+
+            acces:
+                "Comment les secours peuvent-ils accéder aux lieux ?"
+
+        };
+
+
+        ajouterMessage(
+
+            "Opérateur",
+
+            textesQuestions[type],
+
+            "operateur"
+
+        );
+
+
+        setTimeout(
+            () => {
+
+                ajouterMessage(
+
+                    "Appelant",
+
+                    appelActuel.reponses[type],
+
+                    "appelant"
+
+                );
+
+
+                mettreAJourFicheAvecQuestion(
+                    type
+                );
+
+            },
+
+            250
+        );
+
+
+        bouton.disabled = true;
+
+    }
+
+
+    /*
+        ======================================================
+        MISE À JOUR AUTOMATIQUE FICHE
+        ======================================================
+    */
+
+    function mettreAJourFicheAvecQuestion(
+        type
+    ) {
+
+        const fiche =
+            appelActuel.fiche;
+
+
+        if (
+            type === "adresse"
+        ) {
+
+            document.getElementById(
+                "adresse"
+            ).value =
+                fiche.adresse;
+
+
+            document.getElementById(
+                "commune"
+            ).value =
+                fiche.commune;
+
+        }
+
+
+        if (
+            type === "situation"
+        ) {
+
+            document.getElementById(
+                "infoSituation"
+            ).textContent =
+                fiche.situation;
+
+        }
+
+
+        if (
+            type === "victimes"
+        ) {
+
+            document.getElementById(
+                "infoVictimes"
+            ).textContent =
+                fiche.victimes;
+
+        }
+
+
+        if (
+            type === "conscience"
+        ) {
+
+            document.getElementById(
+                "infoConscience"
+            ).textContent =
+                fiche.conscience;
+
+        }
+
+
+        if (
+            type === "respiration"
+        ) {
+
+            document.getElementById(
+                "infoRespiration"
+            ).textContent =
+                fiche.respiration;
+
+        }
+
+
+        if (
+            type === "danger"
+        ) {
+
+            document.getElementById(
+                "infoDanger"
+            ).textContent =
+                fiche.danger;
+
+        }
+
+    }
+
+
+    /*
+        ======================================================
+        RÉINITIALISATION
+        ======================================================
+    */
+
+    function reinitialiserQuestions() {
+
+        document
+            .querySelectorAll(
+                ".question-btn"
+            )
+            .forEach(
+                bouton => {
+
+                    bouton.disabled = false;
+
+                }
+            );
+
+    }
+
+
+    function reinitialiserFiche() {
+
+        document.getElementById(
+            "adresse"
+        ).value = "";
+
+
+        document.getElementById(
+            "commune"
+        ).value = "";
+
+
+        document.getElementById(
+            "nature"
+        ).value = "";
+
+
+        document.getElementById(
+            "urgence"
+        ).value = "";
+
+
+        document.getElementById(
+            "notes"
+        ).value = "";
+
+
+        document.getElementById(
+            "infoSituation"
+        ).textContent =
+            "inconnue";
+
+
+        document.getElementById(
+            "infoVictimes"
+        ).textContent =
+            "inconnu";
+
+
+        document.getElementById(
+            "infoConscience"
+        ).textContent =
+            "inconnu";
+
+
+        document.getElementById(
+            "infoRespiration"
+        ).textContent =
+            "inconnu";
+
+
+        document.getElementById(
+            "infoDanger"
+        ).textContent =
+            "inconnu";
+
+
+        document.getElementById(
+            "niveauBadge"
+        ).textContent =
+            "À QUALIFIER";
+
+
+        document.getElementById(
+            "niveauBadge"
+        ).className =
+            "badge badge-orange";
+
+
+        document
+            .querySelectorAll(
+                ".moyen-checkbox"
+            )
+            .forEach(
+                checkbox => {
+
+                    checkbox.checked = false;
+
+                }
+            );
+
+    }
+
+
+    /*
+        ======================================================
+        QUALIFICATION
+        ======================================================
+    */
+
+    function mettreAJourQualification() {
+
+        const nature =
+            document.getElementById(
+                "nature"
+            ).value;
+
+
+        const urgence =
+            document.getElementById(
+                "urgence"
+            ).value;
+
+
+        const badge =
+            document.getElementById(
+                "niveauBadge"
+            );
+
+
+        if (
+            !nature ||
+            !urgence
+        ) {
+
+            badge.textContent =
+                "À QUALIFIER";
+
+
+            badge.className =
+                "badge badge-orange";
+
+
+            return;
+
+        }
+
+
+        if (
+            urgence === "ABSOLUE"
+        ) {
+
+            badge.textContent =
+                "URGENCE ABSOLUE";
+
+
+            badge.className =
+                "badge badge-rouge";
+
+        }
+
+        else if (
+            urgence === "URGENT"
+        ) {
+
+            badge.textContent =
+                "URGENT";
+
+
+            badge.className =
+                "badge badge-orange";
+
+        }
+
+        else {
+
+            badge.textContent =
+                "QUALIFIÉ";
+
+
+            badge.className =
+                "badge badge-vert";
+
+        }
+
+
+        proposerMoyens(
+            nature
+        );
+
+    }
+
+
+    /*
+        ======================================================
+        PROPOSITION AUTOMATIQUE DE MOYENS
+        ======================================================
+    */
+
+    function proposerMoyens(
+        nature
+    ) {
+
+        document
+            .querySelectorAll(
+                ".moyen-checkbox"
+            )
+            .forEach(
+                checkbox => {
+
+                    checkbox.checked = false;
+
+                }
+            );
+
+
+        const cases =
+            document.querySelectorAll(
+                ".moyen-checkbox"
+            );
+
+
+        cases.forEach(
+            checkbox => {
+
+                if (
+                    nature === "INCENDIE" &&
+                    (
+                        checkbox.value === "FPT" ||
+                        checkbox.value === "VSAV"
+                    )
+                ) {
+
+                    checkbox.checked = true;
+
+                }
+
+
+                if (
+                    nature === "SAP" &&
+                    checkbox.value === "VSAV"
+                ) {
+
+                    checkbox.checked = true;
+
+                }
+
+
+                if (
+                    nature === "AVP" &&
+                    (
+                        checkbox.value === "VSAV" ||
+                        checkbox.value === "VSR"
+                    )
+                ) {
+
+                    checkbox.checked = true;
+
+                }
+
+
+                if (
+                    nature === "GAZ" &&
+                    checkbox.value === "FPT"
+                ) {
+
+                    checkbox.checked = true;
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /*
+        ======================================================
+        DÉCLENCHEMENT
+        ======================================================
+    */
+
+    function declencherSecours() {
+
+        if (!appelActuel) {
+
+            alert(
+                "Aucun appel en cours."
+            );
+
+            return;
+
+        }
+
+
+        const adresse =
+            document.getElementById(
+                "adresse"
+            ).value.trim();
+
+
+        const nature =
+            document.getElementById(
+                "nature"
+            ).value;
+
+
+        const urgence =
+            document.getElementById(
+                "urgence"
+            ).value;
+
+
+        if (
+            !adresse ||
+            !nature ||
+            !urgence
+        ) {
+
+            alert(
+                "Complétez l'adresse, la nature et le niveau d'urgence avant de déclencher les secours."
+            );
+
+            return;
+
+        }
+
+
+        const moyens =
+            [];
+
+
+        document
+            .querySelectorAll(
+                ".moyen-checkbox:checked"
+            )
+            .forEach(
+                checkbox => {
+
+                    moyens.push(
+                        checkbox.value
+                    );
+
+                }
+            );
+
+
+        if (
+            moyens.length === 0
+        ) {
+
+            alert(
+                "Sélectionnez au moins un moyen."
+            );
+
+            return;
+
+        }
+
+
+        const intervention = {
+
+            id:
+                Date.now(),
+
+            titre:
+                appelActuel.titre,
+
+            adresse:
+                adresse,
+
+            commune:
+                document.getElementById(
+                    "commune"
+                ).value,
+
+            nature:
+                nature,
+
+            urgence:
+                urgence,
+
+            moyens:
+                moyens,
+
+            notes:
+                document.getElementById(
+                    "notes"
+                ).value,
+
+            heure:
+                new Date()
+                    .toISOString()
+
+        };
+
+
+        /*
+            Sauvegarde locale.
+
+            operations.html pourra ensuite
+            récupérer ces interventions.
+        */
+
+        const interventions =
+            JSON.parse(
+                localStorage.getItem(
+                    "interventionsSecours"
+                )
+                || "[]"
+            );
+
+
+        interventions.push(
+            intervention
+        );
+
+
+        localStorage.setItem(
+
+            "interventionsSecours",
+
+            JSON.stringify(
+                interventions
+            )
+
+        );
+
+
+        ajouterMessage(
+
+            "Système",
+
+            "Secours déclenchés : " +
+            moyens.join(", "),
+
+            "systeme"
+
+        );
+
+
+        terminerAppel();
+
+    }
+
+
+    /*
+        ======================================================
+        FIN D'APPEL
+        ======================================================
+    */
+
+    function terminerAppel() {
+
+        if (!appelActuel) {
+            return;
+        }
+
+
+        const id =
+            appelActuel.id;
+
+
+        appels =
+            appels.filter(
+                appel =>
+                    appel.id !== id
+            );
+
+
+        appelsTraites++;
+
+
+        document.getElementById(
+            "appelEtat"
+        ).textContent =
+            "TERMINÉ";
+
+
+        document.getElementById(
+            "appelEtat"
+        ).className =
+            "badge badge-vert";
+
+
+        appelActuel = null;
+
+
+        afficherAppels();
+
+
+        document.getElementById(
+            "statCours"
+        ).textContent =
+            "0";
+
+    }
+
+
+    function terminerSansEngagement() {
+
+        if (!appelActuel) {
+
+            alert(
+                "Aucun appel sélectionné."
+            );
+
+            return;
+
+        }
+
+
+        const confirmation =
+            confirm(
+                "Classer cet appel sans engagement de secours ?"
+            );
+
+
+        if (!confirmation) {
+            return;
+        }
+
+
+        terminerAppel();
+
+    }
+
+
+    /*
+        ======================================================
+        SIMULATION NOUVEL APPEL
+        ======================================================
+    */
+
+    function genererAppel() {
+
+        const exemples = [
+
+            {
+                titre:
+                    "Chute sur la voie publique",
+
+                numero:
+                    "06 ** ** 91 04",
+
+                couleur:
+                    "bleu",
+
+                introduction:
+                    "Une personne vient de tomber devant moi et elle n'arrive plus à se relever.",
+
+                reponses: {
+
+                    adresse:
+                        "Nous sommes place de la République.",
+
+                    situation:
+                        "La personne a glissé et est tombée sur le trottoir.",
+
+                    victimes:
+                        "Une seule personne.",
+
+                    conscience:
+                        "Oui, elle est consciente.",
+
+                    respiration:
+                        "Oui, elle respire normalement.",
+
+                    danger:
+                        "Non, il n'y a pas de danger.",
+
+                    feu:
+                        "Non.",
+
+                    acces:
+                        "La place est accessible depuis l'avenue principale."
+
+                },
+
+                fiche: {
+
+                    adresse:
+                        "Place de la République",
+
+                    commune:
+                        "Ville",
+
+                    situation:
+                        "Chute de personne",
+
+                    victimes:
+                        "1",
+
+                    conscience:
+                        "Consciente",
+
+                    respiration:
+                        "Normale",
+
+                    danger:
+                        "Aucun"
+
+                }
+
+            },
+
+
+            {
+                titre:
+                    "Fuite de gaz",
+
+                numero:
+                    "07 ** ** 34 52",
+
+                couleur:
+                    "rouge",
+
+                introduction:
+                    "Ça sent très fort le gaz dans notre immeuble.",
+
+                reponses: {
+
+                    adresse:
+                        "41 rue Nationale.",
+
+                    situation:
+                        "Une forte odeur de gaz est présente dans le hall.",
+
+                    victimes:
+                        "Aucune victime pour le moment.",
+
+                    conscience:
+                        "Tout le monde est conscient.",
+
+                    respiration:
+                        "Personne ne semble avoir de difficulté.",
+
+                    danger:
+                        "Oui, nous avons peur d'une fuite de gaz.",
+
+                    feu:
+                        "Non, aucun feu.",
+
+                    acces:
+                        "L'entrée est directement sur la rue Nationale."
+
+                },
+
+                fiche: {
+
+                    adresse:
+                        "41 rue Nationale",
+
+                    commune:
+                        "Ville",
+
+                    situation:
+                        "Suspicion de fuite de gaz",
+
+                    victimes:
+                        "0 connue",
+
+                    conscience:
+                        "Sans objet",
+
+                    respiration:
+                        "Sans objet",
+
+                    danger:
+                        "Atmosphère potentiellement dangereuse"
+
+                }
+
+            }
+
+        ];
+
+
+        const modele =
+            exemples[
+                Math.floor(
+                    Math.random() *
+                    exemples.length
+                )
+            ];
+
+
+        appels.push({
+
+            id:
+                Date.now(),
+
+            ...modele
+
+        });
+
+
+        afficherAppels();
+
+    }
+
+
+    /*
+        ======================================================
+        DÉMARRAGE
+        ======================================================
+    */
+
+    afficherAppels();
+
+
+    /*
+        On prend automatiquement
+        le premier appel pour le prototype.
+    */
+
+    if (
+        appels.length > 0
+    ) {
+
+        prendreAppel(
+            appels[0].id
+        );
+
+    }
+
+</script>
+
+</body>
+<div class="stat-card">
+    <span class="stat-label">Temps de réponse</span>
+    <strong id="responseTime">00:00</strong>
+</div>
+</html>

@@ -1,0 +1,2325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Rapports - Gestion Secours</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --fond: #081018;
+            --panneau: #121f2a;
+            --panneau-2: #182733;
+            --bordure: #2b3e4c;
+
+            --texte: #f5f7f9;
+            --texte-secondaire: #94a8b7;
+
+            --rouge: #d63031;
+            --orange: #f39c12;
+            --vert: #27ae60;
+            --bleu: #3498db;
+            --violet: #8e44ad;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--fond);
+            color: var(--texte);
+            min-height: 100vh;
+        }
+
+        /* =========================
+           HEADER
+        ========================== */
+
+        header {
+            min-height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 12px 30px;
+
+            background: #0b141c;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--rouge);
+
+            border-radius: 9px;
+
+            font-weight: bold;
+        }
+
+        .logo h1 {
+            font-size: 19px;
+        }
+
+        .logo p {
+            margin-top: 3px;
+
+            color: var(--texte-secondaire);
+            font-size: 12px;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #cbd6de;
+
+            text-decoration: none;
+
+            padding: 9px 13px;
+
+            border-radius: 6px;
+        }
+
+        nav a:hover {
+            background: var(--panneau-2);
+        }
+
+        .horloge {
+            text-align: right;
+        }
+
+        #heure {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #date {
+            color: var(--texte-secondaire);
+            font-size: 11px;
+        }
+
+        /* =========================
+           MAIN
+        ========================== */
+
+        main {
+            padding: 20px;
+        }
+
+        .titre-page {
+            margin-bottom: 20px;
+        }
+
+        .titre-page h2 {
+            font-size: 25px;
+        }
+
+        .titre-page p {
+            margin-top: 5px;
+
+            color: var(--texte-secondaire);
+        }
+
+        /* =========================
+           STATS
+        ========================== */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+            border-radius: 10px;
+
+            padding: 16px;
+        }
+
+        .stat-label {
+            color: var(--texte-secondaire);
+            font-size: 12px;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: bold;
+
+            margin-top: 6px;
+        }
+
+        /* =========================
+           TOOLBAR
+        ========================== */
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 18px;
+        }
+
+        .toolbar select,
+        .toolbar input {
+            padding: 10px;
+
+            background: #0d1820;
+
+            color: white;
+
+            border: 1px solid var(--bordure);
+            border-radius: 7px;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .btn {
+            border: none;
+
+            padding: 10px 14px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: var(--rouge);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #233746;
+            color: white;
+
+            border: 1px solid var(--bordure);
+        }
+
+        /* =========================
+           LAYOUT
+        ========================== */
+
+        .dashboard-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 15px;
+        }
+
+        .panel {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 10px;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .panel-header h3 {
+            font-size: 15px;
+        }
+
+        .panel-content {
+            padding: 15px;
+        }
+
+        /* =========================
+           BAR CHART
+        ========================== */
+
+        .chart {
+            display: grid;
+
+            gap: 13px;
+        }
+
+        .chart-row {
+            display: grid;
+
+            grid-template-columns:
+                150px 1fr 45px;
+
+            gap: 10px;
+
+            align-items: center;
+        }
+
+        .chart-label {
+            font-size: 11px;
+
+            color: var(--texte-secondaire);
+        }
+
+        .chart-bar-background {
+            height: 12px;
+
+            background: #09131a;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .chart-bar {
+            height: 100%;
+
+            border-radius: 20px;
+
+            background: var(--bleu);
+        }
+
+        .bar-red {
+            background: var(--rouge);
+        }
+
+        .bar-orange {
+            background: var(--orange);
+        }
+
+        .bar-green {
+            background: var(--vert);
+        }
+
+        .bar-purple {
+            background: var(--violet);
+        }
+
+        .chart-value {
+            text-align: right;
+
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           MINI STATS
+        ========================== */
+
+        .mini-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+        }
+
+        .mini-card {
+            padding: 13px;
+
+            background: #0d1820;
+
+            border: 1px solid var(--bordure);
+            border-radius: 8px;
+        }
+
+        .mini-card span {
+            display: block;
+
+            color: var(--texte-secondaire);
+
+            font-size: 10px;
+
+            margin-bottom: 5px;
+        }
+
+        .mini-card strong {
+            font-size: 19px;
+        }
+
+        /* =========================
+           TABLE
+        ========================== */
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+
+            padding: 11px;
+
+            color: var(--texte-secondaire);
+
+            font-size: 11px;
+
+            background: #101c25;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        td {
+            padding: 11px;
+
+            border-bottom: 1px solid #22343f;
+
+            font-size: 12px;
+        }
+
+        tbody tr:hover {
+            background: var(--panneau-2);
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 5px 8px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .badge-terminee {
+            color: #80e1a4;
+
+            background:
+                rgba(39,174,96,.18);
+        }
+
+        .badge-active {
+            color: #ffca68;
+
+            background:
+                rgba(243,156,18,.18);
+        }
+
+        .badge-urgence {
+            color: #ff8b82;
+
+            background:
+                rgba(214,48,49,.18);
+        }
+
+        /* =========================
+           PERFORMANCE
+        ========================== */
+
+        .performance-list {
+            display: grid;
+            gap: 8px;
+        }
+
+        .performance-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 10px;
+
+            padding: 10px;
+
+            background: #0d1820;
+
+            border: 1px solid var(--bordure);
+            border-radius: 7px;
+        }
+
+        .performance-item h4 {
+            font-size: 12px;
+        }
+
+        .performance-item p {
+            margin-top: 4px;
+
+            color: var(--texte-secondaire);
+
+            font-size: 10px;
+        }
+
+        .score {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 1050px) {
+
+            .stats {
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                flex-direction: column;
+
+                gap: 14px;
+            }
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .toolbar select,
+            .toolbar input {
+                width: 100%;
+            }
+
+            .mini-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-row {
+                grid-template-columns:
+                    100px 1fr 35px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            18
+        </div>
+
+        <div>
+
+            <h1>
+                Gestion Secours
+            </h1>
+
+            <p>
+                Rapports et statistiques
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a href="index.html">
+            Accueil
+        </a>
+
+        <a href="cta.html">
+            CTA
+        </a>
+
+        <a href="operations.html">
+            Opérations
+        </a>
+
+        <a href="vehicules.html">
+            Véhicules
+        </a>
+
+        <a href="casernes.html">
+            Casernes
+        </a>
+
+        <a href="personnel.html">
+            Personnel
+        </a>
+
+        <a href="hopitaux.html">
+            Hôpitaux
+        </a>
+
+        <a href="carte.html">
+            Carte
+        </a>
+
+    </nav>
+
+
+    <div class="horloge">
+
+        <div id="heure">
+            00:00:00
+        </div>
+
+        <div id="date">
+            --
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <div class="titre-page">
+
+        <h2>
+            Rapports opérationnels
+        </h2>
+
+        <p>
+            Analysez l'activité du service, les délais de réponse et la performance des moyens engagés.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         STATS
+    ========================== -->
+
+    <section class="stats">
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Interventions totales
+            </div>
+
+            <div
+                class="stat-value"
+                id="statTotal"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Interventions actives
+            </div>
+
+            <div
+                class="stat-value"
+                id="statActives"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Terminées aujourd'hui
+            </div>
+
+            <div
+                class="stat-value"
+                id="statTerminees"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Délai moyen départ
+            </div>
+
+            <div class="stat-value">
+                01:42
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Délai moyen arrivée
+            </div>
+
+            <div class="stat-value">
+                08:14
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         FILTRES
+    ========================== -->
+
+    <section class="toolbar">
+
+        <select
+            id="periode"
+            onchange="actualiserRapport()"
+        >
+
+            <option value="jour">
+                Aujourd'hui
+            </option>
+
+            <option value="semaine">
+                Cette semaine
+            </option>
+
+            <option value="mois">
+                Ce mois
+            </option>
+
+            <option value="annee">
+                Cette année
+            </option>
+
+        </select>
+
+
+        <select
+            id="filtreNature"
+            onchange="afficherHistorique()"
+        >
+
+            <option value="">
+                Toutes les interventions
+            </option>
+
+            <option value="INCENDIE">
+                Incendie
+            </option>
+
+            <option value="SAP">
+                Secours à personne
+            </option>
+
+            <option value="AVP">
+                Accident de circulation
+            </option>
+
+            <option value="GAZ">
+                Fuite de gaz
+            </option>
+
+            <option value="DIVERS">
+                Divers
+            </option>
+
+        </select>
+
+
+        <button
+            class="btn btn-secondary"
+            onclick="exporterRapport()"
+        >
+            Exporter le rapport
+        </button>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="reinitialiserRapports()"
+        >
+            Réinitialiser les statistiques
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         GRAPHIQUES
+    ========================== -->
+
+    <section class="dashboard-grid">
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Interventions par catégorie
+                </h3>
+
+            </div>
+
+
+            <div class="panel-content">
+
+                <div
+                    class="chart"
+                    id="chartNature"
+                >
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Activité opérationnelle
+                </h3>
+
+            </div>
+
+
+            <div class="panel-content">
+
+                <div class="mini-grid">
+
+                    <div class="mini-card">
+
+                        <span>
+                            Appels CTA traités
+                        </span>
+
+                        <strong id="appelsTraites">
+                            26
+                        </strong>
+
+                    </div>
+
+
+                    <div class="mini-card">
+
+                        <span>
+                            Victimes transportées
+                        </span>
+
+                        <strong id="victimesTransportees">
+                            14
+                        </strong>
+
+                    </div>
+
+
+                    <div class="mini-card">
+
+                        <span>
+                            Renforts demandés
+                        </span>
+
+                        <strong>
+                            4
+                        </strong>
+
+                    </div>
+
+
+                    <div class="mini-card">
+
+                        <span>
+                            Véhicules mobilisés
+                        </span>
+
+                        <strong id="vehiculesMobilises">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="mini-card">
+
+                        <span>
+                            Hospitalisations
+                        </span>
+
+                        <strong>
+                            9
+                        </strong>
+
+                    </div>
+
+
+                    <div class="mini-card">
+
+                        <span>
+                            Interventions sans transport
+                        </span>
+
+                        <strong>
+                            7
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         PERFORMANCE
+    ========================== -->
+
+    <section class="dashboard-grid">
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Performance des casernes
+                </h3>
+
+            </div>
+
+
+            <div class="panel-content">
+
+                <div
+                    class="performance-list"
+                    id="performanceCasernes"
+                >
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Moyens les plus sollicités
+                </h3>
+
+            </div>
+
+
+            <div class="panel-content">
+
+                <div
+                    class="chart"
+                    id="chartVehicules"
+                >
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         HISTORIQUE
+    ========================== -->
+
+    <section class="panel">
+
+        <div class="panel-header">
+
+            <h3>
+                Historique des interventions
+            </h3>
+
+            <span id="nombreHistorique">
+                0 intervention
+            </span>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Intervention
+                        </th>
+
+                        <th>
+                            Nature
+                        </th>
+
+                        <th>
+                            Adresse
+                        </th>
+
+                        <th>
+                            Moyens
+                        </th>
+
+                        <th>
+                            Priorité
+                        </th>
+
+                        <th>
+                            Statut
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="historiqueInterventions">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+    /*
+        =====================================================
+        DONNÉES D'EXEMPLE
+        =====================================================
+    */
+
+    let historique = [
+
+        {
+            id: 1,
+
+            date:
+                "06/09/2026 18:32",
+
+            titre:
+                "Feu d'appartement",
+
+            nature:
+                "INCENDIE",
+
+            adresse:
+                "12 rue des Lilas",
+
+            moyens:
+                [
+                    "FPT 01",
+                    "VSAV 01"
+                ],
+
+            urgence:
+                "ABSOLUE",
+
+            statut:
+                "ACTIVE"
+        },
+
+
+        {
+            id: 2,
+
+            date:
+                "06/09/2026 17:04",
+
+            titre:
+                "Accident de circulation",
+
+            nature:
+                "AVP",
+
+            adresse:
+                "D47 - PK 18",
+
+            moyens:
+                [
+                    "VSR 01",
+                    "VSAV 02"
+                ],
+
+            urgence:
+                "URGENT",
+
+            statut:
+                "ACTIVE"
+        },
+
+
+        {
+            id: 3,
+
+            date:
+                "06/09/2026 14:21",
+
+            titre:
+                "Malaise à domicile",
+
+            nature:
+                "SAP",
+
+            adresse:
+                "8 avenue Victor-Hugo",
+
+            moyens:
+                [
+                    "VSAV 03"
+                ],
+
+            urgence:
+                "URGENT",
+
+            statut:
+                "TERMINEE"
+        },
+
+
+        {
+            id: 4,
+
+            date:
+                "06/09/2026 11:18",
+
+            titre:
+                "Chute sur la voie publique",
+
+            nature:
+                "SAP",
+
+            adresse:
+                "Place de la République",
+
+            moyens:
+                [
+                    "VSAV 02"
+                ],
+
+            urgence:
+                "NORMAL",
+
+            statut:
+                "TERMINEE"
+        },
+
+
+        {
+            id: 5,
+
+            date:
+                "06/09/2026 08:46",
+
+            titre:
+                "Fuite de gaz",
+
+            nature:
+                "GAZ",
+
+            adresse:
+                "41 rue Nationale",
+
+            moyens:
+                [
+                    "FPT 02",
+                    "VLCDG 01"
+                ],
+
+            urgence:
+                "URGENT",
+
+            statut:
+                "TERMINEE"
+        },
+
+
+        {
+            id: 6,
+
+            date:
+                "05/09/2026 23:34",
+
+            titre:
+                "Ouverture de porte",
+
+            nature:
+                "DIVERS",
+
+            adresse:
+                "6 rue du Stade",
+
+            moyens:
+                [
+                    "FPT 02"
+                ],
+
+            urgence:
+                "NORMAL",
+
+            statut:
+                "TERMINEE"
+        }
+
+    ];
+
+
+    /*
+        =====================================================
+        HORLOGE
+        =====================================================
+    */
+
+    function mettreAJourHorloge() {
+
+        const maintenant =
+            new Date();
+
+
+        document.getElementById(
+            "heure"
+        ).textContent =
+            maintenant.toLocaleTimeString(
+                "fr-FR"
+            );
+
+
+        document.getElementById(
+            "date"
+        ).textContent =
+            maintenant.toLocaleDateString(
+                "fr-FR"
+            );
+
+    }
+
+
+    setInterval(
+        mettreAJourHorloge,
+        1000
+    );
+
+
+    mettreAJourHorloge();
+
+
+    /*
+        =====================================================
+        CHARGER LES INTERVENTIONS DU CTA
+        =====================================================
+    */
+
+    function chargerInterventionsLocales() {
+
+        const sauvegarde =
+            localStorage.getItem(
+                "interventionsSecours"
+            );
+
+
+        if (
+            !sauvegarde
+        ) {
+            return;
+        }
+
+
+        try {
+
+            const interventions =
+                JSON.parse(
+                    sauvegarde
+                );
+
+
+            if (
+                !Array.isArray(
+                    interventions
+                )
+            ) {
+                return;
+            }
+
+
+            interventions.forEach(
+                intervention => {
+
+                    const existe =
+                        historique.some(
+                            item =>
+                                item.id ===
+                                intervention.id
+                        );
+
+
+                    if (
+                        existe
+                    ) {
+                        return;
+                    }
+
+
+                    historique.push({
+
+                        id:
+                            intervention.id,
+
+                        date:
+                            formaterDate(
+                                intervention.heure
+                            ),
+
+                        titre:
+                            intervention.titre
+                            ||
+                            "Intervention",
+
+                        nature:
+                            intervention.nature
+                            ||
+                            "DIVERS",
+
+                        adresse:
+                            intervention.adresse
+                            ||
+                            "Adresse inconnue",
+
+                        moyens:
+                            Array.isArray(
+                                intervention.moyens
+                            )
+                                ?
+                                intervention.moyens
+                                :
+                                [],
+
+                        urgence:
+                            intervention.urgence
+                            ||
+                            "NORMAL",
+
+                        statut:
+                            "ACTIVE"
+
+                    });
+
+                }
+            );
+
+        }
+
+        catch (
+            erreur
+        ) {
+
+            console.error(
+                "Erreur de chargement des interventions :",
+                erreur
+            );
+
+        }
+
+    }
+
+
+    function formaterDate(
+        dateISO
+    ) {
+
+        if (
+            !dateISO
+        ) {
+
+            return "--";
+
+        }
+
+
+        const date =
+            new Date(
+                dateISO
+            );
+
+
+        return date.toLocaleDateString(
+            "fr-FR"
+        )
+        +
+        " "
+        +
+        date.toLocaleTimeString(
+            "fr-FR",
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    }
+
+
+    /*
+        =====================================================
+        LIBELLÉS
+        =====================================================
+    */
+
+    function libelleNature(
+        nature
+    ) {
+
+        const types = {
+
+            INCENDIE:
+                "Incendie",
+
+            SAP:
+                "Secours à personne",
+
+            AVP:
+                "Accident routier",
+
+            GAZ:
+                "Fuite de gaz",
+
+            DIVERS:
+                "Divers"
+
+        };
+
+
+        return (
+            types[nature]
+            ||
+            nature
+        );
+
+    }
+
+
+    function libelleUrgence(
+        urgence
+    ) {
+
+        if (
+            urgence === "ABSOLUE"
+        ) {
+
+            return `
+                <span class="badge badge-urgence">
+                    ABSOLUE
+                </span>
+            `;
+
+        }
+
+
+        if (
+            urgence === "URGENT"
+        ) {
+
+            return `
+                <span class="badge badge-active">
+                    URGENT
+                </span>
+            `;
+
+        }
+
+
+        return `
+            <span class="badge badge-terminee">
+                NORMAL
+            </span>
+        `;
+
+    }
+
+
+    function libelleStatut(
+        statut
+    ) {
+
+        if (
+            statut === "ACTIVE"
+        ) {
+
+            return `
+                <span class="badge badge-active">
+                    ACTIVE
+                </span>
+            `;
+
+        }
+
+
+        return `
+            <span class="badge badge-terminee">
+                TERMINÉE
+            </span>
+        `;
+
+    }
+
+
+    /*
+        =====================================================
+        STATISTIQUES
+        =====================================================
+    */
+
+    function mettreAJourStats() {
+
+        const actives =
+            historique.filter(
+                intervention =>
+                    intervention.statut ===
+                    "ACTIVE"
+            );
+
+
+        const terminees =
+            historique.filter(
+                intervention =>
+                    intervention.statut ===
+                    "TERMINEE"
+            );
+
+
+        document.getElementById(
+            "statTotal"
+        ).textContent =
+            historique.length;
+
+
+        document.getElementById(
+            "statActives"
+        ).textContent =
+            actives.length;
+
+
+        document.getElementById(
+            "statTerminees"
+        ).textContent =
+            terminees.length;
+
+
+        const moyens =
+            new Set();
+
+
+        historique.forEach(
+            intervention => {
+
+                intervention.moyens.forEach(
+                    moyen =>
+                        moyens.add(
+                            moyen
+                        )
+                );
+
+            }
+        );
+
+
+        document.getElementById(
+            "vehiculesMobilises"
+        ).textContent =
+            moyens.size;
+
+    }
+
+
+    /*
+        =====================================================
+        GRAPHIQUE NATURE
+        =====================================================
+    */
+
+    function afficherGraphiqueNature() {
+
+        const categories = [
+            "INCENDIE",
+            "SAP",
+            "AVP",
+            "GAZ",
+            "DIVERS"
+        ];
+
+
+        const couleurs = {
+            INCENDIE:
+                "bar-red",
+
+            SAP:
+                "bar-green",
+
+            AVP:
+                "bar-orange",
+
+            GAZ:
+                "bar-purple",
+
+            DIVERS:
+                ""
+        };
+
+
+        const max =
+            Math.max(
+                1,
+                ...categories.map(
+                    categorie =>
+                        historique.filter(
+                            intervention =>
+                                intervention.nature ===
+                                categorie
+                        ).length
+                )
+            );
+
+
+        const zone =
+            document.getElementById(
+                "chartNature"
+            );
+
+
+        zone.innerHTML =
+            "";
+
+
+        categories.forEach(
+            categorie => {
+
+                const total =
+                    historique.filter(
+                        intervention =>
+                            intervention.nature ===
+                            categorie
+                    ).length;
+
+
+                const pourcentage =
+                    (
+                        total
+                        /
+                        max
+                    )
+                    * 100;
+
+
+                zone.innerHTML += `
+
+                    <div class="chart-row">
+
+                        <div class="chart-label">
+
+                            ${libelleNature(
+                                categorie
+                            )}
+
+                        </div>
+
+
+                        <div class="chart-bar-background">
+
+                            <div
+                                class="chart-bar ${couleurs[categorie]}"
+                                style="width:${pourcentage}%"
+                            ></div>
+
+                        </div>
+
+
+                        <div class="chart-value">
+
+                            ${total}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+    }
+
+
+    /*
+        =====================================================
+        VEHICULES LES PLUS ENGAGÉS
+        =====================================================
+    */
+
+    function afficherGraphiqueVehicules() {
+
+        const compteurs =
+            {};
+
+
+        historique.forEach(
+            intervention => {
+
+                intervention.moyens.forEach(
+                    moyen => {
+
+                        if (
+                            !compteurs[moyen]
+                        ) {
+
+                            compteurs[moyen] =
+                                0;
+
+                        }
+
+
+                        compteurs[moyen]++;
+
+                    }
+                );
+
+            }
+        );
+
+
+        const classement =
+            Object.entries(
+                compteurs
+            )
+            .sort(
+                (
+                    a,
+                    b
+                ) =>
+                    b[1]
+                    -
+                    a[1]
+            )
+            .slice(
+                0,
+                6
+            );
+
+
+        const max =
+            Math.max(
+                1,
+                ...classement.map(
+                    item =>
+                        item[1]
+                )
+            );
+
+
+        const zone =
+            document.getElementById(
+                "chartVehicules"
+            );
+
+
+        zone.innerHTML =
+            "";
+
+
+        if (
+            classement.length === 0
+        ) {
+
+            zone.innerHTML =
+                `
+                    <p style="color:#94a8b7;">
+                        Aucun véhicule utilisé.
+                    </p>
+                `;
+
+            return;
+
+        }
+
+
+        classement.forEach(
+            (
+                [vehicule, total]
+            ) => {
+
+                const pourcentage =
+                    (
+                        total
+                        /
+                        max
+                    )
+                    * 100;
+
+
+                zone.innerHTML += `
+
+                    <div class="chart-row">
+
+                        <div class="chart-label">
+
+                            ${vehicule}
+
+                        </div>
+
+
+                        <div class="chart-bar-background">
+
+                            <div
+                                class="chart-bar"
+                                style="width:${pourcentage}%"
+                            ></div>
+
+                        </div>
+
+
+                        <div class="chart-value">
+
+                            ${total}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+    }
+
+
+    /*
+        =====================================================
+        PERFORMANCE CASERNES
+        =====================================================
+    */
+
+    function afficherPerformanceCasernes() {
+
+        const performances = [
+
+            {
+                nom:
+                    "Centre de secours principal",
+
+                interventions:
+                    18,
+
+                delai:
+                    "06:52",
+
+                score:
+                    94
+            },
+
+
+            {
+                nom:
+                    "Centre de secours secondaire",
+
+                interventions:
+                    9,
+
+                delai:
+                    "08:31",
+
+                score:
+                    87
+            },
+
+
+            {
+                nom:
+                    "Centre de secours Nord",
+
+                interventions:
+                    0,
+
+                delai:
+                    "--",
+
+                score:
+                    0
+            }
+
+        ];
+
+
+        const zone =
+            document.getElementById(
+                "performanceCasernes"
+            );
+
+
+        zone.innerHTML =
+            "";
+
+
+        performances.forEach(
+            caserne => {
+
+                zone.innerHTML += `
+
+                    <div class="performance-item">
+
+                        <div>
+
+                            <h4>
+                                ${caserne.nom}
+                            </h4>
+
+                            <p>
+
+                                ${caserne.interventions}
+                                interventions •
+                                délai moyen :
+                                ${caserne.delai}
+
+                            </p>
+
+                        </div>
+
+
+                        <div class="score">
+
+                            ${caserne.score} %
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+    }
+
+
+    /*
+        =====================================================
+        HISTORIQUE
+        =====================================================
+    */
+
+    function afficherHistorique() {
+
+        const filtreNature =
+            document.getElementById(
+                "filtreNature"
+            ).value;
+
+
+        let liste =
+            historique;
+
+
+        if (
+            filtreNature
+        ) {
+
+            liste =
+                historique.filter(
+                    intervention =>
+                        intervention.nature ===
+                        filtreNature
+                );
+
+        }
+
+
+        const tbody =
+            document.getElementById(
+                "historiqueInterventions"
+            );
+
+
+        tbody.innerHTML =
+            "";
+
+
+        liste
+            .slice()
+            .reverse()
+            .forEach(
+                intervention => {
+
+                    const ligne =
+                        document.createElement(
+                            "tr"
+                        );
+
+
+                    ligne.innerHTML = `
+
+                        <td>
+                            ${intervention.date}
+                        </td>
+
+
+                        <td>
+                            ${intervention.titre}
+                        </td>
+
+
+                        <td>
+
+                            ${libelleNature(
+                                intervention.nature
+                            )}
+
+                        </td>
+
+
+                        <td>
+                            ${intervention.adresse}
+                        </td>
+
+
+                        <td>
+
+                            ${
+                                intervention.moyens.length > 0
+
+                                ?
+
+                                intervention.moyens.join(
+                                    ", "
+                                )
+
+                                :
+
+                                "Aucun"
+                            }
+
+                        </td>
+
+
+                        <td>
+
+                            ${libelleUrgence(
+                                intervention.urgence
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${libelleStatut(
+                                intervention.statut
+                            )}
+
+                        </td>
+
+                    `;
+
+
+                    tbody.appendChild(
+                        ligne
+                    );
+
+                }
+            );
+
+
+        document.getElementById(
+            "nombreHistorique"
+        ).textContent =
+            liste.length
+            +
+            (
+                liste.length > 1
+                    ? " interventions"
+                    : " intervention"
+            );
+
+    }
+
+
+    /*
+        =====================================================
+        PERIODE
+        =====================================================
+    */
+
+    function actualiserRapport() {
+
+        const periode =
+            document.getElementById(
+                "periode"
+            ).value;
+
+
+        console.log(
+            "Période sélectionnée :",
+            periode
+        );
+
+
+        /*
+            Pour le prototype,
+            toutes les données restent affichées.
+
+            Plus tard on pourra filtrer
+            réellement par date.
+        */
+
+        afficherHistorique();
+
+        afficherGraphiqueNature();
+
+        afficherGraphiqueVehicules();
+
+    }
+
+
+    /*
+        =====================================================
+        EXPORT CSV
+        =====================================================
+    */
+
+    function exporterRapport() {
+
+        let csv =
+            "Date;Intervention;Nature;Adresse;Moyens;Priorite;Statut\n";
+
+
+        historique.forEach(
+            intervention => {
+
+                csv +=
+                    [
+                        intervention.date,
+                        intervention.titre,
+                        libelleNature(
+                            intervention.nature
+                        ),
+                        intervention.adresse,
+                        intervention.moyens.join(
+                            ", "
+                        ),
+                        intervention.urgence,
+                        intervention.statut
+                    ]
+                    .map(
+                        valeur =>
+                            `"${String(
+                                valeur
+                            )
+                            .replaceAll(
+                                '"',
+                                '""'
+                            )}"`
+                    )
+                    .join(
+                        ";"
+                    )
+                    +
+                    "\n";
+
+            }
+        );
+
+
+        const blob =
+            new Blob(
+                [
+                    "\uFEFF",
+                    csv
+                ],
+                {
+                    type:
+                        "text/csv;charset=utf-8;"
+                }
+            );
+
+
+        const url =
+            URL.createObjectURL(
+                blob
+            );
+
+
+        const lien =
+            document.createElement(
+                "a"
+            );
+
+
+        lien.href =
+            url;
+
+
+        lien.download =
+            "rapport-interventions.csv";
+
+
+        document.body.appendChild(
+            lien
+        );
+
+
+        lien.click();
+
+
+        lien.remove();
+
+
+        URL.revokeObjectURL(
+            url
+        );
+
+    }
+
+
+    /*
+        =====================================================
+        RESET
+        =====================================================
+    */
+
+    function reinitialiserRapports() {
+
+        const confirmation =
+            confirm(
+                "Voulez-vous réellement réinitialiser les interventions enregistrées dans le navigateur ?"
+            );
+
+
+        if (
+            !confirmation
+        ) {
+            return;
+        }
+
+
+        localStorage.removeItem(
+            "interventionsSecours"
+        );
+
+
+        historique =
+            [];
+
+
+        actualiserTout();
+
+    }
+
+
+    /*
+        =====================================================
+        ACTUALISATION GENERALE
+        =====================================================
+    */
+
+    function actualiserTout() {
+
+        mettreAJourStats();
+
+        afficherGraphiqueNature();
+
+        afficherGraphiqueVehicules();
+
+        afficherPerformanceCasernes();
+
+        afficherHistorique();
+
+    }
+
+
+    /*
+        =====================================================
+        DEMARRAGE
+        =====================================================
+    */
+
+    chargerInterventionsLocales();
+
+    actualiserTout();
+
+</script>
+
+</body>
+</html>

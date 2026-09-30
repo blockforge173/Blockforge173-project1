@@ -1,11 +1,10 @@
 {
     "titre": "Chapitre 13 - La vérité commence",
     "musique": "chapitre13",
-    "fond": "chambre_joueur_nuit",
     "debut": "reveil",
     "scenes": {
         "reveil": {
-            "fond": "chambre_joueur",
+            "fond": "chambre_joueur_reveille",
             "ambiance": "chambre_joueur",
             "dialogues": [
                 {
@@ -53,7 +52,7 @@
             ]
         },
         "conversationGroupe": {
-            "fond": "chambre_joueur",
+            "fond": "discussion_groupe",
             "ambiance": "chambre_joueur",
             "dialogues": [
                 {
@@ -96,6 +95,7 @@
             ]
         },
         "validationMaison": {
+            "fond":"discussion_groupe",
             "dialogues": [
                 {
                     "personnage": "zoe",
@@ -436,7 +436,8 @@
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "À ces mots, Léna baisse encore davantage la tête."
+                    "texte": "À ces mots, Léna baisse encore davantage la tête.",
+                    "fond":"lena_triste"
                 },
                 {
                     "personnage": "claire",
@@ -466,7 +467,8 @@
                 },
                 {
                     "personnage": "narrateur",
-                    "texte": "Elle se lève précipitamment et quitte la pièce en courant."
+                    "texte": "Elle se lève précipitamment et quitte la pièce en courant.",
+                    "fond":"départ_lena"
                 },
                 {
                     "personnage": "claire",
@@ -637,7 +639,8 @@
                 },
                 {
                     "personnage": "narrateur",
-                    "texte": "Christophe baisse les yeux quelques instants."
+                    "texte": "Christophe baisse les yeux quelques instants.",
+                    "fond":"christophe_triste"
                 },
                 {
                     "personnage": "christophe",
@@ -667,7 +670,8 @@
                 },
                 {
                     "personnage": "narrateur",
-                    "texte": "Léna revient lentement dans le salon."
+                    "texte": "Léna revient lentement dans le salon.",
+                    "fond":"lena_retour"
                 },
                 {
                     "personnage": "claire",
@@ -728,7 +732,7 @@
                 {
                     "texte": "Entrer doucement",
                     "message": {
-                        "personnage": "joueur",
+                        "personnage": "narrateur",
                         "texte": "Tu restes devant la porte de la chambre."
                     },
                     "next": "discussionLena",
@@ -765,7 +769,8 @@
                 },
                 {
                     "personnage": "narrateur",
-                    "texte": "Tu t'assois près d'elle sans dire un mot."
+                    "texte": "Tu t'assois près d'elle sans dire un mot.",
+                    "fond":"joueur_chambre_lena"
                 }
             ],
             "choix": [
@@ -900,7 +905,8 @@
                 {
                     "personnage": "lena",
                     "texte": "Ce n'est pas son journal...",
-                    "son": "lena"
+                    "son": "lena",
+                    "fond":"journal_eva"
                 },
                 {
                     "personnage": "lena",
@@ -977,12 +983,12 @@
             ]
         },
         "preparationVideo": {
-            "fond": "salon_eva",
             "ambiance": "silence",
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "Christophe se lève lentement."
+                    "texte": "Christophe se lève lentement.",
+                    "fond":"preparation_video"
                 },
                 {
                     "personnage": "narrateur",

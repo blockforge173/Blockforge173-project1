@@ -5,7 +5,7 @@
   "scenes": {
     "attente22h": {
       "fond": "discussion_eva_message",
-      "ambiance": "chambre_joueur",
+      "ambiance": "appartement_joueur",
       "dialogues": [
         {
           "personnage": "narrateur",

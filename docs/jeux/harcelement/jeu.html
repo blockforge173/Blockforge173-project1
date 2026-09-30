@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Jeu narratif éducatif de sensibilisation au harcèlement."
+    >
+
+    <title>Derrière les mots — Jeu éducatif</title>
+
+    <!-- Feuilles de style -->
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dialogue.css">
+    <link rel="stylesheet" href="css/choix.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+
+    <!-- Fond dynamique -->
+
+    <div
+        id="fond-jeu"
+        aria-hidden="true"
+    ></div>
+
+    <!-- Voile sombre -->
+
+    <div
+        id="voile-fond"
+        aria-hidden="true"
+    ></div>
+
+    <!-- Transition noire -->
+
+    <div
+        id="transition"
+        class="actif"
+        aria-hidden="true"
+    ></div>
+
+    <!-- Conteneur principal -->
+
+    <div id="jeu">
+
+        <!-- En-tête -->
+
+        <header id="entete">
+
+            <button
+                id="retourMenu"
+                type="button"
+                aria-label="Retourner au menu principal"
+            >
+                ← Menu
+            </button>
+
+            <div
+                id="titre"
+                role="heading"
+                aria-level="1"
+            >
+                Chargement du chapitre...
+            </div>
+
+            <div class="actions-entete">
+
+                <button
+                    id="aide"
+                    type="button"
+                    aria-label="Afficher les numéros d’aide"
+                    aria-controls="modale-aide"
+                    aria-expanded="false"
+                >
+                    Aide
+                </button>
+
+                <button
+                    id="ouvrirParametres"
+                    type="button"
+                    aria-label="Ouvrir les paramètres"
+                    aria-controls="popupParametres"
+                    aria-expanded="false"
+                >
+                    ⚙
+                </button>
+
+            </div>
+
+        </header>
+
+        <!-- Conversation -->
+
+        <main
+            id="conversation"
+            aria-live="polite"
+            aria-relevant="additions"
+            tabindex="-1"
+        >
+
+            <div
+                id="personnage"
+                hidden
+            ></div>
+
+            <div id="texte">
+
+                <!--
+                    Les dialogues sont ajoutés automatiquement
+                    par dialogue.js.
+                -->
+
+            </div>
+
+            <div
+                id="message"
+                aria-live="polite"
+                hidden
+            ></div>
+
+        </main>
+
+        <!-- Fenêtre des choix -->
+
+        <div
+            id="popupChoix"
+            class="popup-choix"
+            aria-hidden="true"
+        >
+
+            <div
+                class="popup-choix-contenu"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="titreChoix"
+            >
+
+                <h2 id="titreChoix">
+                    Que veux-tu faire ?
+                </h2>
+
+                <div id="choix">
+
+                    <!--
+                        Les boutons sont ajoutés automatiquement
+                        par choix.js.
+                    -->
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Fenêtre des paramètres -->
+
+        <div
+            id="popupParametres"
+            class="popup-parametres"
+            aria-hidden="true"
+        >
+
+            <div
+                class="popup-parametres-contenu"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="titreParametres"
+            >
+
+                <h2 id="titreParametres">
+                    Paramètres
+                </h2>
+
+                <h3>
+                    Audio
+                </h3>
+
+                <!-- Volume de la musique -->
+
+                <div class="groupe-parametre">
+
+                    <label for="volumeMusique">
+                        Volume de la musique
+                    </label>
+
+                    <input
+                        id="volumeMusique"
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="40"
+                    >
+
+                    <output
+                        id="valeurVolumeMusique"
+                        for="volumeMusique"
+                    >
+                        40 %
+                    </output>
+
+                </div>
+
+                <!-- Volume de l'ambiance -->
+
+                <div class="groupe-parametre">
+
+                    <label for="volumeAmbiance">
+                        Volume de l’ambiance
+                    </label>
+
+                    <input
+                        id="volumeAmbiance"
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="25"
+                    >
+
+                    <output
+                        id="valeurVolumeAmbiance"
+                        for="volumeAmbiance"
+                    >
+                        25 %
+                    </output>
+
+                </div>
+
+                <!-- Volume des effets -->
+
+                <div class="groupe-parametre">
+
+                    <label for="volumeEffets">
+                        Volume des effets
+                    </label>
+
+                    <input
+                        id="volumeEffets"
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="70"
+                    >
+
+                    <output
+                        id="valeurVolumeEffets"
+                        for="volumeEffets"
+                    >
+                        70 %
+                    </output>
+
+                </div>
+
+                <h3>
+                    Affichage
+                </h3>
+
+                <!-- Assombrissement du fond -->
+
+                <div class="groupe-parametre">
+
+                    <label for="assombrissementFond">
+                        Assombrissement du fond
+                    </label>
+
+                    <input
+                        id="assombrissementFond"
+                        type="range"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="35"
+                    >
+
+                    <output
+                        id="valeurAssombrissementFond"
+                        for="assombrissementFond"
+                    >
+                        35 %
+                    </output>
+
+                </div>
+
+                <p>
+                    Les paramètres sont sauvegardés automatiquement.
+                </p>
+
+                <button
+                    id="reinitialiserParametres"
+                    type="button"
+                >
+                    Réinitialiser
+                </button>
+
+                <button
+                    id="fermerParametres"
+                    type="button"
+                >
+                    Fermer
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--
+        Avertissement affiché avant chaque lancement
+        ou reprise du jeu.
+    -->
+
+    <section
+        id="modale-avertissement"
+        class="modale"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titre-avertissement"
+    >
+
+        <div class="contenu-modale">
+
+            <h2 id="titre-avertissement">
+                Avant de continuer
+            </h2>
+
+            <div class="avertissement">
+
+                Ce jeu aborde le harcèlement, l’isolement, la violence
+                et la détresse psychologique.
+
+                Certaines scènes peuvent être difficiles.
+
+                Les passages concernant le suicide ou l’automutilation
+                restent non graphiques et ne donnent aucun détail sur
+                la manière de se faire du mal.
+
+            </div>
+
+            <p>
+                Tu peux interrompre le jeu, revenir au menu ou consulter
+                les ressources d’aide à tout moment.
+
+                Le jeu ne remplace pas l’aide d’un professionnel.
+            </p>
+
+            <div class="actions-modale">
+
+                <button
+                    id="accepter-avertissement"
+                    class="bouton-principal"
+                    type="button"
+                >
+                    Je comprends, continuer
+                </button>
+
+                <button
+                    id="aide-avertissement"
+                    class="bouton-quitter"
+                    type="button"
+                >
+                    Consulter les ressources
+                </button>
+
+                <a
+                    class="bouton-quitter"
+                    href="index.html"
+                >
+                    Quitter le jeu
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Ressources d'aide -->
+
+    <section
+        id="modale-aide"
+        class="modale modale-aide"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titre-aide"
+        hidden
+    >
+
+        <div class="contenu-modale contenu-aide">
+
+            <h2 id="titre-aide">
+                Tu peux demander de l’aide
+            </h2>
+
+            <p>
+                Si une scène est trop difficile, arrête le jeu et parle
+                à une personne de confiance, à un adulte ou à un
+                professionnel.
+            </p>
+
+            <ul class="numeros-aide">
+
+                <li class="numero-aide">
+
+                    <strong>
+                        Danger immédiat
+                    </strong>
+
+                    <a href="tel:112">
+                        112
+                    </a>
+
+                </li>
+
+                <li class="numero-aide">
+
+                    <strong>
+                        Urgence médicale — SAMU
+                    </strong>
+
+                    <a href="tel:15">
+                        15
+                    </a>
+
+                </li>
+
+                <li class="numero-aide">
+
+                    <strong>
+                        Police ou gendarmerie
+                    </strong>
+
+                    <a href="tel:17">
+                        17
+                    </a>
+
+                </li>
+
+                <li class="numero-aide">
+
+                    <strong>
+                        Harcèlement et cyberharcèlement
+                    </strong>
+
+                    <a href="tel:3018">
+                        3018
+                    </a>
+
+                </li>
+
+                <li class="numero-aide">
+
+                    <strong>
+                        Prévention du suicide
+                    </strong>
+
+                    <a href="tel:3114">
+                        3114
+                    </a>
+
+                    <span>
+                        24 h/24 et 7 j/7
+                    </span>
+
+                </li>
+
+                <li class="numero-aide">
+
+                    <strong>
+                        SOS Amitié
+                    </strong>
+
+                    <a href="tel:+33972394050">
+                        09 72 39 40 50
+                    </a>
+
+                    <span>
+                        24 h/24 et 7 j/7
+                    </span>
+
+                </li>
+
+            </ul>
+
+            <p>
+                Ces ressources concernent la France.
+
+                Les numéros 15, 17 et 112 sont réservés aux situations
+                d’urgence.
+            </p>
+
+            <div class="actions-modale">
+
+                <button
+                    id="fermer-aide"
+                    class="bouton-principal"
+                    type="button"
+                >
+                    Revenir au jeu
+                </button>
+
+                <a
+                    class="bouton-quitter"
+                    href="index.html"
+                >
+                    Quitter vers l’accueil
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!--
+        Scripts du moteur.
+
+        L'ordre de chargement est important.
+    -->
+
+    <script src="js/audioManager.js"></script>
+    <script src="js/parametres.js"></script>
+    <script src="js/animation.js"></script>
+    <script src="js/sauvegarde.js"></script>
+    <script src="js/chapitres.js"></script>
+    <script src="js/conditions.js"></script>
+    <script src="js/dialogue.js"></script>
+    <script src="js/choix.js"></script>
+    <script src="js/succes.js"></script>
+    <script src="js/galerie.js"></script>
+    <script src="js/moteur.js"></script>
+
+    <!-- Gestion de l'interface -->
+
+    <script>
+
+        "use strict";
+
+        /*
+         * Éléments des paramètres.
+         */
+
+        const boutonRetourMenu =
+            document.getElementById(
+                "retourMenu"
+            );
+
+        const boutonOuvrirParametres =
+            document.getElementById(
+                "ouvrirParametres"
+            );
+
+        const boutonFermerParametres =
+            document.getElementById(
+                "fermerParametres"
+            );
+
+        const popupParametres =
+            document.getElementById(
+                "popupParametres"
+            );
+
+        /*
+         * Éléments de l'avertissement et de l'aide.
+         */
+
+        const boutonAide =
+            document.getElementById(
+                "aide"
+            );
+
+        const boutonAideAvertissement =
+            document.getElementById(
+                "aide-avertissement"
+            );
+
+        const boutonFermerAide =
+            document.getElementById(
+                "fermer-aide"
+            );
+
+        const boutonAccepterAvertissement =
+            document.getElementById(
+                "accepter-avertissement"
+            );
+
+        const modaleAvertissement =
+            document.getElementById(
+                "modale-avertissement"
+            );
+
+        const modaleAide =
+            document.getElementById(
+                "modale-aide"
+            );
+
+        let retourAvertissementApresAide =
+            false;
+
+        /*
+         * Ouvrir les paramètres.
+         */
+
+        function ouvrirParametres() {
+
+            if (!popupParametres) {
+                return;
+            }
+
+            if (
+                typeof parametresManager !== "undefined" &&
+                parametresManager !== null &&
+                typeof parametresManager
+                    .actualiserDepuisAudio === "function"
+            ) {
+
+                parametresManager
+                    .actualiserDepuisAudio();
+
+            }
+
+            popupParametres
+                .classList
+                .add(
+                    "ouverte"
+                );
+
+            popupParametres
+                .setAttribute(
+                    "aria-hidden",
+                    "false"
+                );
+
+            boutonOuvrirParametres
+                ?.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+            boutonFermerParametres
+                ?.focus();
+
+        }
+
+        /*
+         * Fermer les paramètres.
+         */
+
+        function fermerParametres() {
+
+            if (!popupParametres) {
+                return;
+            }
+
+            popupParametres
+                .classList
+                .remove(
+                    "ouverte"
+                );
+
+            popupParametres
+                .setAttribute(
+                    "aria-hidden",
+                    "true"
+                );
+
+            boutonOuvrirParametres
+                ?.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            boutonOuvrirParametres
+                ?.focus();
+
+        }
+
+        /*
+         * Ouvrir les ressources d'aide.
+         */
+
+        function ouvrirAide(
+            depuisAvertissement = false
+        ) {
+
+            retourAvertissementApresAide =
+                depuisAvertissement;
+
+            if (depuisAvertissement) {
+
+                modaleAvertissement.hidden =
+                    true;
+
+            }
+
+            modaleAide.hidden =
+                false;
+
+            document.body
+                .classList
+                .add(
+                    "aide-ouverte"
+                );
+
+            boutonAide
+                ?.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+            boutonFermerAide
+                ?.focus();
+
+        }
+
+        /*
+         * Fermer les ressources d'aide.
+         */
+
+        function fermerAide() {
+
+            modaleAide.hidden =
+                true;
+
+            document.body
+                .classList
+                .remove(
+                    "aide-ouverte"
+                );
+
+            boutonAide
+                ?.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            /*
+             * Cet événement permet au moteur de poursuivre
+             * le chargement après le rappel de fin de chapitre.
+             */
+
+            modaleAide.dispatchEvent(
+                new CustomEvent(
+                    "aideFermee"
+                )
+            );
+
+            if (retourAvertissementApresAide) {
+
+                retourAvertissementApresAide =
+                    false;
+
+                modaleAvertissement.hidden =
+                    false;
+
+                boutonAccepterAvertissement
+                    ?.focus();
+
+            } else {
+
+                boutonAide
+                    ?.focus();
+
+            }
+
+        }
+
+        /*
+         * Accepter l'avertissement.
+         */
+
+        boutonAccepterAvertissement
+            ?.addEventListener(
+                "click",
+                () => {
+
+                    modaleAvertissement.hidden =
+                        true;
+
+                    document
+                        .getElementById(
+                            "conversation"
+                        )
+                        ?.focus();
+
+                }
+            );
+
+        /*
+         * Ouvrir l'aide depuis l'avertissement.
+         */
+
+        boutonAideAvertissement
+            ?.addEventListener(
+                "click",
+                () => {
+
+                    ouvrirAide(
+                        true
+                    );
+
+                }
+            );
+
+        /*
+         * Ouvrir l'aide depuis le jeu.
+         */
+
+        boutonAide
+            ?.addEventListener(
+                "click",
+                () => {
+
+                    ouvrirAide(
+                        false
+                    );
+
+                }
+            );
+
+        /*
+         * Fermer l'aide.
+         */
+
+        boutonFermerAide
+            ?.addEventListener(
+                "click",
+                fermerAide
+            );
+
+        /*
+         * Ouvrir les paramètres.
+         */
+
+        boutonOuvrirParametres
+            ?.addEventListener(
+                "click",
+                ouvrirParametres
+            );
+
+        /*
+         * Fermer les paramètres.
+         */
+
+        boutonFermerParametres
+            ?.addEventListener(
+                "click",
+                fermerParametres
+            );
+
+        /*
+         * Retourner au menu principal.
+         */
+
+        boutonRetourMenu
+            ?.addEventListener(
+                "click",
+                () => {
+
+                    const confirmation =
+                        window.confirm(
+                            "Retourner au menu principal ?"
+                        );
+
+                    if (!confirmation) {
+                        return;
+                    }
+
+                    /*
+                     * Sauvegarder la progression.
+                     */
+
+                    if (
+                        typeof moteur !== "undefined" &&
+                        moteur !== null &&
+                        typeof moteur
+                            .sauvegarder === "function"
+                    ) {
+
+                        moteur
+                            .sauvegarder();
+
+                    }
+
+                    /*
+                     * Arrêter progressivement les sons.
+                     */
+
+                    if (
+                        typeof audioManager !== "undefined" &&
+                        audioManager !== null
+                    ) {
+
+                        if (
+                            typeof audioManager
+                                .fadeOut === "function"
+                        ) {
+
+                            audioManager
+                                .fadeOut(
+                                    800
+                                );
+
+                        }
+
+                        if (
+                            typeof audioManager
+                                .fadeOutAmbiance === "function"
+                        ) {
+
+                            audioManager
+                                .fadeOutAmbiance(
+                                    600
+                                );
+
+                        }
+
+                    }
+
+                    const allerAuMenu =
+                        () => {
+
+                            window.location.href =
+                                "index.html";
+
+                        };
+
+                    /*
+                     * Utiliser la transition noire si elle existe.
+                     */
+
+                    if (
+                        typeof animationManager !== "undefined" &&
+                        animationManager !== null &&
+                        typeof animationManager
+                            .transitionVersNoir === "function"
+                    ) {
+
+                        animationManager
+                            .transitionVersNoir(
+                                allerAuMenu
+                            );
+
+                    } else {
+
+                        allerAuMenu();
+
+                    }
+
+                }
+            );
+
+        /*
+         * Fermer les paramètres en cliquant sur le fond.
+         */
+
+        popupParametres
+            ?.addEventListener(
+                "click",
+                event => {
+
+                    if (
+                        event.target ===
+                        popupParametres
+                    ) {
+
+                        fermerParametres();
+
+                    }
+
+                }
+            );
+
+        /*
+         * Gestion de la touche Échap.
+         */
+
+        document.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key !== "Escape"
+                ) {
+                    return;
+                }
+
+                /*
+                 * L'avertissement obligatoire ne peut pas
+                 * être fermé avec Échap.
+                 */
+
+                if (
+                    !modaleAvertissement.hidden
+                ) {
+                    return;
+                }
+
+                if (
+                    !modaleAide.hidden
+                ) {
+
+                    fermerAide();
+                    return;
+
+                }
+
+                if (
+                    popupParametres
+                        ?.classList
+                        .contains(
+                            "ouverte"
+                        )
+                ) {
+
+                    fermerParametres();
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

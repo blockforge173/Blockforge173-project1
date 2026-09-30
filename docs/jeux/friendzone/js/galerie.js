@@ -3245,3 +3245,26 @@ const galerieManager = {
     }
 
 };
+
+
+/*=========================================================
+ INITIALISATION AUTOMATIQUE
+=========================================================*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        if (
+            typeof galerieManager !==
+                "undefined" &&
+            galerieManager
+        ) {
+
+            galerieManager
+                .initialiser();
+
+        }
+
+    }
+);

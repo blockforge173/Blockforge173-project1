@@ -1,0 +1,1127 @@
+{
+    "titre":"chapitre 3 - Avant ses premiers souvenirs",
+    "musique":"chapitre3",
+    "debut":"La voiture rouge",
+    "scenes":{
+        "La voiture rouge":{
+        "ambiance":"soiree",
+        "fond":"appartement",
+        "volumeAmbiance":0.1,
+        "dialogues":[
+            {
+                "personnage":"Narrateur",
+                "texte":"La soirée s'installe doucement dans l'appartement."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Après avoir terminé son goûter, Zoé retourne dans sa chambre. Bryan la suit avec sa petite voiture serrée dans sa main."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Tu fais mon dessun maintenant ?"
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Oui, mais tu dois me laisser dessiner tranquillement."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Je peux regarder ?"
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Tu peux regarder, mais tu ne touche pas aux crayons."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Même le rouge ?"
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Surtout le rouge."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Zoé s'assoit à son bureau et prend une nouvelle feuille. Bryan s'installe près d'elle, les bras posèes sur le bord du meuble."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Alors, tu voulais une voiture rouge."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Avec des flammes !"
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Tu n'avais pas parlé des flammes ce matin."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"J'ai changé d'avis."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"D'accord. Mais pas trop de flammes."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Pourquoi ?"
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Parce qu'après, on verra plus la voiture."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Elle doit aller très vite."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Je vais essayer."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Zoé commence par dessiner les roues, puis la carrosserie. Bryan observe chaque trais avec beaucoup de sérieux."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"La roue est trop petite"
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Je viens juste de commencer."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"L'autre aussi est trop petite."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Bryan..."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Je t'aide."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Alors aide moi en attendant que j'aie terminé."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Bryan reste silencieux pendant quelques secondes."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Tu as oublié les flammes."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Je ne les ai pas oubliées !"
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Zoé ajoute de grande flammes jaunes et orange derrière la voiture."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Voilà. Une voiture rouge avec des flammes."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Elle va super vite ?"
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Plus vite que toutes les autres."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Mème plus vite que celle du papa d'Inès ?"
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Je ne sais pas. Je ne l'ai jamais vue rouler."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Moi, je dis qu'elle va plus vite."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Zoé inscrit le pénom de Bryan au-dessus de la voiture et lui tend la feuille."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Tiens. Promesse tenue."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Elle est pour moi ?"
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Oui. Mais tu ne la plies pas."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Promis !"
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Bryan attrape le dessin et quitte la  chambre en courant."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Ne cours pas avec la feuille !"
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Maman ! Regarde ma voiture !"
+            }
+        ],
+        "next":"L'heure-du-coucher"
+    },
+    "L'heure-du-coucher":{
+        "dialoges":[
+            {
+                "personnage":"Narrateur",
+                "texte":"Plus tard dans la soirée, Claire accompagne Bryan dans sa chambre."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Le dessin de la voiture rouge est posé près de son lit."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Tu as mis ton pyjama ?"
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Oui."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Tu t'es lavé les dents ?"
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Oui."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Tu es certain ?"
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Presque."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Alors direction la salle de bain."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Bryan pousse un long soupir avant de quitter son lit."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Quelques minutes plus tard, Claire borde son fils et éteint la lumière."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Tu laisse la porte ouverte ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Un petit peu."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Et mon dessin ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Il reste juste ici."
+            },
+            {
+                "personnage":"Bryan",
+                "texte":"Zoé dessine bien."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Oui, elle dessine très bien."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Claire embrasse Bryan sur le front, puis rejoint la chambre de Zoé."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Zoé est déjà couchée, mais regarde encore son dessin de la danseuse."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Il est temps de dormir."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Je regardais juste un détail."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Tu regarderas le reste demain."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Claire s'assoit sur le bord du lit."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Bryan est très fier de sa voiture."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Il a changé d'avis au dernier moment. Il voulait des flammes."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Tu as quand même tenu ta promesse."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Oui."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Zoé pose son dessun sur la table de nuit."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Maman ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Oui ?"
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Quand je suis née... tu étais toute seule ?"
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Claire regarde sa fille avec surprise."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Pourquoi me demandes-tu cela ?"
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Je pensais encore à papa."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Je comprends."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Il était là quand je suis née."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Non. Il était déjà parti."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Alors, tu étais vraiment toute seule ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Pas complètement. Ta tante Elise m'a beaucoup aidée. Elle était même avec moi le jour de ta naissance."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Elle m'a vue quand j'étais bébé ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Elle t'a vue quelque minutes après ta naissance."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"J'étais comment ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Toute petite, très bruyante et déjà incapable d'attendre."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Je ne suis pas incapable d'attendre !"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Tu poses souvent une nouvelle question avant que j'aie terminé de répondre à la précédente."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"C'est parce que je pense vite."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Evidemment."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Tu avvais peur ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Oui. J'avais peur de beaucoup de choses."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Mais tu étais contente ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Très contente."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Même si papa était parti ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Son départ m'a fait beaucoup de mal. Mais toi, tu n'étais pas responsable de cette douleur. Ta naissance restait l'un des plus beaux jours de ma vie."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Zoé réfléchit quelques secondes."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Tante Elise t'a aidée comment ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"De beaucoup de manières. Elle m'a écoutée, elle m'a aidée à préparer ta chambre et elle est restée près de moi quand tu es née."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Tu me raconteras tout un jour ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Quand tu seras un peu plus grande, si tu le souhaites."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"D'accord."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Maintenant, dors."
+            },
+            {
+                "personnage":"Zoé",
+                "texte":"Bonne nuit, maman."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Bonne nuit, ma grande."
+            }
+        ],
+        "next":"La-boîte"
+    },
+    "La-boîte":{
+        "dialogues":[
+            {
+                "personnage":"Narrateur",
+                "texte":"Lorsque les enfants sont couchés, Claire retourne dans le salon."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Sur une étagère se trouve une boîte qu'elle ouvre rarement. Elle la pose sur la table et soulève doucement le couvercle."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"A l'intérieur, elle retrouve un bracelet de maternité, quelques photographies, une petite paire de chaussettes et le premier bonnet de Zoé."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Claire prend le bonnet entre ses doigts."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Zoé ne conserve aucun souvenir de sa naissance. Elle ne se rappelle ni la peur de sa mère, ni le départ de son père ni les personnes qui ont aidé Claire à tenir."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Pourtant, ces événements appartiennent à son histoire."
+            },
+            {
+                "personnage":"système",
+                "texte":"L'image s'efface progressivement."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Neuf ans plus tôt"
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Quelque semaine avant la naissance de Zoé."
+            }
+        ],
+        "next":"Le-départ"
+    },
+    "Le-départ":{
+        "dialogues":[
+            {
+                "personnage":"Narrateur",
+                "texte":"Dans l'appartement, plusieurs cartons sont encore fermés. Des vêtements de bébé attendent sur la table et la future chambre de Zoé n'est pas terminée."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Claire se tient dans le salon, une main posée sur son ventre."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Le père de Zoé est près de la porte. Un sac est posé à ses pieds."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Dis-moi que tu ne vas pas vraiment partir."
+            },
+            {
+                "personnage":"Père-de-Zoé",
+                "texte":"Je ne peux pas rester."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Elle va naître dans quelques semaines."
+            },
+            {
+                "personnage":"Père-de-Zoé",
+                "texte":"Je le sais."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Alors comporte-toi comme si tu le savais."
+            },
+            {
+                "personnage":"Père-de-Zoé",
+                "texte":"Je ne suis pas prêt pour tout ça."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Moi non plus, je ne suis pas prêtes pour tout. Mais je ne peux pas simplement disparaître."
+            },
+            {
+                "personnage":"Père-de-Zoé",
+                "texte":"Je ne serai pas un bon père."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Alors apprends. Demande de l'aide. Mais ne décide pas que partir est la seule solution."
+            },
+            {
+                "personnage":"Père-de-Zoé",
+                "texte":"J'ai déjà pris ma décision."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Claire reste immobile. Sa voix devient plus faible."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Et moi ? Qu'est-ce que je suis censée faire maintenat ?"
+            },
+            {
+                "personnage":"Père-de-Zoé",
+                "texte":"Je suis désolé."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Ne me dit pas seulement que tu es désolé."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Le père de Zoé prend son sac."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Pendant quelques secondes, il semble vouloir ajouterr quelque chose. Acun mot ne vient."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Il ouvre la porte et quitte l'appartement."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"La porte se referme."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Claire reste seul au milieu du salon."
+            }
+        ],
+        "next":"L'arrivée-d'Elise"
+    },
+    "L'arrivée-d'Elise":{
+        "dialogues":[
+            {
+                "personnage":"Narrateur",
+                "texte":"Quelques heures plus tard, quelqu'un frappe à la porte."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Claire ne répond pas immédiatement."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Claire ? C'est moi."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Claire finit par ouvrir."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Sa soeur comprend rapidement que quelque chose ne va pas."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Qu'est-ce qui s'est passé ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Il est parti."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Parti où ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Je ne sais pas. Il a pris ses affaires. Il a dit qu'il ne pouvait pas rester."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Claire retourne s'asseoir dans le salon. Elise referme la porte derrière elle."
+            }
+        ],
+        "choix":[
+            {
+                "texte":"S'asseoir près de Claire et l'écouter",
+                "message":{
+                    "personnage":"Narrateur",
+                    "texte":"Elise s'installe près de sa soeur."
+                },
+                "next":"S'asseor-avec-claire"
+            },
+            {
+                "texte":"Demander à Claire ce dont elle a besoin",
+                "message":{
+                    "personnage":"Elise",
+                    "texte":"Qu'est-ce que je peux faire pour toi maiintenant ?"
+                },
+                "next":"Demander-ce-dont-elle-a-besoin"
+            },
+            {
+                "texte":"Prendre Claire dans sess bras.",
+                "message":{
+                    "personnage":"Narrateur",
+                    "texte":"Elise s'approche doucement et ouvre les bras."
+                },
+                "next":"Prendre-claire-dans-ses-bras."
+            }
+        ]
+    },
+    "S'asseoir-avec-claire":{
+        "dialogues":[
+            {
+                "personnage":"Claire",
+                "texte":"Je pensais qu'il avait peur. Je pensais qu'on pourrait en parler et trouver une solution."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Tu peux prendre ton temps. Je t'écoute."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Il a déjà décidé. Il n'a mêe pas voulu discuter."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Je suis désolée."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Je ne sais pas comment je vais faire."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Tu n'as pas besoin de trouver toutes les réponses ce soir."
+            }
+        ],
+        "next":"Elise-aide-Claire"
+    },
+    "Demander-ce-dont-elle-a-besoin":{
+        "dialogues":[
+            {
+                "personnage":"Claire",
+                "texte":"Je ne sais pas."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Est-ce que tu veux parler, rester seule ou simplement que je reste ici ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Reste, s'il te plaît."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"D'accord. Je reste"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Je ne sais pas comment je vais faire."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Tu n'as pas besoin de tout décider ce soir."
+            }
+        ],
+        "next":"Elise-aide-Claire"
+    },
+    "Prendre-claiire-dans-ses-bras":{
+        "dialogues":[
+            {
+                "personnage":"Narrateur",
+                "texte":"Claire s'y réfugie sans parvenir à retenir ses larmes."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Je ne comprend pas comment il peut partir maintenant."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Je suis là."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Je ne sais pas comment je vais faire."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Tu n'as pas besoin de savoir tout de suite. Ce soir, je reste avec toi."
+            }
+        ],
+        "next":"Elise-aide-Claire"
+    },
+    "Elise-aide-Claire":{
+        "dialogues":[
+            {
+                "personnage":"Narrateur",
+                "texte":"Elise reste près de sa soeur jusqu'à ce que sa respiration redevienne plus calme."
+            },
+               {
+                "personnage":"Claire",
+                "texte":"Je ne veux pas que Zoé souffre à cause de tout ça."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Ce qui vient de se passer n'est pas sa faute. Ce n'est pas la tienne non plus."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Elle n'est même pas encore née et son père est déjà parti."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Elle aura une mère qui l'aime. Et tu ne seras pas complètement seul."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Tu as ta propre vie."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Oui. Et tu en fais partie."
+            }
+        ],
+        "next":"Les-jours-suivants"
+    },
+    "Les-jours-suivants":{
+        "dialogues":[
+            {
+                "personnage":"Narrateur",
+                "texte":"Les jours passent. Claire continue ses rendez-vous et prépare l'arrivée de Zoé."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Elise vient régulièrement lui rendre visite."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Un après-midi, elle découvre sa soeur assise au milieu de la future chambre du bébé. Plusieurs cartons sont ouverts autour d'elle."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Tu as commencé sans moi ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"J'ai essayé"
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Et alors ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"J'ai ouvert trois cartons, déplacer une commode et maintenant je ne sais plus où j'ai mis les draps."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"C'est donc une réussite presque complète."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Ne te moque pas."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Je ne me moque pas. J'essaie de comprendre ton système de rangement."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Je n'ai pas de système"
+            },
+            {
+                "personnage":"Elise",
+                "texte":"J'avais remarqué"
+            }
+        ],
+        "choix":[
+            {
+                "texte":"Monter le lit de Zoé",
+                "message":{
+                    "personnage":"Elise",
+                    "texte":"On commence par le lit. Au moins, Zoé aura quelque part où dormir."
+                },
+                "next":"Monter-le-lit"
+            },
+            {
+                "texte":"Ranger les vêtements du bébé",
+                "message":{
+                    "personnage":"Elise",
+                    "texte":"On commence par les vêtements."
+                },
+                "next":"Ranger-les-vêtements"
+            },
+            {
+               "texte":"Préparer le sac de maternité",
+               "message":{
+                "personnage":"Elise",
+                "texte":"On commence par le sac pour la maternité. Comme ça, il sera prêt."
+               },
+               "next":"Préparer-le-sac-de-maternité"
+            }
+        ]
+    },
+    "Monter-le-lit":{
+        "dialogues":[
+            {
+                "personnage":"Claire",
+                "texte":"La notice est incompréhensible."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Ce ne sont que quelques planches et des vis."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Quelques minutes plus tard. Elise observe plusieurs pièces étalées devant elle."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"D'accord. La notice est incompréensible."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Je te l'avais dit."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Les deux soeur finissent par monter le lit ensemble, après avoir recommencé une partie de l'assemblage."
+            }
+        ],
+        "next":"fin-après-midi"
+    },
+    "Ranger-les-vêtements":{
+        "dialogues":[
+            {
+                "personnage":"Claire",
+                "texte":"Je ne sais pas comment quelque chose d'aussi petit peut avoir besoin d'autant d'affaites."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Pourquoi y a-t-il trois tailles différentes ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Parce que les bébés grandissent."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Aussi vite ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Apparamment."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Elles trient les vêtements et les rangent daans la commode."
+            }
+        ],
+        "next":"fin-après-midi"
+    },
+    "Préparer-le-sac-de-maternité":{
+        "dialogues":[
+            {
+                "personnage":"Claire",
+                "texte":"Il  reste encore plusieurs semaines."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Justement. Nous avons le temps de vérifier tranquillement."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"J'ai une liste."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Evidemment que tu as fait une liste."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Elles vérifies chaque élément et préparent ensemble les affaires de Claire et de Zoé."
+            }
+        ],
+        "next":"fin-après-midi"
+    },
+    "fin-après-midi":{
+        "dialogues":[
+            {
+                "personnage":"Narrateur",
+                "texte":"A la fin de l'après-midi, la chambre commence enfin à resembler à celle d'un bébé."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Merci."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Tu n'as pas besoin de me remercier toutes les dix minutes."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Je sais."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Tu viens pourtant de recommencer."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Merci de ne pas me laisser seule."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"ça, tu peux me remerccier pour ça."
+            }
+        ],
+        "next":"Une-inquiétude-dans-la-nuit"
+    },
+    "Une-inquiétude-dans-la-nuit":{
+        "dialogues":[
+            {
+                "personnage":"Narrateur",
+                "texte":"Quelque semaines plus tard, le téléphone d'Elise sonne au milieu de la nuit."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Allô ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Je suis désolée de t'appeler aussi tard."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Qu'est-ce qui se passe ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Je ne sais pas si le travail a commencé. J'ai mal depuis un moment."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Est-ce que tu as appelé la maternité ?"
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Pas encore. J'avais peur de les déranger pour rien."
+            }
+        ],
+        "choix":[
+            {
+                "texte":"Tu ne les déranges pas. Appelons-les maintenant.",
+                "message":{
+                    "personnage":"Elise",
+                    "texte":"Tu ne les déranges pas. Leur travail est justement de répondre à ce genre de question. Appelons-les maintenant."
+                },
+                "next":"appel-maternité"
+            },
+            {
+                "texte":"Je viens te rejoindre et nous vérifirons ensemble.",
+                "message":{
+                    "personnage":"Elise",
+                    "texte":"Je viens te rejoindre, En attendant, prépare tes affaires et appelle la maternité."
+                },
+                "next":"Elise-rejoin-Claire"
+            },
+            {
+                "texte":"Respire doucement, je reste au téléphone avec toi.",
+                "message":{
+                    "personnage":"Elise",
+                    "texte":"Respire doucement,je resteau téléphone avec toi. Ensuite, nous appellerons la maternité ensemble."
+                },
+                "next":"Télephone-Claire"
+            }
+        ]
+    },
+    "appel-maternité":{
+        "dialogues":[
+            {
+                "personnage":"Claire",
+                "texte":"Tu restes avec moi ?"
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Oui. Je reste en ligne."
+            }
+        ],
+        "next":"DébutDeSoirée"
+    },
+    "Elise-rejoin-Claire":{
+        "dialogues":[
+            {
+                "personnage":"Claire",
+                "texte":"Tu es sûre ,"
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Ou. Je pars maintenant."
+            }
+        ],
+        "next":"DébutDeSoirée"
+    },
+    "Téléphone-Claire":{
+        "dialogues":[
+            {
+                "personnage":"Claire",
+                "texte":"D'accord."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Tu n'est pas toute seule."
+            }
+        ],
+        "next":"DébutDeSoirée"
+    },
+    "DébutDeSoirée":{
+        "dialogues":[
+            {
+                "personnage":"Narrateur",
+                "texte":"Après l'appel à la marenité, Claire doit venir être examinée."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Elise la rejoint et prend  le sac préparé quelques semaines plus tôt."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Je ne suis pas prête."
+            },
+            {
+                "personnage":"Le sac est prêt."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Je ne parle pas du sac."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Je sais."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Et si je n'y arrive pas ?"
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Tu n'as pas besoin de traverser toute la nuit en une seule fois. On cimence par aller à la maternité."
+            }
+        ],
+        "next":"LaMaternité"
+    },
+    "LaMaternité":{
+        "dialogues":[
+            {
+                "personnage":"Narrateur",
+                "texte":"Quelque heures plus tard, Claire est installée à la maternité."
+            },
+            {
+                "personnage":"Narrateur",
+                "texte":"Elise est assise près d'elle."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Il devrait être là."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Je sais."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"C'est sa fille aussi."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Oui."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"Je suis heureuse que tu sois là. Mais j'aurais voulu qu'il prenne ses responsabilités."
+            },
+            {
+                "personnage":"Elise",
+                "texte":"Tu as le droit de ressentir les deux en même temps."
+            },
+            {
+                "personnage":"Claire",
+                "texte":"J'ai peur de ne pas être une bonne mère."
+            }
+        ]
+    }
+}
+}

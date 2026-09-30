@@ -1,12 +1,13 @@
 {
     "titre": "Chapitre 1 - Une nouvelle rencontre",
     "musique": "chapitre1",
+    "volumeMusique":0.80,
     "debut": "intro",
     "scenes": {
         "intro": {
             "fond": "universite",
             "ambiance": "rue parisienne",
-            "volumeAmbiance": 0.1,
+            "volumeAmbiance": 0.25,
             "dialogues": [
                 {
                     "personnage": "narrateur",
@@ -65,6 +66,7 @@
         },
         "chocolat": {
             "ambiance": "cafeteria",
+            "volumeAmbiance":0.25,
             "dialogues": [
                 {
                     "personnage": "narrateur",
@@ -79,7 +81,8 @@
                 {
                     "personnage": "zoe",
                     "texte": "Oups... Je crois que j'ai encore fait une bêtise.",
-                    "son": "zoe"
+                    "son": "zoe",
+                    "volumeSon":0.22
                 },
                 {
                     "fond": "cafeteria_réaction_emelyne",
@@ -154,7 +157,8 @@
                 {
                     "personnage": "emelyne",
                     "texte": "Merci. Heureusement que quelqu'un a réagi rapidement.",
-                    "son": "emelyne"
+                    "son": "emelyne",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "narrateur",
@@ -201,7 +205,8 @@
                 {
                     "personnage": "emelyne",
                     "texte": "Je m'en doutais un peu.",
-                    "son": "emelyne"
+                    "son": "emelyne",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "emelyne",
@@ -244,7 +249,8 @@
                 {
                     "personnage": "emelyne",
                     "texte": "Je connais surtout les personnes de ma classe et quelques membres des clubs.",
-                    "son": "emelyne"
+                    "son": "emelyne",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "emelyne",
@@ -291,7 +297,8 @@
                 {
                     "personnage": "emelyne",
                     "texte": "Si tu veux, {{nomJoueur}}, je peux te faire visiter rapidement l'université.",
-                    "son": "emelyne"
+                    "son": "emelyne",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "emelyne",
@@ -339,7 +346,8 @@
                 {
                     "personnage": "emelyne",
                     "texte": "D'accord. Suis-moi.",
-                    "son": "emelyne"
+                    "son": "emelyne",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "emelyne",
@@ -365,6 +373,7 @@
         },
         "visiteBatimentPrincipal": {
             "ambiance": "administration",
+            "volumeAmbiance":0.25,
             "dialogues": [
                 {
                     "personnage": "narrateur",
@@ -374,6 +383,7 @@
                     "personnage": "emelyne",
                     "texte": "Ici, tu trouveras l'administration, le bureau du directeur et la vie scolaire.",
                     "son": "emelyne",
+                    "volumeSon":0.22,
                     "fond": "administration"
                 },
                 {
@@ -412,7 +422,8 @@
                 {
                     "personnage": "emelyne",
                     "texte": "Je suis ici depuis plusieurs années.",
-                    "son": "emelyne"
+                    "son": "emelyne",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "emelyne",
@@ -425,7 +436,8 @@
                 {
                     "personnage": "systeme",
                     "texte": "Nouvelle information : sur émelyne.",
-                    "son": "systeme"
+                    "son": "systeme",
+                    "volumeSon":0.22
                 }
             ],
             "choix": [
@@ -441,6 +453,7 @@
         },
         "visiteBibliotheque": {
             "ambiance": "bibliotheque",
+            "volumeAmbiance":0.25,
             "dialogues": [
                 {
                     "personnage": "narrateur",
@@ -451,6 +464,7 @@
                     "personnage": "emelyne",
                     "texte": "La bibliothèque est généralement calme.",
                     "son": "emelyne",
+                    "volumeSon":0.22,
                     "fond": "bibliotheque"
                 },
                 {
@@ -467,6 +481,7 @@
                     "texte": "Lui demander si elle vient souvent ici",
                     "message": {
                         "son": "joueur",
+                        "volumeSon":0.22,
                         "personnage": "joueur",
                         "texte": "Tu viens souvent travailler ici ?"
                     },
@@ -491,7 +506,8 @@
                 {
                     "personnage": "emelyne",
                     "texte": "Oui, assez souvent.",
-                    "son": "emelyne"
+                    "son": "emelyne",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "emelyne",
@@ -504,7 +520,8 @@
                 {
                     "personnage": "systeme",
                     "texte": "Nouvelle information: sur émelyne.",
-                    "son": "systeme"
+                    "son": "systeme",
+                    "volumeSon":0.22
                 }
             ],
             "choix": [
@@ -524,6 +541,7 @@
         },
         "visiteGymnase": {
             "ambiance": "gymnase",
+            "volumeAmbiance":0.25,
             "dialogues": [
                 {
                     "personnage": "narrateur",
@@ -534,6 +552,7 @@
                     "personnage": "emelyne",
                     "texte": "Les cours de sport ont lieu ici.",
                     "son": "emelyne",
+                    "volumeSon":0.22,
                     "fond": "gymnase"
                 },
                 {
@@ -573,7 +592,8 @@
                 {
                     "personnage": "emelyne",
                     "texte": "Pas vraiment.",
-                    "son": "emelyne"
+                    "son": "emelyne",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "emelyne",
@@ -602,6 +622,7 @@
         "finVisiteEcole": {
             "fond": "couloir",
             "ambiance": "classe",
+            "volumeAmbiance":0.25,
             "dialogues": [
                 {
                     "personnage": "narrateur",
@@ -610,7 +631,8 @@
                 {
                     "personnage": "emelyne",
                     "texte": "Voilà {{nomJoueur}}. Tu devrais déjà avoir moins de mal à te repérer.",
-                    "son": "emelyne"
+                    "son": "emelyne",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "emelyne",
@@ -653,7 +675,8 @@
                 {
                     "personnage": "emelyne",
                     "texte": "D'accord {{nomJoueur}}.",
-                    "son": "emelyne"
+                    "son": "emelyne",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "emelyne",
@@ -713,7 +736,8 @@
                 {
                     "personnage": "zoe",
                     "texte": "Merci, vraiment.",
-                    "son": "zoe"
+                    "son": "zoe",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "zoe",
@@ -758,7 +782,8 @@
                     "personnage": "zoe",
                     "texte": "Au fait, je te présente Eva.",
                     "fond": "cafeteria_discussion_zoe",
-                    "son": "zoe"
+                    "son": "zoe",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "zoe",
@@ -768,6 +793,7 @@
                     "personnage": "eva",
                     "texte": "Salut.",
                     "son": "eva",
+                    "volumeSon":0.22,
                     "galerie": "chap1PremiereRencontreEva"
                 },
                 {
@@ -807,7 +833,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Merci encore d'avoir aidé Zoé.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -816,7 +843,8 @@
                 {
                     "personnage": "zoe",
                     "texte": "Hé, je suis juste tombée une fois !",
-                    "son": "zoe"
+                    "son": "zoe",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "narrateur",
@@ -853,7 +881,8 @@
                     "personnage": "eva",
                     "texte": "Oui, pourquoi pas {{nomJoueur}}.",
                     "fond": "cafeteria_instalation",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -904,7 +933,8 @@
                 {
                     "personnage": "zoe",
                     "texte": "Alors, tu viens d'où exactement ?",
-                    "son": "zoe"
+                    "son": "zoe",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "narrateur",
@@ -913,7 +943,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Ne fais pas attention. Elle parle beaucoup quand elle rencontre quelqu'un.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "zoe",
@@ -958,12 +989,14 @@
                 {
                     "personnage": "zoe",
                     "texte": "Tu verras, l'université n'est pas aussi compliquée qu'elle en a l'air.",
-                    "son": "zoe"
+                    "son": "zoe",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
                     "texte": "Il faut surtout éviter certains couloirs entre deux cours.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -990,16 +1023,18 @@
                 {
                     "personnage": "eva",
                     "texte": "Oui, depuis quelques années.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
                     "texte": "Je connais assez bien les lieux maintenant."
                 },
                 {
-                                    "personnage": "zoe",
+                    "personnage": "zoe",
                     "texte": "Elle connaît surtout les endroits tranquilles.",
-                    "son": "zoe"
+                    "son": "zoe",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1043,7 +1078,8 @@
                 {
                     "personnage": "zoe",
                     "texte": "Oui. On était dans la même classe.",
-                    "son": "zoe"
+                    "son": "zoe",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1056,7 +1092,8 @@
                 {
                     "personnage": "eva",
                     "texte": "C'est plutôt toi qui ne me lâches plus.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "narrateur",
@@ -1079,17 +1116,20 @@
                 {
                     "personnage": "zoe",
                     "texte": "On se connaît depuis assez longtemps maintenant.",
-                    "son": "zoe"
+                    "son": "zoe",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "systeme",
                     "texte": "Nouvelle information: sur éva et zoé.",
-                    "son": "systeme"
+                    "son": "systeme",
+                    "volumeSon":0.35
                 },
                 {
                     "personnage": "eva",
                     "texte": "Oui, malheureusement.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "zoe",
@@ -1121,7 +1161,8 @@
                     "fond": "cafeteria_discution_eva",
                     "personnage": "eva",
                     "texte": "D'accord...{{nomJoueur}}",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1130,7 +1171,8 @@
                 {
                     "personnage": "zoe",
                     "texte": "Ce n'est pas grave. Je vais trouver une autre table.",
-                    "son": "zoe"
+                    "son": "zoe",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "narrateur",
@@ -1169,7 +1211,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Ce n'est pas à moi qu'il faut présenter tes excuses.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1222,7 +1265,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Ça dépend des jours.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1269,7 +1313,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Je ne connais pas tant de monde que ça.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1314,7 +1359,8 @@
                 {
                     "personnage": "eva",
                     "texte": "C'est toujours un peu compliqué d'arriver dans un nouvel endroit.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1356,7 +1402,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Peut-être.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1387,7 +1434,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Merci.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1418,7 +1466,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Depuis quelques années.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1448,7 +1497,8 @@
                 {
                     "personnage": "eva",
                     "texte": "On peut dire ça.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "narrateur",
@@ -1499,7 +1549,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Je vais devoir y aller.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1538,6 +1589,7 @@
                     "personnage": "eva",
                     "texte": "Tu aurais pu aider.",
                     "son": "eva",
+                    "volumeSon":0.22,
                     "galerie": "chap1PremiereRencontreEva"
                 },
                 {
@@ -1578,7 +1630,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Au moins, tu le reconnais.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "narrateur",
@@ -1609,7 +1662,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Je vois.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "narrateur",
@@ -1640,7 +1694,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Tu es nouveau ?",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "joueur",
@@ -1686,7 +1741,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Je peux au moins te donner quelques conseils.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1721,7 +1777,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Je dois rejoindre mes amis.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1746,6 +1803,7 @@
         "cours": {
             "fond": "couloir",
             "ambiance": "classe",
+            "volumeAmbiance":0.25,
             "dialogues": [
                 {
                     "personnage": "narrateur",
@@ -1791,6 +1849,7 @@
                     "personnage": "eva",
                     "texte": "Oui. Je cherche la salle du prochain cours.",
                     "son": "eva",
+                    "volumeSon":0.22,
                     "galerie": "chap1PremiereRencontreEva"
                 },
                 {
@@ -1835,7 +1894,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Eva.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1874,7 +1934,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Oui, c'est bien la même salle.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -1917,7 +1978,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Tu viens d'arriver ici ?",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "narrateur",
@@ -1955,7 +2017,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Je comprends mieux.",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "eva",
@@ -2002,6 +2065,7 @@
                     "personnage": "eva",
                     "texte": "On a trouvé.",
                     "son": "eva",
+                    "volumeSon":0.22,
                     "fond":"devant_salle"
                 },
                 {
@@ -2031,7 +2095,8 @@
                 {
                     "personnage": "eva",
                     "texte": "Tu veux t'asseoir ici ?",
-                    "son": "eva"
+                    "son": "eva",
+                    "volumeSon":0.22
                 },
                 {
                     "personnage": "narrateur",
@@ -2118,6 +2183,7 @@
             "fin": {
             "fond": "universite",
             "ambiance": "rue parisienne",
+            "volumeAmbiance":0.25,
             "dialogues": [
                 {
                     "personnage": "narrateur",
@@ -2146,6 +2212,7 @@
         "finChapitre": {
             "fond": "universite",
             "ambiance": "rue parisienne",
+            "volumeAmbiance":0.25,
             "dialogues": [
                 {
                     "personnage": "narrateur",

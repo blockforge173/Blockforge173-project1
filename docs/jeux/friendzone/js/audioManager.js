@@ -3,16 +3,39 @@
 /*=========================================================
     FRIENDZONÉ REBORN
     audioManager.js
-    Audio Manager V3
+    Audio Manager V4
 
     Gestion :
     - musique de fond ;
     - ambiance de scène ;
     - effets sonores ;
+    - mixage artistique défini par les chapitres/scènes ;
+    - volume utilisateur défini dans les paramètres ;
     - fondus sonores ;
     - pause et reprise ;
-    - volumes ;
+    - mise à jour des sons déjà en cours ;
     - blocage automatique du navigateur.
+
+    PRINCIPE DE MIXAGE
+    ------------------
+
+    volume final = volume utilisateur × volume artistique
+
+    Exemple :
+
+    volume utilisateur musique = 0.80
+    volume artistique musique   = 0.75
+
+    volume réellement joué      = 0.60
+
+    Les propriétés historiques :
+
+    volumeMusique
+    volumeAmbiance
+    volumeEffets
+
+    restent les volumes UTILISATEUR afin de conserver
+    la compatibilité avec parametres.js.
 =========================================================*/
 
 const audioManager = {
@@ -37,12 +60,38 @@ const audioManager = {
     audioDebloque: false,
 
     /*=====================================================
-        VOLUMES
+        VOLUMES UTILISATEUR
+
+        Ces valeurs sont contrôlées par parametres.js.
+        Elles ne doivent jamais être remplacées par les
+        volumes artistiques provenant des chapitres JSON.
     =====================================================*/
 
-    volumeMusique: 0.40,
+    volumeMusique: 0.50,
     volumeAmbiance: 0.25,
-    volumeEffets: 0.70,
+    volumeEffets: 0.15,
+
+    /*=====================================================
+        VOLUMES ARTISTIQUES / MIXAGE
+
+        Ces valeurs sont contrôlées par le jeu.
+
+        1 = niveau normal prévu par le joueur.
+        0 = muet.
+
+        Le moteur pourra les modifier à partir de :
+
+        volumeMusique
+        volumeAmbiance
+        volumeEffets
+        volumeSon
+
+        définis dans les chapitres/scènes/dialogues.
+    =====================================================*/
+
+    volumeMixMusique: 1,
+    volumeMixAmbiance: 1,
+    volumeMixEffets: 1,
 
     /*=====================================================
         DOSSIERS AUDIO
@@ -57,11 +106,34 @@ const audioManager = {
     },
 
     /*=====================================================
-        INTERVALLES DE FONDU
+        FONDUS ET TRANSITIONS
     =====================================================*/
 
     intervalleMusique: null,
     intervalleAmbiance: null,
+
+    timerChangementMusique: null,
+    timerChangementAmbiance: null,
+
+    typeFonduMusique: "",
+    typeFonduAmbiance: "",
+
+    /*=====================================================
+        EFFETS SONORES EN COURS
+
+        Chaque entrée contient :
+
+        {
+            audio: HTMLAudioElement,
+            volumeMix: nombre
+        }
+
+        Cela permet de mettre à jour immédiatement les
+        effets déjà en lecture si le joueur déplace le
+        curseur du volume des effets.
+    =====================================================*/
+
+    sonsActifs: new Set(),
 
     /*=====================================================
         INITIALISATION
@@ -75,22 +147,12 @@ const audioManager = {
         this.musique.preload = "auto";
         this.ambiance.preload = "auto";
 
-        this.musique.volume =
-            this.limiterVolume(
-                this.volumeMusique
-            );
-
-        this.ambiance.volume =
-            this.limiterVolume(
-                this.volumeAmbiance
-            );
+        this.actualiserVolumeMusique();
+        this.actualiserVolumeAmbiance();
 
         /*
             Le navigateur bloque souvent le son tant que
             le joueur n'a pas effectué une interaction.
-
-            Le premier clic ou la première touche permet
-            de débloquer la lecture audio.
         */
 
         const debloquerAudio = () => {
@@ -139,7 +201,7 @@ const audioManager = {
         );
 
         console.log(
-            "audioManager initialisé."
+            "audioManager V4 initialisé."
         );
 
     },
@@ -170,6 +232,167 @@ const audioManager = {
     },
 
     /*=====================================================
+        NORMALISER UN VOLUME ARTISTIQUE
+
+        Une valeur absente utilise la valeur de secours.
+        Cela évite qu'un undefined devienne accidentellement 0.
+    =====================================================*/
+
+    normaliserVolumeMix(
+        volume,
+        valeurParDefaut = 1
+    ) {
+
+        if (
+            volume === undefined ||
+            volume === null ||
+            volume === ""
+        ) {
+
+            return this.limiterVolume(
+                valeurParDefaut
+            );
+
+        }
+
+        return this.limiterVolume(
+            volume
+        );
+
+    },
+
+    /*=====================================================
+        CALCULER LE VOLUME FINAL
+    =====================================================*/
+
+    calculerVolumeFinal(
+        volumeUtilisateur,
+        volumeMix = 1
+    ) {
+
+        return this.limiterVolume(
+            this.limiterVolume(
+                volumeUtilisateur
+            ) *
+            this.limiterVolume(
+                volumeMix
+            )
+        );
+
+    },
+
+    /*=====================================================
+        OBTENIR LES VOLUMES FINAUX
+    =====================================================*/
+
+    obtenirVolumeFinalMusique() {
+
+        return this.calculerVolumeFinal(
+            this.volumeMusique,
+            this.volumeMixMusique
+        );
+
+    },
+
+    obtenirVolumeFinalAmbiance() {
+
+        return this.calculerVolumeFinal(
+            this.volumeAmbiance,
+            this.volumeMixAmbiance
+        );
+
+    },
+
+    obtenirVolumeFinalEffets(
+        volumeMixSon = 1
+    ) {
+
+        const volumeMixTotal =
+            this.limiterVolume(
+                this.volumeMixEffets *
+                this.normaliserVolumeMix(
+                    volumeMixSon,
+                    1
+                )
+            );
+
+        return this.calculerVolumeFinal(
+            this.volumeEffets,
+            volumeMixTotal
+        );
+
+    },
+
+    /*=====================================================
+        ACTUALISER LES VOLUMES CONTINUS
+    =====================================================*/
+
+    actualiserVolumeMusique() {
+
+        /*
+            Pendant un fondu, l'intervalle lui-même contrôle
+            le niveau. On ne le casse pas avec une mise à jour
+            brutale provenant du curseur des paramètres.
+        */
+
+        if (
+            this.intervalleMusique !== null
+        ) {
+            return;
+        }
+
+        this.musique.volume =
+            this.obtenirVolumeFinalMusique();
+
+    },
+
+    actualiserVolumeAmbiance() {
+
+        if (
+            this.intervalleAmbiance !== null
+        ) {
+            return;
+        }
+
+        this.ambiance.volume =
+            this.obtenirVolumeFinalAmbiance();
+
+    },
+
+    actualiserVolumeEffetsActifs() {
+
+        this.sonsActifs.forEach(
+            entree => {
+
+                if (
+                    !entree ||
+                    !entree.audio
+                ) {
+                    return;
+                }
+
+                try {
+
+                    entree.audio.volume =
+                        this.obtenirVolumeFinalEffets(
+                            entree.volumeMix
+                        );
+
+                }
+                catch (erreur) {
+
+                    console.warn(
+                        "audioManager : impossible d'actualiser un effet sonore en cours.",
+                        erreur
+                    );
+
+                }
+
+            }
+        );
+
+    },
+        /*=====================================================
         CONSTRUIRE UN CHEMIN AUDIO
     =====================================================*/
 
@@ -188,20 +411,9 @@ const audioManager = {
         const nomNettoye =
             nom.trim();
 
-        /*
-            Si l'extension est déjà présente,
-            elle n'est pas ajoutée une seconde fois.
-        */
-
         if (
-            nomNettoye.endsWith(
-                ".mp3"
-            ) ||
-            nomNettoye.endsWith(
-                ".ogg"
-            ) ||
-            nomNettoye.endsWith(
-                ".wav"
+            /\.(mp3|ogg|wav|m4a|aac|flac)$/i.test(
+                nomNettoye
             )
         ) {
 
@@ -244,11 +456,6 @@ const audioManager = {
         }
         catch (erreur) {
 
-            /*
-                NotAllowedError signifie généralement que
-                le navigateur attend une interaction.
-            */
-
             if (
                 erreur &&
                 erreur.name === "NotAllowedError"
@@ -275,7 +482,45 @@ const audioManager = {
     },
 
     /*=====================================================
-        ARRÊTER UN INTERVALLE DE FONDU
+        ANNULER LES TRANSITIONS EN ATTENTE
+    =====================================================*/
+
+    annulerChangementMusique() {
+
+        if (
+            this.timerChangementMusique !== null
+        ) {
+
+            clearTimeout(
+                this.timerChangementMusique
+            );
+
+            this.timerChangementMusique =
+                null;
+
+        }
+
+    },
+
+    annulerChangementAmbiance() {
+
+        if (
+            this.timerChangementAmbiance !== null
+        ) {
+
+            clearTimeout(
+                this.timerChangementAmbiance
+            );
+
+            this.timerChangementAmbiance =
+                null;
+
+        }
+
+    },
+
+    /*=====================================================
+        ARRÊTER LES INTERVALLES DE FONDU
     =====================================================*/
 
     arreterFonduMusique() {
@@ -292,6 +537,9 @@ const audioManager = {
                 null;
 
         }
+
+        this.typeFonduMusique =
+            "";
 
     },
 
@@ -310,31 +558,87 @@ const audioManager = {
 
         }
 
+        this.typeFonduAmbiance =
+            "";
+
     },
 
     /*=====================================================
+        DÉFINIR LE MIXAGE ARTISTIQUE DE LA MUSIQUE
+    =====================================================*/
+
+    setVolumeMixMusique(
+        volume = 1
+    ) {
+
+        this.volumeMixMusique =
+            this.normaliserVolumeMix(
+                volume,
+                1
+            );
+
+        this.actualiserVolumeMusique();
+
+        return this.volumeMixMusique;
+
+    },
+
+    /*=====================================================
+        DÉFINIR LE MIXAGE ARTISTIQUE DE L'AMBIANCE
+    =====================================================*/
+
+    setVolumeMixAmbiance(
+        volume = 1
+    ) {
+
+        this.volumeMixAmbiance =
+            this.normaliserVolumeMix(
+                volume,
+                1
+            );
+
+        this.actualiserVolumeAmbiance();
+
+        return this.volumeMixAmbiance;
+
+    },
+
+    /*=====================================================
+        DÉFINIR LE MIXAGE ARTISTIQUE GLOBAL DES EFFETS
+    =====================================================*/
+
+    setVolumeMixEffets(
+        volume = 1
+    ) {
+
+        this.volumeMixEffets =
+            this.normaliserVolumeMix(
+                volume,
+                1
+            );
+
+        this.actualiserVolumeEffetsActifs();
+
+        return this.volumeMixEffets;
+
+    },
+        /*=====================================================
         MUSIQUE
+
+        Le paramètre volumeMix représente le volume
+        ARTISTIQUE du morceau, pas le volume utilisateur.
     =====================================================*/
 
     jouerMusique(
         nom,
-        volume = this.volumeMusique
+        volumeMix = 1
     ) {
 
         if (
             typeof nom !== "string" ||
-            nom.trim() === ""
-        ) {
-
-            this.arreterMusique();
-
-            return;
-
-        }
-
-        if (
-            nom === "aucune" ||
-            nom === "aucun"
+            nom.trim() === "" ||
+            nom.toLowerCase() === "aucune" ||
+            nom.toLowerCase() === "aucun"
         ) {
 
             this.arreterMusique();
@@ -346,14 +650,20 @@ const audioManager = {
         const nomNettoye =
             nom.trim();
 
+        this.annulerChangementMusique();
+
+        this.setVolumeMixMusique(
+            volumeMix
+        );
+
         const volumeFinal =
-            this.limiterVolume(
-                volume
-            );
+            this.obtenirVolumeFinalMusique();
 
         /*
             Si la même musique joue déjà,
-            on met seulement à jour le volume.
+            elle ne redémarre pas.
+
+            Seul son mixage est mis à jour.
         */
 
         if (
@@ -361,6 +671,8 @@ const audioManager = {
                 nomNettoye &&
             !this.musique.paused
         ) {
+
+            this.arreterFonduMusique();
 
             this.musique.volume =
                 volumeFinal;
@@ -379,8 +691,20 @@ const audioManager = {
                 nomNettoye
             );
 
-        this.musique.currentTime =
-            0;
+        try {
+
+            this.musique.currentTime =
+                0;
+
+        }
+        catch (erreur) {
+
+            /*
+                Certains navigateurs peuvent empêcher
+                currentTime avant le chargement du média.
+            */
+
+        }
 
         this.musique.volume =
             volumeFinal;
@@ -408,23 +732,20 @@ const audioManager = {
     fadeIn(
         nom,
         duree = 1200,
-        volume = this.volumeMusique
+        volumeMix = 1
     ) {
 
         if (
             typeof nom !== "string" ||
             nom.trim() === ""
         ) {
+
             return;
+
         }
 
         const nomNettoye =
             nom.trim();
-
-        const volumeCible =
-            this.limiterVolume(
-                volume
-            );
 
         const dureeFinale =
             Math.max(
@@ -432,10 +753,23 @@ const audioManager = {
                 Number(duree) || 0
             );
 
+        this.annulerChangementMusique();
+
         this.arreterFonduMusique();
 
         /*
-            Si ce n'est pas la même musique,
+            On enregistre le niveau artistique
+            demandé par le chapitre ou la scène.
+        */
+
+        this.volumeMixMusique =
+            this.normaliserVolumeMix(
+                volumeMix,
+                1
+            );
+
+        /*
+            Si le morceau est différent,
             on charge le nouveau fichier.
         */
 
@@ -452,8 +786,19 @@ const audioManager = {
                     nomNettoye
                 );
 
-            this.musique.currentTime =
-                0;
+            try {
+
+                this.musique.currentTime =
+                    0;
+
+            }
+            catch (erreur) {
+
+                /*
+                    Rien à faire.
+                */
+
+            }
 
             this.musiqueActuelle =
                 nomNettoye;
@@ -462,6 +807,10 @@ const audioManager = {
 
         this.musique.loop =
             true;
+
+        /*
+            Le morceau commence silencieusement.
+        */
 
         this.musique.volume =
             0;
@@ -474,12 +823,17 @@ const audioManager = {
             nomNettoye
         );
 
+        /*
+            Sans durée de fondu,
+            le volume final est appliqué immédiatement.
+        */
+
         if (
             dureeFinale === 0
         ) {
 
             this.musique.volume =
-                volumeCible;
+                this.obtenirVolumeFinalMusique();
 
             return;
 
@@ -497,36 +851,52 @@ const audioManager = {
                 )
             );
 
-        const pas =
-            volumeCible /
-            nombreEtapes;
-
-        let volumeActuel =
+        let etape =
             0;
+
+        this.typeFonduMusique =
+            "in";
 
         this.intervalleMusique =
             setInterval(
                 () => {
 
-                    volumeActuel +=
-                        pas;
+                    etape += 1;
 
-                    if (
-                        volumeActuel >=
-                        volumeCible
-                    ) {
+                    const progression =
+                        Math.min(
+                            1,
+                            etape /
+                            nombreEtapes
+                        );
 
-                        volumeActuel =
-                            volumeCible;
+                    /*
+                        IMPORTANT :
 
-                        this.arreterFonduMusique();
+                        Le volume final est recalculé
+                        à chaque étape.
 
-                    }
+                        Si le joueur change son curseur
+                        pendant le fade-in, le fondu reste
+                        donc cohérent avec son réglage.
+                    */
 
                     this.musique.volume =
                         this.limiterVolume(
-                            volumeActuel
+                            this.obtenirVolumeFinalMusique() *
+                            progression
                         );
+
+                    if (
+                        progression >= 1
+                    ) {
+
+                        this.arreterFonduMusique();
+
+                        this.musique.volume =
+                            this.obtenirVolumeFinalMusique();
+
+                    }
 
                 },
                 intervalle
@@ -543,6 +913,8 @@ const audioManager = {
         arreterCompletement = true
     ) {
 
+        this.annulerChangementMusique();
+
         this.arreterFonduMusique();
 
         const dureeFinale =
@@ -551,12 +923,21 @@ const audioManager = {
                 Number(duree) || 0
             );
 
+        /*
+            Si aucune musique ne joue,
+            il n'y a rien à faire.
+        */
+
         if (
             this.musique.paused
         ) {
 
-            if (arreterCompletement) {
+            if (
+                arreterCompletement
+            ) {
+
                 this.arreterMusique();
+
             }
 
             return;
@@ -565,6 +946,11 @@ const audioManager = {
 
         const volumeDepart =
             this.musique.volume;
+
+        /*
+            Arrêt immédiat si aucune transition
+            n'est demandée.
+        */
 
         if (
             dureeFinale === 0 ||
@@ -576,10 +962,23 @@ const audioManager = {
 
             this.musique.pause();
 
-            if (arreterCompletement) {
+            if (
+                arreterCompletement
+            ) {
 
-                this.musique.currentTime =
-                    0;
+                try {
+
+                    this.musique.currentTime =
+                        0;
+
+                }
+                catch (erreur) {
+
+                    /*
+                        Rien à faire.
+                    */
+
+                }
 
                 this.musiqueActuelle =
                     "";
@@ -602,26 +1001,37 @@ const audioManager = {
                 )
             );
 
-        const pas =
-            volumeDepart /
-            nombreEtapes;
+        let etape =
+            0;
 
-        let volumeActuel =
-            volumeDepart;
+        this.typeFonduMusique =
+            "out";
 
         this.intervalleMusique =
             setInterval(
                 () => {
 
-                    volumeActuel -=
-                        pas;
+                    etape += 1;
+
+                    const progression =
+                        Math.min(
+                            1,
+                            etape /
+                            nombreEtapes
+                        );
+
+                    this.musique.volume =
+                        this.limiterVolume(
+                            volumeDepart *
+                            (
+                                1 -
+                                progression
+                            )
+                        );
 
                     if (
-                        volumeActuel <= 0
+                        progression >= 1
                     ) {
-
-                        volumeActuel =
-                            0;
 
                         this.musique.volume =
                             0;
@@ -630,26 +1040,39 @@ const audioManager = {
 
                         this.arreterFonduMusique();
 
+                        /*
+                            Lors d'un changement de morceau,
+                            arreterCompletement vaut false.
+
+                            On conserve alors temporairement
+                            musiqueActuelle jusqu'au lancement
+                            du prochain morceau.
+                        */
+
                         if (
                             arreterCompletement
                         ) {
 
-                            this.musique.currentTime =
-                                0;
+                            try {
+
+                                this.musique.currentTime =
+                                    0;
+
+                            }
+                            catch (erreur) {
+
+                                /*
+                                    Rien à faire.
+                                */
+
+                            }
 
                             this.musiqueActuelle =
                                 "";
 
                         }
 
-                        return;
-
                     }
-
-                    this.musique.volume =
-                        this.limiterVolume(
-                            volumeActuel
-                        );
 
                 },
                 intervalle
@@ -663,31 +1086,76 @@ const audioManager = {
 
     changerMusique(
         nom,
-        duree = 800
+        duree = 800,
+        volumeMix = 1
     ) {
+
+        /*
+            Valeur vide ou "aucune" :
+            extinction progressive de la musique.
+        */
 
         if (
             typeof nom !== "string" ||
-            nom.trim() === ""
+            nom.trim() === "" ||
+            nom.toLowerCase() === "aucune" ||
+            nom.toLowerCase() === "aucun"
         ) {
+
+            this.fadeOut(
+                duree
+            );
+
             return;
+
         }
 
         const nomNettoye =
             nom.trim();
 
-        if (
-            this.musiqueActuelle ===
-            nomNettoye
-        ) {
-            return;
-        }
+        const volumeMixFinal =
+            this.normaliserVolumeMix(
+                volumeMix,
+                1
+            );
 
         const dureeFinale =
             Math.max(
                 0,
                 Number(duree) || 0
             );
+
+        /*
+            Évite qu'un ancien setTimeout de transition
+            change le morceau après une nouvelle demande.
+        */
+
+        this.annulerChangementMusique();
+
+        /*
+            Même morceau :
+
+            on ne le redémarre surtout pas.
+            On modifie simplement son mixage.
+        */
+
+        if (
+            this.musiqueActuelle ===
+            nomNettoye
+        ) {
+
+            this.setVolumeMixMusique(
+                volumeMixFinal
+            );
+
+            return;
+
+        }
+
+        /*
+            Aucune musique active :
+            simple fade-in.
+        */
 
         if (
             !this.musiqueActuelle ||
@@ -696,7 +1164,8 @@ const audioManager = {
 
             this.fadeIn(
                 nomNettoye,
-                dureeFinale
+                dureeFinale,
+                volumeMixFinal
             );
 
             return;
@@ -704,8 +1173,14 @@ const audioManager = {
         }
 
         /*
-            Le nom actuel est conservé pendant le fade out,
-            puis remplacé par la nouvelle musique.
+            Une autre musique joue déjà.
+
+            1. Fade-out de l'ancienne.
+            2. Attente.
+            3. Fade-in de la nouvelle.
+
+            arreterCompletement = false permet de ne pas
+            provoquer un nettoyage total entre les deux.
         */
 
         this.fadeOut(
@@ -713,17 +1188,22 @@ const audioManager = {
             false
         );
 
-        setTimeout(
-            () => {
+        this.timerChangementMusique =
+            setTimeout(
+                () => {
 
-                this.fadeIn(
-                    nomNettoye,
-                    dureeFinale
-                );
+                    this.timerChangementMusique =
+                        null;
 
-            },
-            dureeFinale
-        );
+                    this.fadeIn(
+                        nomNettoye,
+                        dureeFinale,
+                        volumeMixFinal
+                    );
+
+                },
+                dureeFinale
+            );
 
     },
 
@@ -732,6 +1212,8 @@ const audioManager = {
     =====================================================*/
 
     arreterMusique() {
+
+        this.annulerChangementMusique();
 
         this.arreterFonduMusique();
 
@@ -764,23 +1246,30 @@ const audioManager = {
         this.musiqueEnPause =
             false;
 
-    },
+        /*
+            Une future musique qui ne précise pas
+            de volume artistique recommencera à 1.
+        */
 
-    /*=====================================================
+        this.volumeMixMusique =
+            1;
+
+    },
+        /*=====================================================
         AMBIANCE
     =====================================================*/
 
     jouerAmbiance(
         nom,
-        volume = this.volumeAmbiance
+        volumeMix = 1
     ) {
 
         if (
             nom === null ||
             nom === undefined ||
             nom === "" ||
-            nom === "aucune" ||
-            nom === "aucun"
+            String(nom).toLowerCase() === "aucune" ||
+            String(nom).toLowerCase() === "aucun"
         ) {
 
             this.arreterAmbiance();
@@ -794,14 +1283,20 @@ const audioManager = {
                 nom
             ).trim();
 
+        this.annulerChangementAmbiance();
+
+        this.setVolumeMixAmbiance(
+            volumeMix
+        );
+
         const volumeFinal =
-            this.limiterVolume(
-                volume
-            );
+            this.obtenirVolumeFinalAmbiance();
 
         /*
             Si la même ambiance joue déjà,
             elle ne redémarre pas.
+
+            Seul son niveau de mixage est actualisé.
         */
 
         if (
@@ -809,6 +1304,8 @@ const audioManager = {
                 nomNettoye &&
             !this.ambiance.paused
         ) {
+
+            this.arreterFonduAmbiance();
 
             this.ambiance.volume =
                 volumeFinal;
@@ -827,8 +1324,21 @@ const audioManager = {
                 nomNettoye
             );
 
-        this.ambiance.currentTime =
-            0;
+        try {
+
+            this.ambiance.currentTime =
+                0;
+
+        }
+        catch (erreur) {
+
+            /*
+                Certains navigateurs peuvent empêcher
+                la modification de currentTime avant
+                le chargement du média.
+            */
+
+        }
 
         this.ambiance.volume =
             volumeFinal;
@@ -856,23 +1366,20 @@ const audioManager = {
     fadeInAmbiance(
         nom,
         duree = 800,
-        volume = this.volumeAmbiance
+        volumeMix = 1
     ) {
 
         if (
             typeof nom !== "string" ||
             nom.trim() === ""
         ) {
+
             return;
+
         }
 
         const nomNettoye =
             nom.trim();
-
-        const volumeCible =
-            this.limiterVolume(
-                volume
-            );
 
         const dureeFinale =
             Math.max(
@@ -880,7 +1387,25 @@ const audioManager = {
                 Number(duree) || 0
             );
 
+        this.annulerChangementAmbiance();
+
         this.arreterFonduAmbiance();
+
+        /*
+            Niveau artistique demandé par
+            le chapitre ou la scène.
+        */
+
+        this.volumeMixAmbiance =
+            this.normaliserVolumeMix(
+                volumeMix,
+                1
+            );
+
+        /*
+            Charge le nouveau fichier uniquement
+            si l'ambiance change.
+        */
 
         if (
             this.ambianceActuelle !==
@@ -895,8 +1420,19 @@ const audioManager = {
                     nomNettoye
                 );
 
-            this.ambiance.currentTime =
-                0;
+            try {
+
+                this.ambiance.currentTime =
+                    0;
+
+            }
+            catch (erreur) {
+
+                /*
+                    Rien à faire.
+                */
+
+            }
 
             this.ambianceActuelle =
                 nomNettoye;
@@ -905,6 +1441,10 @@ const audioManager = {
 
         this.ambiance.loop =
             true;
+
+        /*
+            Le fade-in commence silencieusement.
+        */
 
         this.ambiance.volume =
             0;
@@ -922,7 +1462,7 @@ const audioManager = {
         ) {
 
             this.ambiance.volume =
-                volumeCible;
+                this.obtenirVolumeFinalAmbiance();
 
             return;
 
@@ -940,36 +1480,51 @@ const audioManager = {
                 )
             );
 
-        const pas =
-            volumeCible /
-            nombreEtapes;
-
-        let volumeActuel =
+        let etape =
             0;
+
+        this.typeFonduAmbiance =
+            "in";
 
         this.intervalleAmbiance =
             setInterval(
                 () => {
 
-                    volumeActuel +=
-                        pas;
+                    etape += 1;
 
-                    if (
-                        volumeActuel >=
-                        volumeCible
-                    ) {
+                    const progression =
+                        Math.min(
+                            1,
+                            etape /
+                            nombreEtapes
+                        );
 
-                        volumeActuel =
-                            volumeCible;
+                    /*
+                        Comme pour la musique,
+                        le volume utilisateur est
+                        recalculé pendant le fondu.
 
-                        this.arreterFonduAmbiance();
-
-                    }
+                        Si le joueur change son volume
+                        pendant le fade-in, celui-ci
+                        reste cohérent.
+                    */
 
                     this.ambiance.volume =
                         this.limiterVolume(
-                            volumeActuel
+                            this.obtenirVolumeFinalAmbiance() *
+                            progression
                         );
+
+                    if (
+                        progression >= 1
+                    ) {
+
+                        this.arreterFonduAmbiance();
+
+                        this.ambiance.volume =
+                            this.obtenirVolumeFinalAmbiance();
+
+                    }
 
                 },
                 intervalle
@@ -986,6 +1541,8 @@ const audioManager = {
         arreterCompletement = true
     ) {
 
+        this.annulerChangementAmbiance();
+
         this.arreterFonduAmbiance();
 
         const dureeFinale =
@@ -998,8 +1555,12 @@ const audioManager = {
             this.ambiance.paused
         ) {
 
-            if (arreterCompletement) {
+            if (
+                arreterCompletement
+            ) {
+
                 this.arreterAmbiance();
+
             }
 
             return;
@@ -1019,10 +1580,23 @@ const audioManager = {
 
             this.ambiance.pause();
 
-            if (arreterCompletement) {
+            if (
+                arreterCompletement
+            ) {
 
-                this.ambiance.currentTime =
-                    0;
+                try {
+
+                    this.ambiance.currentTime =
+                        0;
+
+                }
+                catch (erreur) {
+
+                    /*
+                        Rien à faire.
+                    */
+
+                }
 
                 this.ambianceActuelle =
                     "";
@@ -1045,26 +1619,37 @@ const audioManager = {
                 )
             );
 
-        const pas =
-            volumeDepart /
-            nombreEtapes;
+        let etape =
+            0;
 
-        let volumeActuel =
-            volumeDepart;
+        this.typeFonduAmbiance =
+            "out";
 
         this.intervalleAmbiance =
             setInterval(
                 () => {
 
-                    volumeActuel -=
-                        pas;
+                    etape += 1;
+
+                    const progression =
+                        Math.min(
+                            1,
+                            etape /
+                            nombreEtapes
+                        );
+
+                    this.ambiance.volume =
+                        this.limiterVolume(
+                            volumeDepart *
+                            (
+                                1 -
+                                progression
+                            )
+                        );
 
                     if (
-                        volumeActuel <= 0
+                        progression >= 1
                     ) {
-
-                        volumeActuel =
-                            0;
 
                         this.ambiance.volume =
                             0;
@@ -1077,22 +1662,26 @@ const audioManager = {
                             arreterCompletement
                         ) {
 
-                            this.ambiance.currentTime =
-                                0;
+                            try {
+
+                                this.ambiance.currentTime =
+                                    0;
+
+                            }
+                            catch (erreur) {
+
+                                /*
+                                    Rien à faire.
+                                */
+
+                            }
 
                             this.ambianceActuelle =
                                 "";
 
                         }
 
-                        return;
-
                     }
-
-                    this.ambiance.volume =
-                        this.limiterVolume(
-                            volumeActuel
-                        );
 
                 },
                 intervalle
@@ -1101,21 +1690,26 @@ const audioManager = {
     },
 
     /*=====================================================
-        CHANGER D'AMBIANCE
+        CHANGER D'AMBIANCE AVEC TRANSITION
     =====================================================*/
 
     changerAmbiance(
         nom,
         duree = 600,
-        volume = this.volumeAmbiance
+        volumeMix = 1
     ) {
+
+        /*
+            Une ambiance absente ou "aucune"
+            provoque un fade-out.
+        */
 
         if (
             nom === null ||
             nom === undefined ||
             nom === "" ||
-            nom === "aucune" ||
-            nom === "aucun"
+            String(nom).toLowerCase() === "aucune" ||
+            String(nom).toLowerCase() === "aucun"
         ) {
 
             this.fadeOutAmbiance(
@@ -1131,25 +1725,44 @@ const audioManager = {
                 nom
             ).trim();
 
-        if (
-            this.ambianceActuelle ===
-            nomNettoye
-        ) {
-
-            this.ambiance.volume =
-                this.limiterVolume(
-                    volume
-                );
-
-            return;
-
-        }
+        const volumeMixFinal =
+            this.normaliserVolumeMix(
+                volumeMix,
+                1
+            );
 
         const dureeFinale =
             Math.max(
                 0,
                 Number(duree) || 0
             );
+
+        this.annulerChangementAmbiance();
+
+        /*
+            Même ambiance :
+
+            pas de redémarrage.
+            On change seulement le niveau artistique.
+        */
+
+        if (
+            this.ambianceActuelle ===
+            nomNettoye
+        ) {
+
+            this.setVolumeMixAmbiance(
+                volumeMixFinal
+            );
+
+            return;
+
+        }
+
+        /*
+            Aucune ambiance active :
+            simple fade-in.
+        */
 
         if (
             !this.ambianceActuelle ||
@@ -1159,30 +1772,42 @@ const audioManager = {
             this.fadeInAmbiance(
                 nomNettoye,
                 dureeFinale,
-                volume
+                volumeMixFinal
             );
 
             return;
 
         }
 
+        /*
+            Une ambiance joue déjà :
+
+            1. fade-out ;
+            2. attente ;
+            3. fade-in de la nouvelle ambiance.
+        */
+
         this.fadeOutAmbiance(
             dureeFinale,
             false
         );
 
-        setTimeout(
-            () => {
+        this.timerChangementAmbiance =
+            setTimeout(
+                () => {
 
-                this.fadeInAmbiance(
-                    nomNettoye,
-                    dureeFinale,
-                    volume
-                );
+                    this.timerChangementAmbiance =
+                        null;
 
-            },
-            dureeFinale
-        );
+                    this.fadeInAmbiance(
+                        nomNettoye,
+                        dureeFinale,
+                        volumeMixFinal
+                    );
+
+                },
+                dureeFinale
+            );
 
     },
 
@@ -1191,6 +1816,8 @@ const audioManager = {
     =====================================================*/
 
     arreterAmbiance() {
+
+        this.annulerChangementAmbiance();
 
         this.arreterFonduAmbiance();
 
@@ -1223,28 +1850,57 @@ const audioManager = {
         this.ambianceEnPause =
             false;
 
+        /*
+            La prochaine ambiance sans volume précisé
+            utilisera un mix artistique de 1.
+        */
+
+        this.volumeMixAmbiance =
+            1;
+
     },
 
     /*=====================================================
         EFFETS SONORES
+
+        volumeMix représente le niveau artistique
+        propre à CE son.
+
+        Le niveau final devient :
+
+        volume utilisateur effets
+        ×
+        volume artistique global des effets
+        ×
+        volume artistique propre au son
     =====================================================*/
 
     jouerSon(
         nom,
-        volume = this.volumeEffets
+        volumeMix = 1
     ) {
 
         if (
             typeof nom !== "string" ||
             nom.trim() === "" ||
-            nom === "aucun" ||
-            nom === "aucune"
+            nom.toLowerCase() === "aucun" ||
+            nom.toLowerCase() === "aucune" ||
+            nom.toLowerCase() === "none" ||
+            nom.toLowerCase() === "false"
         ) {
+
             return null;
+
         }
 
         const nomNettoye =
             nom.trim();
+
+        const volumeMixSon =
+            this.normaliserVolumeMix(
+                volumeMix,
+                1
+            );
 
         const son =
             new Audio(
@@ -1258,18 +1914,44 @@ const audioManager = {
             "auto";
 
         son.volume =
-            this.limiterVolume(
-                volume
+            this.obtenirVolumeFinalEffets(
+                volumeMixSon
             );
 
         /*
-            Une fois terminé, la référence peut être
-            libérée par le navigateur.
+            On conserve le son dans sonsActifs.
+
+            Cela permet de recalculer son volume
+            si le joueur change ses paramètres
+            pendant que le son est encore joué.
         */
 
-        son.addEventListener(
-            "ended",
-            () => {
+        const entree = {
+
+            audio:
+                son,
+
+            volumeMix:
+                volumeMixSon
+
+        };
+
+        this.sonsActifs.add(
+            entree
+        );
+
+        /*
+            Nettoyage de la référence une fois
+            le son terminé ou en erreur.
+        */
+
+        const nettoyer = () => {
+
+            this.sonsActifs.delete(
+                entree
+            );
+
+            try {
 
                 son.removeAttribute(
                     "src"
@@ -1277,7 +1959,28 @@ const audioManager = {
 
                 son.load();
 
-            },
+            }
+            catch (erreur) {
+
+                /*
+                    Rien à faire.
+                */
+
+            }
+
+        };
+
+        son.addEventListener(
+            "ended",
+            nettoyer,
+            {
+                once: true
+            }
+        );
+
+        son.addEventListener(
+            "error",
+            nettoyer,
             {
                 once: true
             }
@@ -1293,42 +1996,100 @@ const audioManager = {
     },
 
     /*=====================================================
-        EFFETS SONORES PRÉDÉFINIS
+        ARRÊTER TOUS LES EFFETS SONORES EN COURS
     =====================================================*/
 
-    jouerSucces() {
+    arreterEffets() {
 
-        return this.jouerSon(
-            "succes"
+        this.sonsActifs.forEach(
+            entree => {
+
+                if (
+                    !entree ||
+                    !entree.audio
+                ) {
+
+                    return;
+
+                }
+
+                try {
+
+                    entree.audio.pause();
+
+                    entree.audio.currentTime =
+                        0;
+
+                    entree.audio.removeAttribute(
+                        "src"
+                    );
+
+                    entree.audio.load();
+
+                }
+                catch (erreur) {
+
+                    /*
+                        Rien à faire.
+                    */
+
+                }
+
+            }
         );
 
-    },
-
-    jouerChoixImportant() {
-
-        return this.jouerSon(
-            "choix-important"
-        );
-
-    },
-
-    jouerNotification() {
-
-        return this.jouerSon(
-            "notification"
-        );
-
-    },
-
-    jouerInformationPersonnage() {
-
-        return this.jouerSon(
-            "systeme"
-        );
+        this.sonsActifs.clear();
 
     },
 
     /*=====================================================
+        EFFETS SONORES PRÉDÉFINIS
+    =====================================================*/
+
+    jouerSucces(
+        volumeMix = 1
+    ) {
+
+        return this.jouerSon(
+            "succes",
+            volumeMix
+        );
+
+    },
+
+    jouerChoixImportant(
+        volumeMix = 1
+    ) {
+
+        return this.jouerSon(
+            "choix-important",
+            volumeMix
+        );
+
+    },
+
+    jouerNotification(
+        volumeMix = 1
+    ) {
+
+        return this.jouerSon(
+            "notification",
+            volumeMix
+        );
+
+    },
+
+    jouerInformationPersonnage(
+        volumeMix = 1
+    ) {
+
+        return this.jouerSon(
+            "systeme",
+            volumeMix
+        );
+
+    },
+        /*=====================================================
         PAUSE GÉNÉRALE
     =====================================================*/
 
@@ -1409,69 +2170,87 @@ const audioManager = {
     },
 
     /*=====================================================
-        ARRÊTER TOUS LES SONS CONTINUS
+        ARRÊTER TOUS LES SONS
     =====================================================*/
 
     toutArreter() {
 
         this.arreterMusique();
         this.arreterAmbiance();
+        this.arreterEffets();
 
     },
 
     /*=====================================================
-        MODIFIER LE VOLUME DE LA MUSIQUE
+        MODIFIER LE VOLUME UTILISATEUR DE LA MUSIQUE
+
+        Fonction conservée pour parametres.js.
     =====================================================*/
 
-    setVolumeMusique(volume) {
+    setVolumeMusique(
+        volume
+    ) {
 
         this.volumeMusique =
             this.limiterVolume(
                 volume
             );
 
-        this.musique.volume =
-            this.volumeMusique;
+        this.actualiserVolumeMusique();
 
         this.sauvegarderVolumes();
+
+        return this.volumeMusique;
 
     },
 
     /*=====================================================
-        MODIFIER LE VOLUME DE L'AMBIANCE
+        MODIFIER LE VOLUME UTILISATEUR DE L'AMBIANCE
     =====================================================*/
 
-    setVolumeAmbiance(volume) {
+    setVolumeAmbiance(
+        volume
+    ) {
 
         this.volumeAmbiance =
             this.limiterVolume(
                 volume
             );
 
-        this.ambiance.volume =
-            this.volumeAmbiance;
+        this.actualiserVolumeAmbiance();
 
         this.sauvegarderVolumes();
+
+        return this.volumeAmbiance;
 
     },
 
     /*=====================================================
-        MODIFIER LE VOLUME DES EFFETS
+        MODIFIER LE VOLUME UTILISATEUR DES EFFETS
     =====================================================*/
 
-    setVolumeEffets(volume) {
+    setVolumeEffets(
+        volume
+    ) {
 
         this.volumeEffets =
             this.limiterVolume(
                 volume
             );
 
+        this.actualiserVolumeEffetsActifs();
+
         this.sauvegarderVolumes();
+
+        return this.volumeEffets;
 
     },
 
     /*=====================================================
-        SAUVEGARDER LES VOLUMES
+        SAUVEGARDER LES VOLUMES UTILISATEUR
+
+        Les volumes artistiques ne sont volontairement pas
+        sauvegardés ici : ils appartiennent aux chapitres.
     =====================================================*/
 
     sauvegarderVolumes() {
@@ -1507,7 +2286,7 @@ const audioManager = {
     },
 
     /*=====================================================
-        CHARGER LES VOLUMES
+        CHARGER LES VOLUMES UTILISATEUR
     =====================================================*/
 
     chargerVolumes() {
@@ -1564,11 +2343,9 @@ const audioManager = {
 
             }
 
-            this.musique.volume =
-                this.volumeMusique;
-
-            this.ambiance.volume =
-                this.volumeAmbiance;
+            this.actualiserVolumeMusique();
+            this.actualiserVolumeAmbiance();
+            this.actualiserVolumeEffetsActifs();
 
         }
         catch (erreur) {
@@ -1579,6 +2356,72 @@ const audioManager = {
             );
 
         }
+
+    },
+
+    /*=====================================================
+        INFORMATIONS DE MIXAGE
+
+        Utile pour le débogage dans la console.
+    =====================================================*/
+
+    obtenirEtatMixage() {
+
+        return {
+
+            utilisateur: {
+
+                musique:
+                    this.volumeMusique,
+
+                ambiance:
+                    this.volumeAmbiance,
+
+                effets:
+                    this.volumeEffets
+
+            },
+
+            artistique: {
+
+                musique:
+                    this.volumeMixMusique,
+
+                ambiance:
+                    this.volumeMixAmbiance,
+
+                effets:
+                    this.volumeMixEffets
+
+            },
+
+            final: {
+
+                musique:
+                    this.obtenirVolumeFinalMusique(),
+
+                ambiance:
+                    this.obtenirVolumeFinalAmbiance(),
+
+                effets:
+                    this.obtenirVolumeFinalEffets()
+
+            },
+
+            pistes: {
+
+                musique:
+                    this.musiqueActuelle,
+
+                ambiance:
+                    this.ambianceActuelle,
+
+                effetsActifs:
+                    this.sonsActifs.size
+
+            }
+
+        };
 
     }
 

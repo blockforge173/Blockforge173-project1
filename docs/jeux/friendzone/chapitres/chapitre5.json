@@ -9,7 +9,7 @@
         {
           "personnage": "narrateur",
           "texte": "Le lendemain matin, {{nomJoueur}} arrive devant l'établissement.",
-          "fond" : "universite"
+          "fond":"universite"
         },
         {
           "personnage": "narrateur",
@@ -45,7 +45,7 @@
         {
           "personnage": "narrateur",
           "texte": "En entrant dans le hall, {{nomJoueur}} aperçoit Eva près des casiers.",
-          "fond" : "couloir_rencontre_eva"
+          "fond":"couloir_rencontre_eva"
         },
         {
           "personnage": "eva",
@@ -173,7 +173,7 @@
         {
           "personnage": "narrateur",
           "texte": "Avant que tu puisses répondre, Zoé arrive derrière elle.",
-          "fond" : "couloir_arrivee_zoe"
+          "fond":"couloir_arrivee_zoe"
         },
         {
           "personnage": "zoe",
@@ -382,7 +382,7 @@
         {
           "personnage": "narrateur",
           "texte": "Vous commencez à marcher ensemble vers les salles de cours.",
-          "fond" : "direction_salle_de_cours_eva_zoe"
+          "fond": "direction_salle_de_cours_eva_zoe"
         }
       ],
       "choix": [
@@ -397,7 +397,7 @@
       ]
     },
     "arriveeEvaFroide": {
-      "fond" : "couloir_rencontre_eva",
+      "fond":"couloir_rencontre_eva",
       "dialogues": [
         {
           "personnage": "narrateur",
@@ -641,7 +641,7 @@
         {
           "personnage": "narrateur",
           "texte": "Dans le couloir suivant, tu croises Émelyne.",
-          "fond" : "couloir_croisee_emelyne"
+          "fond":"couloir_croisee_emelyne"
         },
         {
           "personnage": "emelyne",
@@ -943,7 +943,7 @@
         {
           "personnage": "narrateur",
           "texte": "Vous commencez à préparer la présentation.",
-          "fond" : "class_travaille_groupe"
+          "fond":"class_travaille_groupe"
         },
         {
           "personnage": "narrateur",
@@ -956,7 +956,8 @@
             "negative": "Je peux te parler deux minutes {{nomJoueur}} ?",
             "neutre": "Je peux te parler deux minutes {{nomJoueur}} ?",
             "amicale": "Je peux te parler deux minutes {{nomJoueur}} ?",
-            "proche": "Je peux te parler deux minutes {{nomJoueur}} ?"
+            "proche": "Je peux te parler deux minutes {{nomJoueur}} ?",
+            "fond":"discussion_bryan"
           }
         }
       ],
@@ -990,7 +991,7 @@
         {
           "personnage": "narrateur",
           "texte": "Vous vous éloignez légèrement du groupe.",
-          "fond" : "discussion_bryan_ecart"
+          "fond":"discussion_bryan_ecart"
         },
         {
           "personnage": "bryan",
@@ -1358,7 +1359,8 @@
       "dialogues": [
         {
           "personnage": "narrateur",
-          "texte": "Vous rejoignez le groupe."
+          "texte": "Vous rejoignez le groupe.",
+          "fond":"retour_groupe"
         },
         {
           "personnage": "eva",
@@ -1411,7 +1413,8 @@
       "dialogues": [
         {
           "personnage": "narrateur",
-          "texte": "Eva remarque immédiatement la tension entre vous."
+          "texte": "Eva remarque immédiatement la tension entre vous.",
+          "fond":"retour_groupe_tendu"
         },
         {
           "personnage": "eva",
@@ -1515,12 +1518,12 @@
       "dialogues": [
         {
           "personnage": "narrateur",
-          "texte": "Le professeur appelle finalement votre groupe.",
-          "fond" : "presentation_classe"
+          "texte": "Le professeur appelle finalement votre groupe."
         },
         {
           "personnage": "narrateur",
-          "texte": "Vous présentez votre travail devant la classe."
+          "texte": "Vous présentez votre travail devant la classe.",
+          "fond":"presentation_classe"
         },
         {
           "personnage": "narrateur",
@@ -1569,7 +1572,7 @@
         {
           "personnage": "narrateur",
           "texte": "À midi, le groupe se retrouve devant la cafétéria.",
-          "fond" : "devant_cafeteria"
+          "fond":"devant_cafeteria"
         },
         {
           "personnage": "zoe",
@@ -2199,7 +2202,7 @@
           "personnage": "narrateur",
           "texte": "En quittant le café, Eva ralentit légèrement pour marcher près de toi.",
           "galerie":"chap5RapprochementEva",
-          "fond" : "sortie_devant_cafe"
+          "fond":"sortie_devant_cafe"
         },
         {
           "personnage": "eva",
@@ -2300,7 +2303,7 @@
         {
           "personnage": "narrateur",
           "texte": "Plus tard dans la soirée, ton téléphone vibre.",
-          "fond": "discussion_eva_message"
+          "fond":"discussion_eva_message"
         },
         {
           "personnage": "eva",

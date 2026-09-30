@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Secours</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(rgba(5,10,15,.82), rgba(5,10,15,.92)),
+                        url("images/fond-secours.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+        }
+        header {
+            min-height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 45px;
+            background: rgba(10,18,25,.95);
+            border-bottom: 1px solid #31404d;
+        }
+        .logo { display: flex; align-items: center; gap: 15px; }
+        .logo-icon {
+            width: 48px; height: 48px; display: grid; place-items: center;
+            border-radius: 10px; background: #d63031;
+            font-size: 22px; font-weight: bold;
+        }
+        .logo-text h1 { font-size: 20px; }
+        .logo-text p { color: #9fb0be; font-size: 13px; margin-top: 3px; }
+        nav { display: flex; gap: 10px; flex-wrap: wrap; }
+        nav a {
+            color: #d8e0e6; text-decoration: none;
+            padding: 10px 15px; border-radius: 7px; transition: .2s;
+        }
+        nav a:hover { background: #1d2b36; color: white; }
+        main {
+            min-height: calc(100vh - 75px);
+            display: flex; flex-direction: column;
+            align-items: center; padding: 55px 20px;
+        }
+        .hero { text-align: center; max-width: 850px; margin-bottom: 45px; }
+        .hero-badge {
+            display: inline-block; padding: 7px 15px; margin-bottom: 20px;
+            border-radius: 50px; font-size: 13px; color: #ff7675;
+            background: rgba(214,48,49,.2);
+            border: 1px solid rgba(214,48,49,.7);
+        }
+        .hero h2 { font-size: 48px; margin-bottom: 20px; }
+        .hero h2 span { color: #e74c3c; }
+        .hero p { font-size: 18px; color: #b6c2cc; line-height: 1.7; }
+        .actions {
+            display: flex; gap: 15px; margin-top: 30px;
+            flex-wrap: wrap; justify-content: center;
+        }
+        .btn {
+            display: inline-block; padding: 14px 24px; border-radius: 8px;
+            text-decoration: none; font-weight: bold; transition: .2s;
+        }
+        .btn-primary { background: #d63031; color: white; }
+        .btn-secondary {
+            background: #1b2934; color: white; border: 1px solid #344653;
+        }
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .menu-grid {
+            width: 100%; max-width: 1100px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+        }
+        .menu-card {
+            position: relative; min-height: 185px; padding: 25px;
+            background: rgba(17,27,36,.95); border: 1px solid #2d414f;
+            border-radius: 12px; text-decoration: none; color: white;
+            transition: .25s; overflow: hidden;
+        }
+        .menu-card:hover {
+            transform: translateY(-5px); border-color: #d63031;
+            box-shadow: 0 10px 30px rgba(0,0,0,.35);
+        }
+        .menu-card::before {
+            content: ""; position: absolute; top: 0; left: 0;
+            width: 100%; height: 4px; background: #d63031;
+            transform: scaleX(0); transform-origin: left; transition: .25s;
+        }
+        .menu-card:hover::before { transform: scaleX(1); }
+        .icon { font-size: 35px; margin-bottom: 18px; }
+        .menu-card h3 { font-size: 19px; margin-bottom: 10px; }
+        .menu-card p { color: #9eafbb; line-height: 1.5; font-size: 14px; }
+        footer {
+            text-align: center; padding: 20px; background: #080d11;
+            border-top: 1px solid #243540; color: #748694; font-size: 13px;
+        }
+        @media (max-width: 800px) {
+            header { flex-direction: column; gap: 15px; padding: 20px; }
+            nav { justify-content: center; }
+            .hero h2 { font-size: 35px; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="logo">
+        <div class="logo-icon">18</div>
+        <div class="logo-text">
+            <h1>Gestion Secours</h1>
+            <p>Simulation de chaîne de secours</p>
+        </div>
+    </div>
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="operations.html">Opérations</a>
+        <a href="parametres.html">Paramètres</a>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="hero-badge">CENTRE OPÉRATIONNEL</div>
+        <h2>Gérez les secours <span>de A à Z</span></h2>
+        <p>
+            Prenez les appels d'urgence, analysez les informations,
+            choisissez les moyens adaptés, déclenchez les secours et
+            prenez le contrôle des interventions jusqu'au retour des équipes en caserne.
+        </p>
+        <div class="actions">
+            <a href="operations.html" class="btn btn-primary">Démarrer la garde</a>
+            <a href="tutoriel.html" class="btn btn-secondary">Tutoriel</a>
+        </div>
+    </section>
+
+    <section class="menu-grid">
+        <a href="cta.html" class="menu-card">
+            <div class="icon">📞</div>
+            <h3>Centre de traitement des appels</h3>
+            <p>Réceptionnez les appels, interrogez les témoins et déterminez la réponse adaptée.</p>
+        </a>
+
+        <a href="operations.html" class="menu-card">
+            <div class="icon">🚨</div>
+            <h3>Salle opérationnelle</h3>
+            <p>Déclenchez les moyens, gérez les renforts et suivez toutes les interventions.</p>
+        </a>
+
+        <a href="vehicules.html" class="menu-card">
+            <div class="icon">🚒</div>
+            <h3>Véhicules</h3>
+            <p>Gérez les VSAV, FPT, échelles, secours routier, commandement et moyens spécialisés.</p>
+        </a>
+
+        <a href="casernes.html" class="menu-card">
+            <div class="icon">🏢</div>
+            <h3>Casernes</h3>
+            <p>Construisez et améliorez vos centres de secours et répartissez vos moyens.</p>
+        </a>
+
+        <a href="personnel.html" class="menu-card">
+            <div class="icon">👨‍🚒</div>
+            <h3>Personnel</h3>
+            <p>Gérez les gardes, qualifications, spécialités, repos et disponibilités.</p>
+        </a>
+
+        <a href="hopitaux.html" class="menu-card">
+            <div class="icon">🏥</div>
+            <h3>Hôpitaux</h3>
+            <p>Choisissez les établissements et services adaptés à l'état des victimes.</p>
+        </a>
+
+        <a href="carte.html" class="menu-card">
+            <div class="icon">🗺️</div>
+            <h3>Carte opérationnelle</h3>
+            <p>Visualisez les casernes, véhicules, hôpitaux et interventions sur votre secteur.</p>
+        </a>
+
+        <a href="rapports.html" class="menu-card">
+            <div class="icon">📊</div>
+            <h3>Rapports</h3>
+            <p>Consultez les statistiques, coûts et performances de votre service.</p>
+        </a>
+    </section>
+</main>
+
+<footer>Gestion Secours — Prototype Alpha</footer>
+</body>
+</html>

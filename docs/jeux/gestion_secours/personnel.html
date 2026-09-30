@@ -1,0 +1,2721 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Personnel - Gestion Secours</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --fond: #081018;
+            --panneau: #121f2a;
+            --panneau-2: #182733;
+            --bordure: #2b3e4c;
+
+            --texte: #f5f7f9;
+            --texte-secondaire: #94a8b7;
+
+            --rouge: #d63031;
+            --orange: #f39c12;
+            --vert: #27ae60;
+            --bleu: #3498db;
+            --gris: #7f8c8d;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--fond);
+            color: var(--texte);
+            min-height: 100vh;
+        }
+
+        /* =========================
+           HEADER
+        ========================== */
+
+        header {
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 12px 30px;
+
+            background: #0b141c;
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--rouge);
+            border-radius: 9px;
+
+            font-weight: bold;
+        }
+
+        .logo h1 {
+            font-size: 19px;
+        }
+
+        .logo p {
+            margin-top: 3px;
+
+            color: var(--texte-secondaire);
+            font-size: 12px;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #cbd6de;
+            text-decoration: none;
+
+            padding: 9px 13px;
+
+            border-radius: 6px;
+        }
+
+        nav a:hover {
+            background: var(--panneau-2);
+        }
+
+        .horloge {
+            text-align: right;
+        }
+
+        #heure {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #date {
+            color: var(--texte-secondaire);
+            font-size: 11px;
+        }
+
+        /* =========================
+           MAIN
+        ========================== */
+
+        main {
+            padding: 20px;
+        }
+
+        .titre-page {
+            margin-bottom: 20px;
+        }
+
+        .titre-page h2 {
+            font-size: 25px;
+        }
+
+        .titre-page p {
+            margin-top: 5px;
+
+            color: var(--texte-secondaire);
+        }
+
+        /* =========================
+           STATS
+        ========================== */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+            border-radius: 10px;
+
+            padding: 16px;
+        }
+
+        .stat-label {
+            color: var(--texte-secondaire);
+            font-size: 12px;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: bold;
+
+            margin-top: 6px;
+        }
+
+        /* =========================
+           TOOLBAR
+        ========================== */
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+
+            margin-bottom: 18px;
+        }
+
+        .toolbar input,
+        .toolbar select {
+            padding: 10px;
+
+            background: #0d1820;
+            color: white;
+
+            border: 1px solid var(--bordure);
+            border-radius: 7px;
+        }
+
+        .toolbar input {
+            min-width: 250px;
+            flex: 1;
+        }
+
+        .toolbar select {
+            min-width: 180px;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .btn {
+            border: none;
+
+            padding: 10px 14px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: var(--rouge);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #233746;
+            color: white;
+
+            border: 1px solid var(--bordure);
+        }
+
+        .btn-success {
+            background: var(--vert);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--orange);
+            color: #111;
+        }
+
+        .btn-danger {
+            background: #772323;
+            color: white;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================== */
+
+        .personnel-layout {
+            display: grid;
+            grid-template-columns: 1fr 390px;
+
+            gap: 15px;
+
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .panel-header h3 {
+            font-size: 16px;
+        }
+
+        .panel-content {
+            padding: 13px;
+        }
+
+        /* =========================
+           TABLE
+        ========================== */
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+
+            padding: 11px;
+
+            font-size: 11px;
+
+            color: var(--texte-secondaire);
+
+            background: #101c25;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        td {
+            padding: 12px 11px;
+
+            font-size: 12px;
+
+            border-bottom: 1px solid #22343f;
+        }
+
+        tbody tr {
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        tbody tr:hover {
+            background: var(--panneau-2);
+        }
+
+        tbody tr.selected {
+            background: #203441;
+        }
+
+        .personne {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #263b49;
+
+            border-radius: 50%;
+
+            font-size: 19px;
+        }
+
+        .personne strong {
+            display: block;
+        }
+
+        .personne small {
+            color: var(--texte-secondaire);
+        }
+
+        /* =========================
+           STATUTS
+        ========================== */
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            padding: 5px 8px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+        }
+
+        .status-disponible {
+            background: rgba(39, 174, 96, 0.17);
+            color: #80e1a4;
+        }
+
+        .status-disponible .dot {
+            background: var(--vert);
+        }
+
+        .status-garde {
+            background: rgba(52, 152, 219, 0.17);
+            color: #78c7ff;
+        }
+
+        .status-garde .dot {
+            background: var(--bleu);
+        }
+
+        .status-intervention {
+            background: rgba(243, 156, 18, 0.17);
+            color: #ffca68;
+        }
+
+        .status-intervention .dot {
+            background: var(--orange);
+        }
+
+        .status-repos {
+            background: rgba(127, 140, 141, 0.17);
+            color: #c9d0d4;
+        }
+
+        .status-repos .dot {
+            background: var(--gris);
+        }
+
+        .status-indisponible {
+            background: rgba(214, 48, 49, 0.17);
+            color: #ff8880;
+        }
+
+        .status-indisponible .dot {
+            background: var(--rouge);
+        }
+
+        /* =========================
+           PROGRESS
+        ========================== */
+
+        .progress {
+            width: 100%;
+            height: 7px;
+
+            background: #09131a;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+
+            background: var(--vert);
+        }
+
+        .progress-orange {
+            background: var(--orange);
+        }
+
+        .progress-red {
+            background: var(--rouge);
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+
+            margin-bottom: 5px;
+
+            font-size: 10px;
+        }
+
+        .progress-label span {
+            color: var(--texte-secondaire);
+        }
+
+        /* =========================
+           DETAILS
+        ========================== */
+
+        .detail-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .detail-avatar {
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #263b49;
+
+            border-radius: 50%;
+
+            font-size: 28px;
+        }
+
+        .detail-title h3 {
+            font-size: 19px;
+        }
+
+        .detail-title p {
+            margin-top: 4px;
+
+            color: var(--texte-secondaire);
+            font-size: 12px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 8px;
+        }
+
+        .detail-box {
+            padding: 10px;
+
+            background: #0d1820;
+
+            border: 1px solid var(--bordure);
+            border-radius: 7px;
+        }
+
+        .detail-box span {
+            display: block;
+
+            color: var(--texte-secondaire);
+            font-size: 10px;
+
+            margin-bottom: 4px;
+        }
+
+        .detail-box strong {
+            font-size: 12px;
+        }
+
+        .separator {
+            height: 1px;
+
+            background: var(--bordure);
+
+            margin: 15px 0;
+        }
+
+        .detail-section h4 {
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .liste {
+            display: grid;
+            gap: 7px;
+        }
+
+        .liste-item {
+            display: flex;
+            justify-content: space-between;
+
+            gap: 8px;
+
+            padding: 9px;
+
+            background: #0c171f;
+
+            border: 1px solid var(--bordure);
+            border-radius: 7px;
+
+            font-size: 11px;
+        }
+
+        .liste-item span {
+            color: var(--texte-secondaire);
+        }
+
+        .actions {
+            display: grid;
+            gap: 8px;
+
+            margin-top: 15px;
+        }
+
+        /* =========================
+           MODAL
+        ========================== */
+
+        .modal-overlay {
+            display: none;
+
+            position: fixed;
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.72);
+
+            align-items: center;
+            justify-content: center;
+
+            z-index: 100;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            width: 95%;
+            max-width: 530px;
+
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 14px;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .modal-content {
+            padding: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: var(--texte-secondaire);
+
+            font-size: 11px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+
+            padding: 10px;
+
+            background: #0c171f;
+            color: white;
+
+            border: 1px solid var(--bordure);
+            border-radius: 6px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+
+            margin-top: 15px;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 1100px) {
+
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .personnel-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 750px) {
+
+            header {
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .toolbar {
+                flex-direction: column;
+            }
+
+            .toolbar input,
+            .toolbar select {
+                width: 100%;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            18
+        </div>
+
+        <div>
+            <h1>
+                Gestion Secours
+            </h1>
+
+            <p>
+                Gestion du personnel
+            </p>
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a href="index.html">
+            Accueil
+        </a>
+
+        <a href="cta.html">
+            CTA
+        </a>
+
+        <a href="operations.html">
+            Opérations
+        </a>
+
+        <a href="vehicules.html">
+            Véhicules
+        </a>
+
+        <a href="casernes.html">
+            Casernes
+        </a>
+
+    </nav>
+
+
+    <div class="horloge">
+
+        <div id="heure">
+            00:00:00
+        </div>
+
+        <div id="date">
+            --
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <div class="titre-page">
+
+        <h2>
+            Personnel
+        </h2>
+
+        <p>
+            Gérez les effectifs, les gardes, les spécialités, les formations et l'aptitude opérationnelle.
+        </p>
+
+    </div>
+
+
+    <!-- =====================
+         STATISTIQUES
+    ====================== -->
+
+    <section class="stats">
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Effectif total
+            </div>
+
+            <div class="stat-value" id="statTotal">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                En garde
+            </div>
+
+            <div class="stat-value" id="statGarde">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                En intervention
+            </div>
+
+            <div class="stat-value" id="statIntervention">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Au repos
+            </div>
+
+            <div class="stat-value" id="statRepos">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Indisponibles
+            </div>
+
+            <div class="stat-value" id="statIndisponibles">
+                0
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================
+         TOOLBAR
+    ====================== -->
+
+    <section class="toolbar">
+
+        <input
+            type="text"
+            id="recherche"
+            placeholder="Rechercher un agent..."
+            oninput="afficherPersonnel()"
+        >
+
+
+        <select
+            id="filtreCaserne"
+            onchange="afficherPersonnel()"
+        >
+
+            <option value="">
+                Toutes les casernes
+            </option>
+
+            <option value="Centre de secours principal">
+                Centre de secours principal
+            </option>
+
+            <option value="Centre de secours secondaire">
+                Centre de secours secondaire
+            </option>
+
+        </select>
+
+
+        <select
+            id="filtreStatut"
+            onchange="afficherPersonnel()"
+        >
+
+            <option value="">
+                Tous les statuts
+            </option>
+
+            <option value="DISPONIBLE">
+                Disponible
+            </option>
+
+            <option value="GARDE">
+                En garde
+            </option>
+
+            <option value="INTERVENTION">
+                En intervention
+            </option>
+
+            <option value="REPOS">
+                Au repos
+            </option>
+
+            <option value="INDISPONIBLE">
+                Indisponible
+            </option>
+
+        </select>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="ouvrirAjout()"
+        >
+            + Recruter
+        </button>
+
+    </section>
+
+
+    <section class="personnel-layout">
+
+        <!-- =====================
+             TABLE PERSONNEL
+        ====================== -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Effectifs
+                </h3>
+
+                <span id="resultats">
+                    0 résultat
+                </span>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Agent
+                            </th>
+
+                            <th>
+                                Grade
+                            </th>
+
+                            <th>
+                                Caserne
+                            </th>
+
+                            <th>
+                                Statut
+                            </th>
+
+                            <th>
+                                Fatigue
+                            </th>
+
+                            <th>
+                                Aptitude
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="tablePersonnel">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             DETAILS
+        ====================== -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Fiche personnel
+                </h3>
+
+            </div>
+
+
+            <div
+                class="panel-content"
+                id="detailPersonnel"
+            >
+
+                <p style="color:#94a8b7;">
+                    Sélectionnez un agent.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     MODAL RECRUTEMENT
+========================== -->
+
+<div
+    class="modal-overlay"
+    id="modalAjout"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3>
+                Recruter un agent
+            </h3>
+
+            <button
+                class="btn btn-secondary"
+                onclick="fermerAjout()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <div class="modal-content">
+
+            <div class="form-group">
+
+                <label>
+                    Prénom
+                </label>
+
+                <input
+                    type="text"
+                    id="nouveauPrenom"
+                    placeholder="Prénom"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Nom
+                </label>
+
+                <input
+                    type="text"
+                    id="nouveauNom"
+                    placeholder="Nom"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Grade
+                </label>
+
+                <select id="nouveauGrade">
+
+                    <option value="Sapeur">
+                        Sapeur
+                    </option>
+
+                    <option value="Caporal">
+                        Caporal
+                    </option>
+
+                    <option value="Sergent">
+                        Sergent
+                    </option>
+
+                    <option value="Adjudant">
+                        Adjudant
+                    </option>
+
+                    <option value="Lieutenant">
+                        Lieutenant
+                    </option>
+
+                    <option value="Capitaine">
+                        Capitaine
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Caserne
+                </label>
+
+                <select id="nouvelleCaserne">
+
+                    <option>
+                        Centre de secours principal
+                    </option>
+
+                    <option>
+                        Centre de secours secondaire
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Spécialité principale
+                </label>
+
+                <select id="nouvelleSpecialite">
+
+                    <option value="Incendie">
+                        Incendie
+                    </option>
+
+                    <option value="SAP">
+                        Secours à personne
+                    </option>
+
+                    <option value="Secours routier">
+                        Secours routier
+                    </option>
+
+                    <option value="Feux de forêt">
+                        Feux de forêt
+                    </option>
+
+                    <option value="Commandement">
+                        Commandement
+                    </option>
+
+                    <option value="GRIMP">
+                        GRIMP
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="fermerAjout()"
+                >
+                    Annuler
+                </button>
+
+
+                <button
+                    class="btn btn-primary"
+                    onclick="ajouterPersonnel()"
+                >
+                    Recruter
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+        =====================================================
+        DONNÉES DU PERSONNEL
+        =====================================================
+    */
+
+    let personnel = [
+
+        {
+            id: 1,
+
+            prenom: "Lucas",
+            nom: "Martin",
+
+            grade: "Sergent",
+
+            caserne:
+                "Centre de secours principal",
+
+            statut:
+                "INTERVENTION",
+
+            fatigue:
+                42,
+
+            aptitude:
+                96,
+
+            anciennete:
+                8,
+
+            specialites: [
+                "Incendie",
+                "SAP",
+                "Chef d'agrès"
+            ],
+
+            formations: [
+                "Équipier incendie",
+                "Chef d'agrès",
+                "SAP niveau 2"
+            ],
+
+            vehicule:
+                "FPT 01"
+        },
+
+
+        {
+            id: 2,
+
+            prenom: "Emma",
+            nom: "Bernard",
+
+            grade: "Caporal",
+
+            caserne:
+                "Centre de secours principal",
+
+            statut:
+                "GARDE",
+
+            fatigue:
+                22,
+
+            aptitude:
+                99,
+
+            anciennete:
+                5,
+
+            specialites: [
+                "SAP",
+                "Secours routier"
+            ],
+
+            formations: [
+                "SAP niveau 2",
+                "Secours routier"
+            ],
+
+            vehicule:
+                "VSAV 03"
+        },
+
+
+        {
+            id: 3,
+
+            prenom: "Thomas",
+            nom: "Dubois",
+
+            grade: "Adjudant",
+
+            caserne:
+                "Centre de secours principal",
+
+            statut:
+                "GARDE",
+
+            fatigue:
+                34,
+
+            aptitude:
+                94,
+
+            anciennete:
+                14,
+
+            specialites: [
+                "Commandement",
+                "Incendie"
+            ],
+
+            formations: [
+                "Chef de groupe",
+                "Commandement opérationnel"
+            ],
+
+            vehicule:
+                "VLCDG 01"
+        },
+
+
+        {
+            id: 4,
+
+            prenom: "Julie",
+            nom: "Moreau",
+
+            grade: "Sapeur",
+
+            caserne:
+                "Centre de secours secondaire",
+
+            statut:
+                "DISPONIBLE",
+
+            fatigue:
+                12,
+
+            aptitude:
+                100,
+
+            anciennete:
+                2,
+
+            specialites: [
+                "SAP"
+            ],
+
+            formations: [
+                "Équipier SAP"
+            ],
+
+            vehicule:
+                "Aucun"
+        },
+
+
+        {
+            id: 5,
+
+            prenom: "Nicolas",
+            nom: "Petit",
+
+            grade: "Caporal",
+
+            caserne:
+                "Centre de secours secondaire",
+
+            statut:
+                "REPOS",
+
+            fatigue:
+                78,
+
+            aptitude:
+                87,
+
+            anciennete:
+                6,
+
+            specialites: [
+                "Feux de forêt",
+                "Incendie"
+            ],
+
+            formations: [
+                "Équipier incendie",
+                "Feux de forêt"
+            ],
+
+            vehicule:
+                "Aucun"
+        },
+
+
+        {
+            id: 6,
+
+            prenom: "Sarah",
+            nom: "Leroy",
+
+            grade: "Lieutenant",
+
+            caserne:
+                "Centre de secours principal",
+
+            statut:
+                "INDISPONIBLE",
+
+            fatigue:
+                10,
+
+            aptitude:
+                48,
+
+            anciennete:
+                11,
+
+            specialites: [
+                "Commandement",
+                "SAP"
+            ],
+
+            formations: [
+                "Chef de groupe",
+                "Gestion opérationnelle"
+            ],
+
+            vehicule:
+                "Aucun"
+        }
+
+    ];
+
+
+    let personnelSelectionne = null;
+
+
+    /*
+        =====================================================
+        HORLOGE
+        =====================================================
+    */
+
+    function mettreAJourHorloge() {
+
+        const maintenant =
+            new Date();
+
+
+        document.getElementById(
+            "heure"
+        ).textContent =
+            maintenant.toLocaleTimeString(
+                "fr-FR"
+            );
+
+
+        document.getElementById(
+            "date"
+        ).textContent =
+            maintenant.toLocaleDateString(
+                "fr-FR"
+            );
+
+    }
+
+
+    setInterval(
+        mettreAJourHorloge,
+        1000
+    );
+
+
+    mettreAJourHorloge();
+
+
+    /*
+        =====================================================
+        AFFICHAGE
+        =====================================================
+    */
+
+    function afficherPersonnel() {
+
+        const recherche =
+            document.getElementById(
+                "recherche"
+            )
+            .value
+            .toLowerCase();
+
+
+        const filtreCaserne =
+            document.getElementById(
+                "filtreCaserne"
+            ).value;
+
+
+        const filtreStatut =
+            document.getElementById(
+                "filtreStatut"
+            ).value;
+
+
+        const filtres =
+            personnel.filter(
+                agent => {
+
+                    const texte =
+                        (
+                            agent.prenom
+                            +
+                            " "
+                            +
+                            agent.nom
+                            +
+                            " "
+                            +
+                            agent.grade
+                        )
+                        .toLowerCase();
+
+
+                    const correspondRecherche =
+                        texte.includes(
+                            recherche
+                        );
+
+
+                    const correspondCaserne =
+
+                        !filtreCaserne
+
+                        ||
+
+                        agent.caserne ===
+                            filtreCaserne;
+
+
+                    const correspondStatut =
+
+                        !filtreStatut
+
+                        ||
+
+                        agent.statut ===
+                            filtreStatut;
+
+
+                    return (
+                        correspondRecherche
+                        &&
+                        correspondCaserne
+                        &&
+                        correspondStatut
+                    );
+
+                }
+            );
+
+
+        const tableau =
+            document.getElementById(
+                "tablePersonnel"
+            );
+
+
+        tableau.innerHTML = "";
+
+
+        filtres.forEach(
+            agent => {
+
+                const ligne =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                if (
+                    personnelSelectionne
+                    &&
+                    personnelSelectionne.id ===
+                    agent.id
+                ) {
+
+                    ligne.classList.add(
+                        "selected"
+                    );
+
+                }
+
+
+                ligne.onclick =
+                    () =>
+                        selectionnerPersonnel(
+                            agent.id
+                        );
+
+
+                ligne.innerHTML = `
+
+                    <td>
+
+                        <div class="personne">
+
+                            <div class="avatar">
+                                👨‍🚒
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    ${agent.prenom}
+                                    ${agent.nom}
+                                </strong>
+
+                                <small>
+                                    ${agent.specialites[0]}
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+                        ${agent.grade}
+                    </td>
+
+
+                    <td>
+                        ${agent.caserne}
+                    </td>
+
+
+                    <td>
+                        ${htmlStatut(
+                            agent.statut
+                        )}
+                    </td>
+
+
+                    <td>
+
+                        ${agent.fatigue} %
+
+                        ${htmlProgressionInverse(
+                            agent.fatigue
+                        )}
+
+                    </td>
+
+
+                    <td>
+
+                        ${agent.aptitude} %
+
+                        ${htmlProgression(
+                            agent.aptitude
+                        )}
+
+                    </td>
+
+                `;
+
+
+                tableau.appendChild(
+                    ligne
+                );
+
+            }
+        );
+
+
+        document.getElementById(
+            "resultats"
+        ).textContent =
+            filtres.length
+            +
+            (
+                filtres.length > 1
+                    ? " résultats"
+                    : " résultat"
+            );
+
+
+        mettreAJourStats();
+
+    }
+
+
+    /*
+        =====================================================
+        STATUTS
+        =====================================================
+    */
+
+    function htmlStatut(statut) {
+
+        if (
+            statut === "DISPONIBLE"
+        ) {
+
+            return `
+
+                <span class="status status-disponible">
+
+                    <span class="dot"></span>
+
+                    Disponible
+
+                </span>
+
+            `;
+
+        }
+
+
+        if (
+            statut === "GARDE"
+        ) {
+
+            return `
+
+                <span class="status status-garde">
+
+                    <span class="dot"></span>
+
+                    En garde
+
+                </span>
+
+            `;
+
+        }
+
+
+        if (
+            statut === "INTERVENTION"
+        ) {
+
+            return `
+
+                <span class="status status-intervention">
+
+                    <span class="dot"></span>
+
+                    Intervention
+
+                </span>
+
+            `;
+
+        }
+
+
+        if (
+            statut === "REPOS"
+        ) {
+
+            return `
+
+                <span class="status status-repos">
+
+                    <span class="dot"></span>
+
+                    Repos
+
+                </span>
+
+            `;
+
+        }
+
+
+        return `
+
+            <span class="status status-indisponible">
+
+                <span class="dot"></span>
+
+                Indisponible
+
+            </span>
+
+        `;
+
+    }
+
+
+    /*
+        =====================================================
+        BARRES DE PROGRESSION
+        =====================================================
+    */
+
+    function htmlProgression(
+        valeur
+    ) {
+
+        let classe = "";
+
+
+        if (
+            valeur < 50
+        ) {
+
+            classe =
+                "progress-red";
+
+        }
+
+        else if (
+            valeur < 75
+        ) {
+
+            classe =
+                "progress-orange";
+
+        }
+
+
+        return `
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar ${classe}"
+                    style="width:${valeur}%"
+                ></div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    function htmlProgressionInverse(
+        valeur
+    ) {
+
+        let classe = "";
+
+
+        if (
+            valeur >= 75
+        ) {
+
+            classe =
+                "progress-red";
+
+        }
+
+        else if (
+            valeur >= 50
+        ) {
+
+            classe =
+                "progress-orange";
+
+        }
+
+
+        return `
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar ${classe}"
+                    style="width:${valeur}%"
+                ></div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /*
+        =====================================================
+        STATS
+        =====================================================
+    */
+
+    function mettreAJourStats() {
+
+        document.getElementById(
+            "statTotal"
+        ).textContent =
+            personnel.length;
+
+
+        document.getElementById(
+            "statGarde"
+        ).textContent =
+            personnel.filter(
+                agent =>
+                    agent.statut ===
+                    "GARDE"
+            ).length;
+
+
+        document.getElementById(
+            "statIntervention"
+        ).textContent =
+            personnel.filter(
+                agent =>
+                    agent.statut ===
+                    "INTERVENTION"
+            ).length;
+
+
+        document.getElementById(
+            "statRepos"
+        ).textContent =
+            personnel.filter(
+                agent =>
+                    agent.statut ===
+                    "REPOS"
+            ).length;
+
+
+        document.getElementById(
+            "statIndisponibles"
+        ).textContent =
+            personnel.filter(
+                agent =>
+                    agent.statut ===
+                    "INDISPONIBLE"
+            ).length;
+
+    }
+
+
+    /*
+        =====================================================
+        SELECTION
+        =====================================================
+    */
+
+    function selectionnerPersonnel(id) {
+
+        personnelSelectionne =
+            personnel.find(
+                agent =>
+                    agent.id === id
+            );
+
+
+        afficherPersonnel();
+
+        afficherDetail();
+
+    }
+
+
+    /*
+        =====================================================
+        DETAILS
+        =====================================================
+    */
+
+    function afficherDetail() {
+
+        if (
+            !personnelSelectionne
+        ) {
+            return;
+        }
+
+
+        const p =
+            personnelSelectionne;
+
+
+        const specialites =
+            p.specialites
+                .map(
+                    specialite => `
+
+                        <div class="liste-item">
+
+                            <strong>
+                                ${specialite}
+                            </strong>
+
+                            <span>
+                                Qualifié
+                            </span>
+
+                        </div>
+
+                    `
+                )
+                .join("");
+
+
+        const formations =
+            p.formations
+                .map(
+                    formation => `
+
+                        <div class="liste-item">
+
+                            <strong>
+                                ${formation}
+                            </strong>
+
+                            <span>
+                                Validée
+                            </span>
+
+                        </div>
+
+                    `
+                )
+                .join("");
+
+
+        const zone =
+            document.getElementById(
+                "detailPersonnel"
+            );
+
+
+        zone.innerHTML = `
+
+            <div class="detail-title">
+
+                <div class="detail-avatar">
+                    👨‍🚒
+                </div>
+
+                <div>
+
+                    <h3>
+                        ${p.prenom}
+                        ${p.nom}
+                    </h3>
+
+                    <p>
+                        ${p.grade}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            ${htmlStatut(
+                p.statut
+            )}
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-grid">
+
+                <div class="detail-box">
+
+                    <span>
+                        Grade
+                    </span>
+
+                    <strong>
+                        ${p.grade}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Ancienneté
+                    </span>
+
+                    <strong>
+                        ${p.anciennete} ans
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Caserne
+                    </span>
+
+                    <strong>
+                        ${p.caserne}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Véhicule affecté
+                    </span>
+
+                    <strong>
+                        ${p.vehicule}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Fatigue
+                </h4>
+
+                <div class="progress-label">
+
+                    <span>
+                        Niveau actuel
+                    </span>
+
+                    <strong>
+                        ${p.fatigue} %
+                    </strong>
+
+                </div>
+
+                ${htmlProgressionInverse(
+                    p.fatigue
+                )}
+
+            </div>
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Aptitude opérationnelle
+                </h4>
+
+                <div class="progress-label">
+
+                    <span>
+                        Aptitude
+                    </span>
+
+                    <strong>
+                        ${p.aptitude} %
+                    </strong>
+
+                </div>
+
+                ${htmlProgression(
+                    p.aptitude
+                )}
+
+            </div>
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Spécialités
+                </h4>
+
+                <div class="liste">
+                    ${specialites}
+                </div>
+
+            </div>
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Formations
+                </h4>
+
+                <div class="liste">
+                    ${formations}
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <button
+                    class="btn btn-success"
+                    onclick="mettreEnGarde()"
+                >
+                    🟢 Mettre en garde
+                </button>
+
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="mettreAuRepos()"
+                >
+                    🛏 Mettre au repos
+                </button>
+
+
+                <button
+                    class="btn btn-warning"
+                    onclick="ajouterFormation()"
+                >
+                    🎓 Ajouter une formation
+                </button>
+
+
+                <button
+                    class="btn btn-danger"
+                    onclick="changerStatut()"
+                >
+                    Modifier le statut
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /*
+        =====================================================
+        ACTIONS
+        =====================================================
+    */
+
+    function mettreEnGarde() {
+
+        if (
+            !personnelSelectionne
+        ) {
+            return;
+        }
+
+
+        if (
+            personnelSelectionne.aptitude < 60
+        ) {
+
+            alert(
+                "Cet agent n'est pas suffisamment apte pour être placé en garde."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            personnelSelectionne.fatigue >= 80
+        ) {
+
+            alert(
+                "Cet agent est trop fatigué pour prendre une garde."
+            );
+
+            return;
+
+        }
+
+
+        personnelSelectionne.statut =
+            "GARDE";
+
+
+        sauvegarder();
+
+        afficherPersonnel();
+
+        afficherDetail();
+
+    }
+
+
+    function mettreAuRepos() {
+
+        if (
+            !personnelSelectionne
+        ) {
+            return;
+        }
+
+
+        if (
+            personnelSelectionne.statut ===
+            "INTERVENTION"
+        ) {
+
+            alert(
+                "Impossible de mettre au repos un agent actuellement en intervention."
+            );
+
+            return;
+
+        }
+
+
+        personnelSelectionne.statut =
+            "REPOS";
+
+
+        personnelSelectionne.fatigue =
+            Math.max(
+                0,
+                personnelSelectionne.fatigue - 30
+            );
+
+
+        sauvegarder();
+
+        afficherPersonnel();
+
+        afficherDetail();
+
+    }
+
+
+    function ajouterFormation() {
+
+        if (
+            !personnelSelectionne
+        ) {
+            return;
+        }
+
+
+        const formation =
+            prompt(
+                "Nom de la formation :",
+                "Conducteur engin pompe"
+            );
+
+
+        if (
+            !formation
+        ) {
+            return;
+        }
+
+
+        personnelSelectionne.formations.push(
+            formation
+        );
+
+
+        personnelSelectionne.aptitude =
+            Math.min(
+                100,
+                personnelSelectionne.aptitude + 2
+            );
+
+
+        sauvegarder();
+
+        afficherDetail();
+
+    }
+
+
+    function changerStatut() {
+
+        if (
+            !personnelSelectionne
+        ) {
+            return;
+        }
+
+
+        const choix =
+            prompt(
+                "Statut : DISPONIBLE, GARDE, INTERVENTION, REPOS ou INDISPONIBLE",
+                personnelSelectionne.statut
+            );
+
+
+        if (
+            !choix
+        ) {
+            return;
+        }
+
+
+        const statut =
+            choix.toUpperCase();
+
+
+        const statuts = [
+            "DISPONIBLE",
+            "GARDE",
+            "INTERVENTION",
+            "REPOS",
+            "INDISPONIBLE"
+        ];
+
+
+        if (
+            !statuts.includes(
+                statut
+            )
+        ) {
+
+            alert(
+                "Statut invalide."
+            );
+
+            return;
+        }
+
+
+        personnelSelectionne.statut =
+            statut;
+
+
+        sauvegarder();
+
+        afficherPersonnel();
+
+        afficherDetail();
+
+    }
+
+
+    /*
+        =====================================================
+        RECRUTEMENT
+        =====================================================
+    */
+
+    function ouvrirAjout() {
+
+        document.getElementById(
+            "modalAjout"
+        ).classList.add(
+            "active"
+        );
+
+    }
+
+
+    function fermerAjout() {
+
+        document.getElementById(
+            "modalAjout"
+        ).classList.remove(
+            "active"
+        );
+
+    }
+
+
+    function ajouterPersonnel() {
+
+        const prenom =
+            document.getElementById(
+                "nouveauPrenom"
+            )
+            .value
+            .trim();
+
+
+        const nom =
+            document.getElementById(
+                "nouveauNom"
+            )
+            .value
+            .trim();
+
+
+        const grade =
+            document.getElementById(
+                "nouveauGrade"
+            ).value;
+
+
+        const caserne =
+            document.getElementById(
+                "nouvelleCaserne"
+            ).value;
+
+
+        const specialite =
+            document.getElementById(
+                "nouvelleSpecialite"
+            ).value;
+
+
+        if (
+            !prenom ||
+            !nom
+        ) {
+
+            alert(
+                "Complétez le prénom et le nom."
+            );
+
+            return;
+        }
+
+
+        personnel.push({
+
+            id:
+                Date.now(),
+
+            prenom:
+                prenom,
+
+            nom:
+                nom,
+
+            grade:
+                grade,
+
+            caserne:
+                caserne,
+
+            statut:
+                "DISPONIBLE",
+
+            fatigue:
+                0,
+
+            aptitude:
+                100,
+
+            anciennete:
+                0,
+
+            specialites:
+                [
+                    specialite
+                ],
+
+            formations:
+                [
+                    "Formation initiale"
+                ],
+
+            vehicule:
+                "Aucun"
+
+        });
+
+
+        document.getElementById(
+            "nouveauPrenom"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "nouveauNom"
+        ).value =
+            "";
+
+
+        sauvegarder();
+
+        fermerAjout();
+
+        afficherPersonnel();
+
+    }
+
+
+    /*
+        =====================================================
+        SAUVEGARDE
+        =====================================================
+    */
+
+    function sauvegarder() {
+
+        localStorage.setItem(
+
+            "personnelSecours",
+
+            JSON.stringify(
+                personnel
+            )
+
+        );
+
+    }
+
+
+    function chargerSauvegarde() {
+
+        const sauvegarde =
+            localStorage.getItem(
+                "personnelSecours"
+            );
+
+
+        if (
+            !sauvegarde
+        ) {
+            return;
+        }
+
+
+        try {
+
+            const donnees =
+                JSON.parse(
+                    sauvegarde
+                );
+
+
+            if (
+                Array.isArray(
+                    donnees
+                )
+            ) {
+
+                personnel =
+                    donnees;
+
+            }
+
+        }
+
+        catch (
+            erreur
+        ) {
+
+            console.error(
+                "Erreur de chargement du personnel :",
+                erreur
+            );
+
+        }
+
+    }
+
+
+    /*
+        =====================================================
+        DEMARRAGE
+        =====================================================
+    */
+
+    chargerSauvegarde();
+
+    afficherPersonnel();
+
+
+    if (
+        personnel.length > 0
+    ) {
+
+        selectionnerPersonnel(
+            personnel[0].id
+        );
+
+    }
+
+</script>
+
+</body>
+</html>
+```

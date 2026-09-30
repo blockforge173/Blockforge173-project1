@@ -4,7 +4,7 @@
     "debut": "reveilLendemain",
     "scenes": {
         "reveilLendemain": {
-            "fond": "chambre_joueur3",
+            "fond": "chambre_joueur",
             "ambiance": "chambre_joueur_réveille",
             "dialogues": [
                 {
@@ -21,13 +21,15 @@
                 },
                 {
                     "personnage": "narrateur",
-                    "texte": "{{nomJoueur}} attrape son téléphone et ouvre la conversation."
+                    "texte": "{{nomJoueur}} attrape son téléphone et ouvre la conversation.",
+                    "fond":"joueur_ouvre_telephone"
                 },
                 {
                     "personnage": "systeme",
                     "texte": "Aucun nouveaux message d'Eva",
                     "son": "systeme",
-                    "galerie":"chap8MessageAbsent"
+                    "galerie":"chap8MessageAbsent",
+                    "fond":"discussion_eva_message_absent"
                 }
             ],
             "choix": [
@@ -35,7 +37,8 @@
                     "texte": "Lui envoyer un message",
                     "message": {
                         "personnage": "joueur",
-                        "texte": "Salut Eva. Tu es bien rentrée hier soir ?"
+                        "texte": "Salut Eva. Tu es bien rentrée hier soir ?",
+                        "fond":"discussion_eva_message"
                     },
                     "effet": {
                         "messageEvaMatinEnvoye": true
@@ -46,7 +49,8 @@
                     "texte": "Vérifier une nouvelle fois la conversation",
                     "message": {
                         "personnage": "narrateur",
-                        "texte": "{{nomJoueur}} fait défiler la conversation, mais aucun message n'a été reçu pendant la nuit."
+                        "texte": "{{nomJoueur}} fait défiler la conversation, mais aucun message n'a été reçu pendant la nuit.",
+                        "fond":"discussion_eva_message_absent"
                     },
                     "next": "attenteMessageEva"
                 },
@@ -54,7 +58,8 @@
                     "texte": "Contacter immédiatement Zoé",
                     "message": {
                         "personnage": "joueur",
-                        "texte": "Salut Zoé. Est-ce que tu as eu des nouvelle d'Eva depuis hier soir ?"
+                        "texte": "Salut Zoé. Est-ce que tu as eu des nouvelle d'Eva depuis hier soir ?",
+                        "fond":"discussion_zoe_message"
                     },
                     "effet": {
                         "zoeContacteePourEva": true,
@@ -86,7 +91,8 @@
                     "texte": "Demander à Zoé si elle a des nouvelles",
                     "message": {
                         "personnage": "joueur",
-                        "texte": "Salut Zoé. Est-ce que tu as eu des nouvelle d'Eva depuis hier soir ?"
+                        "texte": "Salut Zoé. Est-ce que tu as eu des nouvelle d'Eva depuis hier soir ?",
+                        "fond":"discussion_zoe_message"
                     },
                     "effet": {
                         "zoeContacteePourEva": true,
@@ -230,7 +236,8 @@
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "{{nomJoueur}} ouvre la conversation avec émelyne."
+                    "texte": "{{nomJoueur}} ouvre la conversation avec émelyne.",
+                    "fond":"discussion_emelyne_message"
                 }
             ],
             "choix": [
@@ -307,7 +314,8 @@
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "Quelque instants après la conversation  avec émelyne, le téléphone de {{nomJoueur}} se met à sonner."
+                    "texte": "Quelque instants après la conversation  avec émelyne, le téléphone de {{nomJoueur}} se met à sonner.",
+                    "fond":"appartement_joueur"
                 },
                 {
                     "personnage": "systeme",
@@ -320,7 +328,8 @@
                     "texte": "Décrocher",
                     "message": {
                         "personnage": "joueur",
-                        "texte": "Allo ?"
+                        "texte": "Allo ?",
+                        "fond":"appel_christophe"
                     },
                     "next": "presentationChristophe"
                 }
@@ -533,7 +542,8 @@
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "Le dernier message d'Eva reste affiché sur l'écran."
+                    "texte": "Le dernier message d'Eva reste affiché sur l'écran.",
+                    "fond":"discussion_eva_message_absent"
                 },
                 {
                     "personnage": "narrateur",

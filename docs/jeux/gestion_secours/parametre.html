@@ -1,0 +1,2325 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Paramètres - Gestion Secours</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --fond: #081018;
+            --panneau: #121f2a;
+            --panneau-2: #182733;
+            --bordure: #2b3e4c;
+
+            --texte: #f5f7f9;
+            --texte-secondaire: #94a8b7;
+
+            --rouge: #d63031;
+            --orange: #f39c12;
+            --vert: #27ae60;
+            --bleu: #3498db;
+            --gris: #7f8c8d;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--fond);
+            color: var(--texte);
+            min-height: 100vh;
+        }
+
+        body.mode-clair {
+            --fond: #edf2f5;
+            --panneau: #ffffff;
+            --panneau-2: #f3f6f8;
+            --bordure: #c8d3da;
+
+            --texte: #17212a;
+            --texte-secondaire: #60717e;
+        }
+
+        header {
+            min-height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 12px 30px;
+
+            background: #0b141c;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        body.mode-clair header {
+            background: #ffffff;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--rouge);
+
+            color: white;
+
+            border-radius: 9px;
+
+            font-weight: bold;
+        }
+
+        .logo h1 {
+            font-size: 19px;
+        }
+
+        .logo p {
+            margin-top: 3px;
+
+            color: var(--texte-secondaire);
+
+            font-size: 12px;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--texte);
+
+            text-decoration: none;
+
+            padding: 9px 13px;
+
+            border-radius: 6px;
+        }
+
+        nav a:hover {
+            background: var(--panneau-2);
+        }
+
+        .horloge {
+            text-align: right;
+        }
+
+        #heure {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #date {
+            color: var(--texte-secondaire);
+            font-size: 11px;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .titre-page {
+            margin-bottom: 20px;
+        }
+
+        .titre-page h2 {
+            font-size: 25px;
+        }
+
+        .titre-page p {
+            margin-top: 5px;
+
+            color: var(--texte-secondaire);
+        }
+
+        .layout {
+            display: grid;
+
+            grid-template-columns:
+                260px 1fr;
+
+            gap: 15px;
+
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 14px;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .panel-header h3 {
+            font-size: 15px;
+        }
+
+        .panel-content {
+            padding: 15px;
+        }
+
+        .menu-settings {
+            display: grid;
+            gap: 8px;
+        }
+
+        .menu-btn {
+            width: 100%;
+
+            padding: 11px;
+
+            border: 1px solid transparent;
+
+            border-radius: 7px;
+
+            background: var(--panneau-2);
+
+            color: var(--texte);
+
+            text-align: left;
+
+            cursor: pointer;
+        }
+
+        .menu-btn:hover {
+            border-color: var(--bleu);
+        }
+
+        .menu-btn.active {
+            border-color: var(--rouge);
+
+            background: rgba(214, 48, 49, 0.12);
+        }
+
+        .setting-section {
+            display: none;
+        }
+
+        .setting-section.active {
+            display: block;
+        }
+
+        .setting-group {
+            margin-bottom: 22px;
+        }
+
+        .setting-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .setting-group h4 {
+            font-size: 14px;
+
+            margin-bottom: 11px;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 13px 0;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-info strong {
+            display: block;
+
+            font-size: 12px;
+
+            margin-bottom: 4px;
+        }
+
+        .setting-info p {
+            color: var(--texte-secondaire);
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+        select,
+        input[type="number"] {
+            min-width: 180px;
+
+            padding: 9px;
+
+            background: var(--panneau-2);
+
+            color: var(--texte);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 6px;
+        }
+
+        input[type="range"] {
+            width: 190px;
+        }
+
+        .range-wrap {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .range-value {
+            min-width: 45px;
+
+            text-align: right;
+
+            font-size: 11px;
+        }
+
+        .switch {
+            position: relative;
+
+            width: 42px;
+            height: 22px;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+
+            inset: 0;
+
+            background: #42525d;
+
+            border-radius: 20px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .slider::before {
+            content: "";
+
+            position: absolute;
+
+            width: 16px;
+            height: 16px;
+
+            left: 3px;
+            top: 3px;
+
+            background: white;
+
+            border-radius: 50%;
+
+            transition: 0.2s;
+        }
+
+        .switch input:checked + .slider {
+            background: var(--vert);
+        }
+
+        .switch input:checked + .slider::before {
+            transform: translateX(20px);
+        }
+
+        .btn {
+            border: none;
+
+            padding: 10px 14px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: var(--rouge);
+
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--panneau-2);
+
+            color: var(--texte);
+
+            border: 1px solid var(--bordure);
+        }
+
+        .btn-success {
+            background: var(--vert);
+
+            color: white;
+        }
+
+        .btn-danger {
+            background: #762424;
+
+            color: white;
+        }
+
+        .actions {
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-top: 20px;
+        }
+
+        .warning-box {
+            padding: 13px;
+
+            background: rgba(214,48,49,.10);
+
+            border: 1px solid rgba(214,48,49,.35);
+
+            border-radius: 8px;
+
+            color: #ff9189;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+        .success-message {
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 11px;
+
+            background: rgba(39,174,96,.12);
+
+            border: 1px solid rgba(39,174,96,.35);
+
+            border-radius: 7px;
+
+            color: #85e3a8;
+
+            font-size: 11px;
+        }
+
+        .data-list {
+            display: grid;
+
+            gap: 8px;
+
+            margin-top: 12px;
+        }
+
+        .data-item {
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            padding: 10px;
+
+            background: var(--panneau-2);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 7px;
+
+            font-size: 11px;
+        }
+
+        .data-item span {
+            color: var(--texte-secondaire);
+        }
+
+        @media (max-width: 850px) {
+
+            header {
+                flex-direction: column;
+
+                gap: 14px;
+            }
+
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .setting-item {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            select,
+            input[type="number"],
+            input[type="range"] {
+                width: 100%;
+            }
+
+            .range-wrap {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            18
+        </div>
+
+        <div>
+
+            <h1>
+                Gestion Secours
+            </h1>
+
+            <p>
+                Paramètres
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a href="index.html">
+            Accueil
+        </a>
+
+        <a href="operations.html">
+            Opérations
+        </a>
+
+        <a href="cta.html">
+            CTA
+        </a>
+
+        <a href="carte.html">
+            Carte
+        </a>
+
+        <a href="rapports.html">
+            Rapports
+        </a>
+
+    </nav>
+
+
+    <div class="horloge">
+
+        <div id="heure">
+            00:00:00
+        </div>
+
+        <div id="date">
+            --
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <div class="titre-page">
+
+        <h2>
+            Paramètres du jeu
+        </h2>
+
+        <p>
+            Configurez l'interface, l'audio, la difficulté et les données de votre partie.
+        </p>
+
+    </div>
+
+
+    <section class="layout">
+
+        <!-- MENU -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Catégories
+                </h3>
+
+            </div>
+
+
+            <div class="panel-content">
+
+                <div class="menu-settings">
+
+                    <button
+                        class="menu-btn active"
+                        onclick="ouvrirSection('general', this)"
+                    >
+                        ⚙ Général
+                    </button>
+
+                    <button
+                        class="menu-btn"
+                        onclick="ouvrirSection('audio', this)"
+                    >
+                        🔊 Audio
+                    </button>
+
+                    <button
+                        class="menu-btn"
+                        onclick="ouvrirSection('jeu', this)"
+                    >
+                        🎮 Gameplay
+                    </button>
+
+                    <button
+                        class="menu-btn"
+                        onclick="ouvrirSection('interface', this)"
+                    >
+                        🖥 Interface
+                    </button>
+
+                    <button
+                        class="menu-btn"
+                        onclick="ouvrirSection('accessibilite', this)"
+                    >
+                        ♿ Accessibilité
+                    </button>
+
+                    <button
+                        class="menu-btn"
+                        onclick="ouvrirSection('donnees', this)"
+                    >
+                        💾 Données
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONTENU -->
+
+        <div class="panel">
+
+            <div class="panel-content">
+
+
+                <!-- GENERAL -->
+
+                <section
+                    class="setting-section active"
+                    id="section-general"
+                >
+
+                    <div class="setting-group">
+
+                        <h4>
+                            Général
+                        </h4>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Nom de la partie
+                                </strong>
+
+                                <p>
+                                    Nom utilisé pour identifier votre sauvegarde locale.
+                                </p>
+
+                            </div>
+
+                            <input
+                                type="text"
+                                id="nomPartie"
+                                value="Partie principale"
+                                style="min-width:220px;padding:9px;background:var(--panneau-2);color:var(--texte);border:1px solid var(--bordure);border-radius:6px;"
+                            >
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Sauvegarde automatique
+                                </strong>
+
+                                <p>
+                                    Sauvegarde automatiquement les données importantes dans le navigateur.
+                                </p>
+
+                            </div>
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    id="sauvegardeAuto"
+                                    checked
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Afficher l'horloge
+                                </strong>
+
+                                <p>
+                                    Affiche l'heure dans les différentes interfaces du jeu.
+                                </p>
+
+                            </div>
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    id="afficherHorloge"
+                                    checked
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- AUDIO -->
+
+                <section
+                    class="setting-section"
+                    id="section-audio"
+                >
+
+                    <div class="setting-group">
+
+                        <h4>
+                            Audio
+                        </h4>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Volume général
+                                </strong>
+
+                                <p>
+                                    Contrôle le volume global du jeu.
+                                </p>
+
+                            </div>
+
+                            <div class="range-wrap">
+
+                                <input
+                                    type="range"
+                                    id="volumeGeneral"
+                                    min="0"
+                                    max="100"
+                                    value="80"
+                                    oninput="majRange('volumeGeneral','volumeGeneralValue')"
+                                >
+
+                                <span
+                                    class="range-value"
+                                    id="volumeGeneralValue"
+                                >
+                                    80 %
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Volume radio
+                                </strong>
+
+                                <p>
+                                    Volume des messages radio et communications opérationnelles.
+                                </p>
+
+                            </div>
+
+                            <div class="range-wrap">
+
+                                <input
+                                    type="range"
+                                    id="volumeRadio"
+                                    min="0"
+                                    max="100"
+                                    value="85"
+                                    oninput="majRange('volumeRadio','volumeRadioValue')"
+                                >
+
+                                <span
+                                    class="range-value"
+                                    id="volumeRadioValue"
+                                >
+                                    85 %
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Volume des sirènes
+                                </strong>
+
+                                <p>
+                                    Contrôle les sons des véhicules de secours.
+                                </p>
+
+                            </div>
+
+                            <div class="range-wrap">
+
+                                <input
+                                    type="range"
+                                    id="volumeSirenes"
+                                    min="0"
+                                    max="100"
+                                    value="70"
+                                    oninput="majRange('volumeSirenes','volumeSirenesValue')"
+                                >
+
+                                <span
+                                    class="range-value"
+                                    id="volumeSirenesValue"
+                                >
+                                    70 %
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Couper tous les sons
+                                </strong>
+
+                                <p>
+                                    Désactive temporairement tous les sons du jeu.
+                                </p>
+
+                            </div>
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    id="modeMuet"
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- GAMEPLAY -->
+
+                <section
+                    class="setting-section"
+                    id="section-jeu"
+                >
+
+                    <div class="setting-group">
+
+                        <h4>
+                            Gameplay
+                        </h4>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Difficulté
+                                </strong>
+
+                                <p>
+                                    Influence la fréquence des interventions, la gravité et la disponibilité des ressources.
+                                </p>
+
+                            </div>
+
+                            <select id="difficulte">
+
+                                <option value="FACILE">
+                                    Facile
+                                </option>
+
+                                <option
+                                    value="NORMAL"
+                                    selected
+                                >
+                                    Normal
+                                </option>
+
+                                <option value="DIFFICILE">
+                                    Difficile
+                                </option>
+
+                                <option value="REALISTE">
+                                    Réaliste
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Vitesse de simulation
+                                </strong>
+
+                                <p>
+                                    Multiplicateur utilisé pour l'écoulement du temps dans le jeu.
+                                </p>
+
+                            </div>
+
+                            <select id="vitesseSimulation">
+
+                                <option value="0.5">
+                                    x0.5
+                                </option>
+
+                                <option
+                                    value="1"
+                                    selected
+                                >
+                                    x1
+                                </option>
+
+                                <option value="2">
+                                    x2
+                                </option>
+
+                                <option value="4">
+                                    x4
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Aide au choix des moyens
+                                </strong>
+
+                                <p>
+                                    Propose automatiquement des véhicules adaptés lors du traitement d'un appel.
+                                </p>
+
+                            </div>
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    id="aideMoyens"
+                                    checked
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Gestion de la fatigue
+                                </strong>
+
+                                <p>
+                                    Active la fatigue du personnel au fil des gardes et interventions.
+                                </p>
+
+                            </div>
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    id="fatigueActive"
+                                    checked
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Maintenance des véhicules
+                                </strong>
+
+                                <p>
+                                    Active l'usure mécanique, les pannes et les immobilisations.
+                                </p>
+
+                            </div>
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    id="maintenanceActive"
+                                    checked
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- INTERFACE -->
+
+                <section
+                    class="setting-section"
+                    id="section-interface"
+                >
+
+                    <div class="setting-group">
+
+                        <h4>
+                            Interface
+                        </h4>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Thème
+                                </strong>
+
+                                <p>
+                                    Modifie l'apparence générale de l'interface.
+                                </p>
+
+                            </div>
+
+                            <select
+                                id="theme"
+                                onchange="appliquerTheme()"
+                            >
+
+                                <option value="SOMBRE">
+                                    Sombre
+                                </option>
+
+                                <option value="CLAIR">
+                                    Clair
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Taille de l'interface
+                                </strong>
+
+                                <p>
+                                    Ajuste la taille générale du texte et des éléments.
+                                </p>
+
+                            </div>
+
+                            <select id="tailleInterface">
+
+                                <option value="PETITE">
+                                    Petite
+                                </option>
+
+                                <option
+                                    value="NORMALE"
+                                    selected
+                                >
+                                    Normale
+                                </option>
+
+                                <option value="GRANDE">
+                                    Grande
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Afficher les étiquettes sur la carte
+                                </strong>
+
+                                <p>
+                                    Affiche le nom des interventions, véhicules et bâtiments.
+                                </p>
+
+                            </div>
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    id="labelsCarte"
+                                    checked
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ACCESSIBILITE -->
+
+                <section
+                    class="setting-section"
+                    id="section-accessibilite"
+                >
+
+                    <div class="setting-group">
+
+                        <h4>
+                            Accessibilité
+                        </h4>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Contraste renforcé
+                                </strong>
+
+                                <p>
+                                    Renforce la lisibilité de certains éléments importants.
+                                </p>
+
+                            </div>
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    id="contrasteRenforce"
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Réduire les animations
+                                </strong>
+
+                                <p>
+                                    Réduit les transitions et mouvements de l'interface.
+                                </p>
+
+                            </div>
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    id="animationsReduites"
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+
+                        <div class="setting-item">
+
+                            <div class="setting-info">
+
+                                <strong>
+                                    Confirmation avant action importante
+                                </strong>
+
+                                <p>
+                                    Demande une confirmation avant certaines suppressions ou dépenses importantes.
+                                </p>
+
+                            </div>
+
+                            <label class="switch">
+
+                                <input
+                                    type="checkbox"
+                                    id="confirmationActions"
+                                    checked
+                                >
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- DONNEES -->
+
+                <section
+                    class="setting-section"
+                    id="section-donnees"
+                >
+
+                    <div class="setting-group">
+
+                        <h4>
+                            Données de la partie
+                        </h4>
+
+
+                        <div class="data-list">
+
+                            <div class="data-item">
+
+                                <strong>
+                                    Interventions enregistrées
+                                </strong>
+
+                                <span id="nbInterventions">
+                                    0
+                                </span>
+
+                            </div>
+
+
+                            <div class="data-item">
+
+                                <strong>
+                                    Véhicules enregistrés
+                                </strong>
+
+                                <span id="nbVehicules">
+                                    0
+                                </span>
+
+                            </div>
+
+
+                            <div class="data-item">
+
+                                <strong>
+                                    Casernes enregistrées
+                                </strong>
+
+                                <span id="nbCasernes">
+                                    0
+                                </span>
+
+                            </div>
+
+
+                            <div class="data-item">
+
+                                <strong>
+                                    Personnel enregistré
+                                </strong>
+
+                                <span id="nbPersonnel">
+                                    0
+                                </span>
+
+                            </div>
+
+
+                            <div class="data-item">
+
+                                <strong>
+                                    Hôpitaux enregistrés
+                                </strong>
+
+                                <span id="nbHopitaux">
+                                    0
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="warning-box"
+                            style="margin-top:18px;"
+                        >
+
+                            La réinitialisation efface les données du jeu enregistrées dans le localStorage de ce navigateur.
+
+                        </div>
+
+
+                        <div class="actions">
+
+                            <button
+                                class="btn btn-secondary"
+                                onclick="exporterSauvegarde()"
+                            >
+                                Exporter la sauvegarde
+                            </button>
+
+
+                            <button
+                                class="btn btn-danger"
+                                onclick="reinitialiserPartie()"
+                            >
+                                Réinitialiser la partie
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ACTIONS GENERALES -->
+
+                <div class="actions">
+
+                    <button
+                        class="btn btn-success"
+                        onclick="sauvegarderParametres()"
+                    >
+                        Enregistrer les paramètres
+                    </button>
+
+
+                    <button
+                        class="btn btn-secondary"
+                        onclick="chargerParametres()"
+                    >
+                        Annuler les modifications
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="success-message"
+                    id="successMessage"
+                >
+                    Paramètres enregistrés.
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+    const cleParametres =
+        "parametresGestionSecours";
+
+
+    function mettreAJourHorloge() {
+
+        const maintenant =
+            new Date();
+
+
+        document.getElementById(
+            "heure"
+        ).textContent =
+            maintenant.toLocaleTimeString(
+                "fr-FR"
+            );
+
+
+        document.getElementById(
+            "date"
+        ).textContent =
+            maintenant.toLocaleDateString(
+                "fr-FR"
+            );
+
+    }
+
+
+    setInterval(
+        mettreAJourHorloge,
+        1000
+    );
+
+
+    mettreAJourHorloge();
+
+
+    function ouvrirSection(
+        nom,
+        bouton
+    ) {
+
+        document
+            .querySelectorAll(
+                ".setting-section"
+            )
+            .forEach(
+                section => {
+
+                    section.classList.remove(
+                        "active"
+                    );
+
+                }
+            );
+
+
+        document
+            .querySelectorAll(
+                ".menu-btn"
+            )
+            .forEach(
+                btn => {
+
+                    btn.classList.remove(
+                        "active"
+                    );
+
+                }
+            );
+
+
+        document.getElementById(
+            "section-" + nom
+        ).classList.add(
+            "active"
+        );
+
+
+        bouton.classList.add(
+            "active"
+        );
+
+
+        if (
+            nom === "donnees"
+        ) {
+
+            afficherDonneesSauvegarde();
+
+        }
+
+    }
+
+
+    function majRange(
+        inputId,
+        labelId
+    ) {
+
+        const valeur =
+            document.getElementById(
+                inputId
+            ).value;
+
+
+        document.getElementById(
+            labelId
+        ).textContent =
+            valeur
+            +
+            " %";
+
+    }
+
+
+    function lireParametresFormulaire() {
+
+        return {
+
+            nomPartie:
+                document.getElementById(
+                    "nomPartie"
+                ).value,
+
+            sauvegardeAuto:
+                document.getElementById(
+                    "sauvegardeAuto"
+                ).checked,
+
+            afficherHorloge:
+                document.getElementById(
+                    "afficherHorloge"
+                ).checked,
+
+            volumeGeneral:
+                Number(
+                    document.getElementById(
+                        "volumeGeneral"
+                    ).value
+                ),
+
+            volumeRadio:
+                Number(
+                    document.getElementById(
+                        "volumeRadio"
+                    ).value
+                ),
+
+            volumeSirenes:
+                Number(
+                    document.getElementById(
+                        "volumeSirenes"
+                    ).value
+                ),
+
+            modeMuet:
+                document.getElementById(
+                    "modeMuet"
+                ).checked,
+
+            difficulte:
+                document.getElementById(
+                    "difficulte"
+                ).value,
+
+            vitesseSimulation:
+                Number(
+                    document.getElementById(
+                        "vitesseSimulation"
+                    ).value
+                ),
+
+            aideMoyens:
+                document.getElementById(
+                    "aideMoyens"
+                ).checked,
+
+            fatigueActive:
+                document.getElementById(
+                    "fatigueActive"
+                ).checked,
+
+            maintenanceActive:
+                document.getElementById(
+                    "maintenanceActive"
+                ).checked,
+
+            theme:
+                document.getElementById(
+                    "theme"
+                ).value,
+
+            tailleInterface:
+                document.getElementById(
+                    "tailleInterface"
+                ).value,
+
+            labelsCarte:
+                document.getElementById(
+                    "labelsCarte"
+                ).checked,
+
+            contrasteRenforce:
+                document.getElementById(
+                    "contrasteRenforce"
+                ).checked,
+
+            animationsReduites:
+                document.getElementById(
+                    "animationsReduites"
+                ).checked,
+
+            confirmationActions:
+                document.getElementById(
+                    "confirmationActions"
+                ).checked
+
+        };
+
+    }
+
+
+    function sauvegarderParametres() {
+
+        const parametres =
+            lireParametresFormulaire();
+
+
+        localStorage.setItem(
+
+            cleParametres,
+
+            JSON.stringify(
+                parametres
+            )
+
+        );
+
+
+        appliquerParametres(
+            parametres
+        );
+
+
+        const message =
+            document.getElementById(
+                "successMessage"
+            );
+
+
+        message.style.display =
+            "block";
+
+
+        setTimeout(
+            () => {
+
+                message.style.display =
+                    "none";
+
+            },
+            2000
+        );
+
+    }
+
+
+    function chargerParametres() {
+
+        const sauvegarde =
+            localStorage.getItem(
+                cleParametres
+            );
+
+
+        if (
+            !sauvegarde
+        ) {
+
+            appliquerTheme();
+
+            return;
+
+        }
+
+
+        try {
+
+            const p =
+                JSON.parse(
+                    sauvegarde
+                );
+
+
+            document.getElementById(
+                "nomPartie"
+            ).value =
+                p.nomPartie
+                ??
+                "Partie principale";
+
+
+            document.getElementById(
+                "sauvegardeAuto"
+            ).checked =
+                p.sauvegardeAuto
+                ??
+                true;
+
+
+            document.getElementById(
+                "afficherHorloge"
+            ).checked =
+                p.afficherHorloge
+                ??
+                true;
+
+
+            document.getElementById(
+                "volumeGeneral"
+            ).value =
+                p.volumeGeneral
+                ??
+                80;
+
+
+            document.getElementById(
+                "volumeRadio"
+            ).value =
+                p.volumeRadio
+                ??
+                85;
+
+
+            document.getElementById(
+                "volumeSirenes"
+            ).value =
+                p.volumeSirenes
+                ??
+                70;
+
+
+            document.getElementById(
+                "modeMuet"
+            ).checked =
+                p.modeMuet
+                ??
+                false;
+
+
+            document.getElementById(
+                "difficulte"
+            ).value =
+                p.difficulte
+                ??
+                "NORMAL";
+
+
+            document.getElementById(
+                "vitesseSimulation"
+            ).value =
+                p.vitesseSimulation
+                ??
+                1;
+
+
+            document.getElementById(
+                "aideMoyens"
+            ).checked =
+                p.aideMoyens
+                ??
+                true;
+
+
+            document.getElementById(
+                "fatigueActive"
+            ).checked =
+                p.fatigueActive
+                ??
+                true;
+
+
+            document.getElementById(
+                "maintenanceActive"
+            ).checked =
+                p.maintenanceActive
+                ??
+                true;
+
+
+            document.getElementById(
+                "theme"
+            ).value =
+                p.theme
+                ??
+                "SOMBRE";
+
+
+            document.getElementById(
+                "tailleInterface"
+            ).value =
+                p.tailleInterface
+                ??
+                "NORMALE";
+
+
+            document.getElementById(
+                "labelsCarte"
+            ).checked =
+                p.labelsCarte
+                ??
+                true;
+
+
+            document.getElementById(
+                "contrasteRenforce"
+            ).checked =
+                p.contrasteRenforce
+                ??
+                false;
+
+
+            document.getElementById(
+                "animationsReduites"
+            ).checked =
+                p.animationsReduites
+                ??
+                false;
+
+
+            document.getElementById(
+                "confirmationActions"
+            ).checked =
+                p.confirmationActions
+                ??
+                true;
+
+
+            majRange(
+                "volumeGeneral",
+                "volumeGeneralValue"
+            );
+
+
+            majRange(
+                "volumeRadio",
+                "volumeRadioValue"
+            );
+
+
+            majRange(
+                "volumeSirenes",
+                "volumeSirenesValue"
+            );
+
+
+            appliquerParametres(
+                p
+            );
+
+        }
+
+        catch (
+            erreur
+        ) {
+
+            console.error(
+                "Erreur de chargement des paramètres :",
+                erreur
+            );
+
+        }
+
+    }
+
+
+    function appliquerParametres(
+        parametres = null
+    ) {
+
+        const p =
+            parametres
+            ||
+            lireParametresFormulaire();
+
+
+        if (
+            p.theme ===
+            "CLAIR"
+        ) {
+
+            document.body.classList.add(
+                "mode-clair"
+            );
+
+        }
+
+        else {
+
+            document.body.classList.remove(
+                "mode-clair"
+            );
+
+        }
+
+
+        document.querySelector(
+            ".horloge"
+        ).style.display =
+            p.afficherHorloge
+                ?
+                ""
+                :
+                "none";
+
+
+        if (
+            p.animationsReduites
+        ) {
+
+            document.documentElement.style.scrollBehavior =
+                "auto";
+
+        }
+
+
+        if (
+            p.tailleInterface ===
+            "PETITE"
+        ) {
+
+            document.body.style.fontSize =
+                "13px";
+
+        }
+
+        else if (
+            p.tailleInterface ===
+            "GRANDE"
+        ) {
+
+            document.body.style.fontSize =
+                "17px";
+
+        }
+
+        else {
+
+            document.body.style.fontSize =
+                "16px";
+
+        }
+
+    }
+
+
+    function appliquerTheme() {
+
+        const theme =
+            document.getElementById(
+                "theme"
+            ).value;
+
+
+        if (
+            theme === "CLAIR"
+        ) {
+
+            document.body.classList.add(
+                "mode-clair"
+            );
+
+        }
+
+        else {
+
+            document.body.classList.remove(
+                "mode-clair"
+            );
+
+        }
+
+    }
+
+
+    function lireTableauLocal(
+        cle
+    ) {
+
+        const valeur =
+            localStorage.getItem(
+                cle
+            );
+
+
+        if (
+            !valeur
+        ) {
+
+            return [];
+
+        }
+
+
+        try {
+
+            const donnees =
+                JSON.parse(
+                    valeur
+                );
+
+
+            return Array.isArray(
+                donnees
+            )
+                ?
+                donnees
+                :
+                [];
+
+        }
+
+        catch (
+            erreur
+        ) {
+
+            return [];
+
+        }
+
+    }
+
+
+    function afficherDonneesSauvegarde() {
+
+        document.getElementById(
+            "nbInterventions"
+        ).textContent =
+            lireTableauLocal(
+                "interventionsSecours"
+            ).length;
+
+
+        document.getElementById(
+            "nbVehicules"
+        ).textContent =
+            lireTableauLocal(
+                "vehiculesSecours"
+            ).length;
+
+
+        document.getElementById(
+            "nbCasernes"
+        ).textContent =
+            lireTableauLocal(
+                "casernesSecours"
+            ).length;
+
+
+        document.getElementById(
+            "nbPersonnel"
+        ).textContent =
+            lireTableauLocal(
+                "personnelSecours"
+            ).length;
+
+
+        document.getElementById(
+            "nbHopitaux"
+        ).textContent =
+            lireTableauLocal(
+                "hopitauxSecours"
+            ).length;
+
+    }
+
+
+    function exporterSauvegarde() {
+
+        const sauvegarde = {
+
+            version:
+                "0.1-alpha",
+
+            dateExport:
+                new Date()
+                    .toISOString(),
+
+            parametres:
+                JSON.parse(
+                    localStorage.getItem(
+                        cleParametres
+                    )
+                    ||
+                    "{}"
+                ),
+
+            interventions:
+                lireTableauLocal(
+                    "interventionsSecours"
+                ),
+
+            vehicules:
+                lireTableauLocal(
+                    "vehiculesSecours"
+                ),
+
+            casernes:
+                lireTableauLocal(
+                    "casernesSecours"
+                ),
+
+            personnel:
+                lireTableauLocal(
+                    "personnelSecours"
+                ),
+
+            hopitaux:
+                lireTableauLocal(
+                    "hopitauxSecours"
+                ),
+
+            tutorielTermine:
+                localStorage.getItem(
+                    "tutorielGestionSecoursTermine"
+                )
+                ===
+                "true"
+
+        };
+
+
+        const blob =
+            new Blob(
+
+                [
+                    JSON.stringify(
+                        sauvegarde,
+                        null,
+                        2
+                    )
+                ],
+
+                {
+                    type:
+                        "application/json"
+                }
+
+            );
+
+
+        const url =
+            URL.createObjectURL(
+                blob
+            );
+
+
+        const lien =
+            document.createElement(
+                "a"
+            );
+
+
+        lien.href =
+            url;
+
+
+        lien.download =
+            "gestion-secours-sauvegarde.json";
+
+
+        document.body.appendChild(
+            lien
+        );
+
+
+        lien.click();
+
+
+        lien.remove();
+
+
+        URL.revokeObjectURL(
+            url
+        );
+
+    }
+
+
+    function reinitialiserPartie() {
+
+        const confirmation =
+            confirm(
+                "Cette action va supprimer les données de la partie enregistrées dans ce navigateur. Continuer ?"
+            );
+
+
+        if (
+            !confirmation
+        ) {
+            return;
+        }
+
+
+        const cles = [
+
+            "interventionsSecours",
+            "vehiculesSecours",
+            "casernesSecours",
+            "personnelSecours",
+            "hopitauxSecours",
+            "tutorielGestionSecoursTermine"
+
+        ];
+
+
+        cles.forEach(
+            cle =>
+                localStorage.removeItem(
+                    cle
+                )
+        );
+
+
+        afficherDonneesSauvegarde();
+
+
+        alert(
+            "Les données de la partie ont été réinitialisées."
+        );
+
+    }
+
+
+    chargerParametres();
+
+    afficherDonneesSauvegarde();
+
+</script>
+
+</body>
+</html>
+```

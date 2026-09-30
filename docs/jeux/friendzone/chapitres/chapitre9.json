@@ -4,12 +4,12 @@
     "debut": "soirDisparition",
     "scenes": {
         "soirDisparition": {
-            "fond": "chambre_joueur_début_soiree",
-            "ambiance": "chambre_joueur",
+            "fond": "appartement_joueur_début_soiree",
+            "ambiance": "appartement_joueur",
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "Le soir tombe sur une journée qui semnlé interminable."
+                    "texte": "Le soir tombe sur une journée qui semnblé interminable."
                 },
                 {
                     "personnage": "narrateur",
@@ -25,14 +25,15 @@
                     "texte": "Sortir prendre l'air",
                     "message": {
                         "personnage": "narrateur",
-                        "texte": "{{nomJoueur}} enfile une veste et quitte son domicile sans savoir vraiment où aller."
+                        "texte": "{{nomJoueur}} enfile une veste et quitte son domicile sans savoir vraiment où aller.",
+                        "fond":"sortie_joueur"
                     },
                     "next": "rencontreBryan"
                 }
             ]
         },
         "rencontreBryan": {
-            "fond": "rue parisienne",
+            "fond": "rue_parisienne_joueur",
             "ambiance": "rue parisienne",
             "dialogues": [
                 {
@@ -43,7 +44,8 @@
                 {
                     "personnage": "bryan",
                     "texte": "{{nomJoueur}} ?",
-                    "son": "bryan"
+                    "son": "bryan",
+                    "fond":"croisee_bryan"
                 }
             ],
             "choix": [
@@ -218,7 +220,8 @@
                 },
                 {
                     "personnage": "narrateur",
-                    "texte": "Bryan s'éloigne, laissant {{nomJoueur}} avec cette nouvelle information."
+                    "texte": "Bryan s'éloigne, laissant {{nomJoueur}} avec cette nouvelle information.",
+                    "fond":"bryan_depart"
                 }
             ],
             "choix": [
@@ -337,7 +340,8 @@
                 },
                 {
                     "personnage": "narrateur",
-                    "texte": "Bryan tourne les talons et s'élogne rapidemant."
+                    "texte": "Bryan tourne les talons et s'élogne rapidemant.",
+                    "fond":"bryan_depart__dispute"
                 }
             ],
             "choix": [
@@ -361,7 +365,8 @@
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "Sur le chemin du retour, les accusation de Bryan tournent en boucle dans l'esprit de {{nomJoueur}}."
+                    "texte": "Sur le chemin du retour, les accusation de Bryan tournent en boucle dans l'esprit de {{nomJoueur}}.",
+                    "fond":"rue_chez_joueur"
                 },
                 {
                     "personnage": "narrateur",
@@ -383,7 +388,8 @@
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "Après quelques sonneries, Émelyne décroche."
+                    "texte": "Après quelques sonneries, Émelyne décroche.",
+                    "fond":"appel_emelyne"
                 },
                 {
                     "personnage": "emelyne",
@@ -606,7 +612,8 @@
                     "texte": "Garder ton téléphone près de  toi",
                     "message": {
                         "personnage": "narrateur",
-                        "texte": "{{nomJoueur}} s'assoit, le téléphone posé à côté de lui."
+                        "texte": "{{nomJoueur}} s'assoit, le téléphone posé à côté de lui.",
+                        "fond":"appartement_joueur"
                     },
                     "next": "appelPolice"
                 }
@@ -629,7 +636,8 @@
                     "texte": "Décrocher",
                     "message": {
                         "personnage": "joueur",
-                        "texte": "Allô ?"
+                        "texte": "Allô ?",
+                        "fond":"appel_police"
                     },
                     "next": "convocationPolice"
                 }

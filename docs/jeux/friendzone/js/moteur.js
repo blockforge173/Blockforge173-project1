@@ -1,28 +1,30 @@
 "use strict";
 
 /*=========================================================
- FRIENDZONÉ REBORN
- moteur.js
+    FRIENDZONÉ REBORN
+    moteur.js
 
- Gestion :
- - chapitres ;
- - scènes ;
- - dialogues ;
- - apparition progressive des messages ;
- - délais des narrations ;
- - choix ;
- - effets ;
- - succès ;
- - galerie multimédia ;
- - sauvegardes multi-slot ;
- - audio ;
- - fonds dynamiques.
+    Gestion :
+    - chapitres ;
+    - scènes ;
+    - dialogues ;
+    - apparition progressive des messages ;
+    - délais des narrations ;
+    - choix ;
+    - effets ;
+    - succès ;
+    - galerie multimédia ;
+    - sauvegardes multi-slot ;
+    - audio ;
+    - mixage audio artistique ;
+    - vidéos ;
+    - fonds dynamiques.
 =========================================================*/
 
 const moteur = {
 
     /*=====================================================
-     ÉTAT DU JEU
+        ÉTAT DU JEU
     =====================================================*/
 
     chapitreActuel:
@@ -39,7 +41,7 @@ const moteur = {
 
 
     /*=====================================================
-     TIMERS ET ÉLÉMENTS TEMPORAIRES
+        TIMERS ET ÉLÉMENTS TEMPORAIRES
     =====================================================*/
 
     timerChoix:
@@ -59,7 +61,7 @@ const moteur = {
 
 
     /*=====================================================
-     GESTION VIDÉO
+        GESTION VIDÉO
     =====================================================*/
 
     videoEnCours:
@@ -76,7 +78,7 @@ const moteur = {
 
 
     /*=====================================================
-     GESTION DES FONDS
+        GESTION DES FONDS
     =====================================================*/
 
     fondActuel:
@@ -93,7 +95,43 @@ const moteur = {
 
 
     /*=====================================================
-     INITIALISATION
+        MIXAGE AUDIO
+
+        Le volume utilisateur reste entièrement géré
+        par audioManager / parametresManager.
+
+        Le moteur contrôle uniquement le mixage artistique
+        provenant des chapitres et des scènes.
+
+        Exemple JSON :
+
+        {
+            "musique": "theme_eva",
+            "volumeMusique": 0.85,
+
+            "ambiance": "pluie_nuit",
+            "volumeAmbiance": 0.35,
+
+            "volumeEffets": 0.80
+        }
+
+        audioManager calculera ensuite :
+
+        volume utilisateur × volume artistique
+    =====================================================*/
+
+    volumeMixMusiqueParDefaut:
+        1,
+
+    volumeMixAmbianceParDefaut:
+        1,
+
+    volumeMixEffetsParDefaut:
+        1,
+
+
+    /*=====================================================
+        INITIALISATION
     =====================================================*/
 
     async initialiser() {
@@ -106,7 +144,7 @@ const moteur = {
 
 
             /*---------------------------------------------
-             VÉRIFICATION DES GESTIONNAIRES OBLIGATOIRES
+                VÉRIFICATION DES GESTIONNAIRES OBLIGATOIRES
             ---------------------------------------------*/
 
             if (
@@ -134,7 +172,27 @@ const moteur = {
 
 
             /*---------------------------------------------
-             CHARGEMENT DES CHAPITRES
+                VÉRIFICATION AUDIO
+
+                audioManager reste facultatif pour ne pas
+                empêcher complètement le jeu de démarrer
+                si l'audio rencontre un problème.
+            ---------------------------------------------*/
+
+            if (
+                typeof audioManager ===
+                    "undefined"
+            ) {
+
+                console.warn(
+                    "moteur.js : audioManager est introuvable. Le jeu continuera sans audio."
+                );
+
+            }
+
+
+            /*---------------------------------------------
+                CHARGEMENT DES CHAPITRES
             ---------------------------------------------*/
 
             await chapitresManager
@@ -157,7 +215,7 @@ const moteur = {
 
 
             /*---------------------------------------------
-             NOUVELLE PARTIE DEMANDÉE DEPUIS LE MENU
+                NOUVELLE PARTIE DEMANDÉE DEPUIS LE MENU
             ---------------------------------------------*/
 
             const nouvellePartieDemandee =
@@ -177,16 +235,16 @@ const moteur = {
 
 
                 /*
-                 IMPORTANT — MULTI-SAUVEGARDE
+                    IMPORTANT — MULTI-SAUVEGARDE
 
-                 Le menu a déjà :
-                 - choisi le slot ;
-                 - supprimé son ancienne sauvegarde
-                   si nécessaire ;
-                 - défini ce slot comme actif.
+                    Le menu a déjà :
+                    - choisi le slot ;
+                    - supprimé son ancienne sauvegarde
+                      si nécessaire ;
+                    - défini ce slot comme actif.
 
-                 Il ne faut donc pas supprimer
-                 la sauvegarde ici.
+                    Il ne faut donc pas supprimer
+                    la sauvegarde ici.
                 */
 
 
@@ -261,7 +319,7 @@ const moteur = {
 
 
             /*---------------------------------------------
-             CHARGEMENT D'UNE SAUVEGARDE
+                CHARGEMENT D'UNE SAUVEGARDE
             ---------------------------------------------*/
 
             const sauvegarde =
@@ -368,7 +426,7 @@ const moteur = {
 
 
     /*=====================================================
-     INITIALISER LE FOND DU JEU
+        INITIALISER LE FOND DU JEU
     =====================================================*/
 
     initialiserFond() {
@@ -420,7 +478,7 @@ const moteur = {
 
 
     /*=====================================================
-     TRANSITION D'ENTRÉE
+        TRANSITION D'ENTRÉE
     =====================================================*/
 
     initialiserTransition() {
@@ -459,7 +517,7 @@ const moteur = {
 
 
     /*=====================================================
-     DEMANDER LE NOM DU JOUEUR
+        DEMANDER LE NOM DU JOUEUR
     =====================================================*/
 
     demanderNomJoueur() {
@@ -510,7 +568,102 @@ const moteur = {
 
 
     /*=====================================================
-     NOUVELLE PARTIE
+        RÉINITIALISER LE MIXAGE ARTISTIQUE
+
+        IMPORTANT :
+        cela ne touche PAS aux paramètres du joueur.
+
+        Si le joueur a réglé :
+            musique = 70 %
+            ambiance = 40 %
+            effets = 80 %
+
+        ces valeurs restent intactes.
+
+        Seuls les multiplicateurs artistiques reviennent
+        à leur valeur normale : 1.
+    =====================================================*/
+
+    reinitialiserMixageAudio() {
+
+        if (
+            typeof audioManager ===
+                "undefined" ||
+            audioManager ===
+                null
+        ) {
+
+            return false;
+
+        }
+
+
+        try {
+
+            if (
+                typeof audioManager
+                    .setVolumeMixMusique ===
+                    "function"
+            ) {
+
+                audioManager
+                    .setVolumeMixMusique(
+                        this.volumeMixMusiqueParDefaut
+                    );
+
+            }
+
+
+            if (
+                typeof audioManager
+                    .setVolumeMixAmbiance ===
+                    "function"
+            ) {
+
+                audioManager
+                    .setVolumeMixAmbiance(
+                        this.volumeMixAmbianceParDefaut
+                    );
+
+            }
+
+
+            if (
+                typeof audioManager
+                    .setVolumeMixEffets ===
+                    "function"
+            ) {
+
+                audioManager
+                    .setVolumeMixEffets(
+                        this.volumeMixEffetsParDefaut
+                    );
+
+            }
+
+
+            return true;
+
+        }
+        catch (
+            erreur
+        ) {
+
+            console.error(
+                "moteur.js : impossible de réinitialiser le mixage audio.",
+                erreur
+            );
+
+
+            return false;
+
+        }
+
+    },
+
+
+    /*=====================================================
+        NOUVELLE PARTIE
     =====================================================*/
 
     nouvellePartie() {
@@ -563,11 +716,13 @@ const moteur = {
 
 
         /*---------------------------------------------
-         VIDER LES NOTIFICATIONS DE SUCCÈS EN ATTENTE
+            VIDER LES NOTIFICATIONS DE SUCCÈS EN ATTENTE
 
-         Une nouvelle partie doit repartir avec une file
-         de notifications vide. Cela ne réinitialise pas
-         les succès déjà débloqués dans le menu.
+            Une nouvelle partie doit repartir avec une file
+            de notifications vide.
+
+            Cela ne réinitialise pas les succès déjà
+            débloqués dans le menu.
         ---------------------------------------------*/
 
         if (
@@ -618,9 +773,15 @@ const moteur = {
         }
 
 
+        /*---------------------------------------------
+            ARRÊTER L'AUDIO DE L'ANCIENNE PARTIE
+        ---------------------------------------------*/
+
         if (
             typeof audioManager !==
                 "undefined" &&
+            audioManager !==
+                null &&
             typeof audioManager
                 .toutArreter ===
                 "function"
@@ -630,6 +791,20 @@ const moteur = {
                 .toutArreter();
 
         }
+
+
+        /*
+            Important avec Audio Manager V4.
+
+            volumeMixEffets, notamment, pourrait provenir
+            de la dernière scène d'une ancienne partie.
+
+            On remet donc tous les multiplicateurs
+            artistiques à 1 sans modifier les réglages
+            utilisateur.
+        */
+
+        this.reinitialiserMixageAudio();
 
 
         this.retirerFond(
@@ -652,7 +827,7 @@ const moteur = {
 
 
     /*=====================================================
-     APPLIQUER UNE SAUVEGARDE
+        APPLIQUER UNE SAUVEGARDE
     =====================================================*/
 
     appliquerSauvegarde(
@@ -774,6 +949,18 @@ const moteur = {
         }
 
 
+        /*
+            Le mixage artistique n'est PAS restauré depuis
+            les paramètres utilisateur.
+
+            chargerChapitre() puis chargerScene()
+            reconstruiront le mixage à partir du JSON
+            du chapitre et de la scène correspondante.
+        */
+
+        this.reinitialiserMixageAudio();
+
+
         this.chargerChapitre(
             this.chapitreActuel,
             this.sceneActuelle
@@ -783,7 +970,7 @@ const moteur = {
 
 
     /*=====================================================
-     SAUVEGARDER
+        SAUVEGARDER
     =====================================================*/
 
     sauvegarder() {
@@ -859,7 +1046,7 @@ const moteur = {
 
 
     /*=====================================================
-     VÉRIFIER LES SUCCÈS
+        VÉRIFIER LES SUCCÈS
     =====================================================*/
 
     verifierSucces() {
@@ -901,7 +1088,7 @@ const moteur = {
 
     },
         /*=====================================================
-     VÉRIFIER SI LA GALERIE EST DISPONIBLE
+        VÉRIFIER SI LA GALERIE EST DISPONIBLE
     =====================================================*/
 
     galerieDisponible() {
@@ -924,7 +1111,7 @@ const moteur = {
 
 
     /*=====================================================
-     DÉBLOQUER UN MÉDIA DE GALERIE
+        DÉBLOQUER UN MÉDIA DE GALERIE
     =====================================================*/
 
     debloquerGalerie(
@@ -940,6 +1127,11 @@ const moteur = {
 
         }
 
+
+        /*
+            Plusieurs médias peuvent être débloqués
+            en une seule fois.
+        */
 
         if (
             Array.isArray(
@@ -1016,7 +1208,7 @@ const moteur = {
 
 
     /*=====================================================
-     GÉRER LA GALERIE D'UN ÉLÉMENT
+        GÉRER LA GALERIE D'UN ÉLÉMENT
     =====================================================*/
 
     gererGalerieElement(
@@ -1056,23 +1248,24 @@ const moteur = {
 
 
     /*=====================================================
-     GÉRER LA GALERIE D'UN DIALOGUE
+        GÉRER LA GALERIE D'UN DIALOGUE
 
-     Cette fonction est séparée afin que dialogue.js
-     puisse avertir le moteur exactement au moment où
-     le dialogue est réellement affiché.
+        Cette fonction est séparée afin que dialogue.js
+        puisse avertir le moteur exactement au moment où
+        le dialogue est réellement affiché.
 
-     Exemple JSON :
+        Exemple JSON :
 
-     {
-         "personnage": "eva",
-         "texte": "...",
-         "galerie": "chap1RencontreEva"
-     }
+        {
+            "personnage": "eva",
+            "texte": "...",
+            "galerie": "chap1RencontreEva"
+        }
 
-     IMPORTANT :
-     le média ne doit pas être débloqué simplement parce
-     que la scène contenant le dialogue a été chargée.
+        IMPORTANT :
+
+        le média ne doit pas être débloqué simplement parce
+        que la scène contenant le dialogue a été chargée.
     =====================================================*/
 
     gererGalerieDialogue(
@@ -1098,7 +1291,18 @@ const moteur = {
 
 
     /*=====================================================
-     CHARGER UN CHAPITRE
+        CHARGER UN CHAPITRE
+
+        IMPORTANT AUDIO V4 :
+
+        gererAudioChapitre() déterminera désormais :
+        - la musique ;
+        - son volume artistique ;
+        - l'ambiance ;
+        - son volume artistique ;
+        - le volume artistique global des effets.
+
+        Les réglages utilisateur ne sont jamais modifiés ici.
     =====================================================*/
 
     chargerChapitre(
@@ -1162,6 +1366,10 @@ const moteur = {
             chapitre;
 
 
+        /*---------------------------------------------
+            TITRE
+        ---------------------------------------------*/
+
         const elementTitre =
             document.getElementById(
                 "titre"
@@ -1179,20 +1387,39 @@ const moteur = {
         }
 
 
+        /*---------------------------------------------
+            GALERIE DU CHAPITRE
+        ---------------------------------------------*/
+
         this.gererGalerieElement(
             chapitre
         );
 
+
+        /*---------------------------------------------
+            FOND DU CHAPITRE
+        ---------------------------------------------*/
 
         this.gererFondChapitre(
             chapitre
         );
 
 
+        /*---------------------------------------------
+            AUDIO DU CHAPITRE
+
+            gererAudioChapitre() sera modifié dans
+            une prochaine partie pour Audio Manager V4.
+        ---------------------------------------------*/
+
         this.gererAudioChapitre(
             chapitre
         );
 
+
+        /*---------------------------------------------
+            DÉTERMINER LA SCÈNE À CHARGER
+        ---------------------------------------------*/
 
         let sceneCible =
             sceneDemandee ||
@@ -1233,6 +1460,13 @@ const moteur = {
         }
 
 
+        /*
+            chargerScene() est asynchrone.
+
+            On ne bloque volontairement pas chargerChapitre()
+            afin de conserver le comportement actuel du moteur.
+        */
+
         this.chargerScene(
             sceneCible
         );
@@ -1244,7 +1478,7 @@ const moteur = {
 
 
     /*=====================================================
-     CHARGER UNE SCÈNE
+        CHARGER UNE SCÈNE
     =====================================================*/
 
     async chargerScene(
@@ -1304,7 +1538,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         ANNULER LES ÉTATS DE LA SCÈNE PRÉCÉDENTE
+            ANNULER LES ÉTATS DE LA SCÈNE PRÉCÉDENTE
         ---------------------------------------------*/
 
         this.annulerAttenteChoix();
@@ -1341,7 +1575,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         ENREGISTRER LA SCÈNE ACTIVE
+            ENREGISTRER LA SCÈNE ACTIVE
         ---------------------------------------------*/
 
         this.sceneActuelle =
@@ -1354,7 +1588,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         GALERIE DE LA SCÈNE
+            GALERIE DE LA SCÈNE
         ---------------------------------------------*/
 
         this.gererGalerieElement(
@@ -1363,7 +1597,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         EFFETS DE SCÈNE
+            EFFETS DE SCÈNE
         ---------------------------------------------*/
 
         if (
@@ -1379,889 +1613,55 @@ const moteur = {
         }
 
 
-        /*---------------------------------------------
-         SUCCÈS
-        ---------------------------------------------*/
-
-        this.verifierSucces();
-
-
-        /*---------------------------------------------
-         CONDITIONS DE REDIRECTION
-        ---------------------------------------------*/
-
-        if (
-            Array.isArray(
-                scene.conditions
-            ) &&
-            scene.conditions.length >
-                0
-        ) {
-
-            const destination =
-                this.evaluerConditionsScene(
-                    scene.conditions
-                );
-
-
-            if (
-                destination
-            ) {
-
-                this.sauvegarder();
-
-
-                /*
-                 IMPORTANT :
-                 une redirection peut pointer
-                 vers une scène OU un chapitre.
-                */
-
-                await this.gererDestination(
-                    destination
-                );
-
-
-                return true;
-
-            }
-
-        }
-
-
-        /*---------------------------------------------
-         FOND DE LA SCÈNE
-        ---------------------------------------------*/
-
-        this.gererFondScene(
-            scene
-        );
-
-
-        /*---------------------------------------------
-         AUDIO DE LA SCÈNE
-        ---------------------------------------------*/
-
-        this.gererAudioScene(
-            scene
-        );
-
-
-        /*---------------------------------------------
-         SAUVEGARDE
-        ---------------------------------------------*/
-
-        this.sauvegarder();
-
-
-        /*---------------------------------------------
-         VIDÉO DE LA SCÈNE
-
-         La vidéo est jouée avant les dialogues.
-
-         Si la vidéo possède un "next",
-         la scène change directement après
-         la cinématique.
-        ---------------------------------------------*/
-
-        if (
-            scene.video
-        ) {
-
-            const resultatVideo =
-                await this.gererVideoScene(
-                    scene
-                );
-
-
-            /*
-             Une autre scène pourrait avoir
-             été chargée pendant la vidéo.
-            */
-
-            if (
-                this.sceneActuelle !==
-                    idScene
-            ) {
-
-                return true;
-
-            }
-
-
-            if (
-                resultatVideo
-                    ?.destination
-            ) {
-
-                await this.gererDestination(
-                    resultatVideo.destination
-                );
-
-
-                return true;
-
-            }
-
-        }
-
-
-        /*---------------------------------------------
-         DIALOGUES
-        ---------------------------------------------*/
-
-        if (
-            typeof dialogueManager !==
-                "undefined" &&
-            dialogueManager !==
-                null &&
-            typeof dialogueManager
-                .afficherScene ===
-                "function"
-        ) {
-
-            try {
-
-                await dialogueManager
-                    .afficherScene(
-                        scene
-                    );
-
-            }
-            catch (
-                erreur
-            ) {
-
-                console.error(
-                    "moteur.js : erreur pendant l'affichage de la scène :",
-                    erreur
-                );
-
-            }
-
-        }
-        else {
-
-            console.warn(
-                "moteur.js : dialogueManager.afficherScene() est indisponible."
-            );
-
-        }
-
-
         /*
-         Une autre scène peut avoir été chargée
-         pendant l'affichage des dialogues.
+            Compatibilité supplémentaire.
+
+            Certains chapitres peuvent utiliser :
+
+            "effets": [
+                {...},
+                {...}
+            ]
+
+            On accepte donc également un tableau.
         */
 
         if (
-            this.sceneActuelle !==
-                idScene
-        ) {
-
-            return true;
-
-        }
-
-
-        /*---------------------------------------------
-         FIN D'AFFICHAGE
-        ---------------------------------------------*/
-
-        this.terminerAffichageScene(
-            scene
-        );
-
-
-        return true;
-
-    },
-
-
-    /*=====================================================
-     GÉRER UNE DESTINATION
-
-     Fonction centrale.
-
-     Une destination JSON peut être :
-
-     "discussionEva"
-         -> scène du chapitre actuel
-
-     "chapitre2"
-         -> chapitre 2
-
-     "chapitre13"
-         -> chapitre 13
-
-     "finJeu"
-         -> fin du jeu
-
-     Tous les "next" du moteur doivent passer
-     par cette fonction.
-    =====================================================*/
-
-    async gererDestination(
-        destination
-    ) {
-
-        if (
-            destination ===
-                null ||
-            destination ===
-                undefined
-        ) {
-
-            console.warn(
-                "moteur.js : destination manquante."
-            );
-
-            return false;
-
-        }
-
-
-        const destinationTexte =
-            String(
-                destination
+            Array.isArray(
+                scene.effets
             )
-                .trim();
-
-
-        if (
-            !destinationTexte
         ) {
 
-            console.warn(
-                "moteur.js : destination vide."
-            );
+            scene.effets.forEach(
+                effet => {
 
-            return false;
+                    if (
+                        effet &&
+                        typeof effet ===
+                            "object"
+                    ) {
 
-        }
+                        this.appliquerEffets(
+                            effet
+                        );
 
+                    }
 
-        console.log(
-            "moteur.js : destination :",
-            destinationTexte
-        );
-
-
-        /*---------------------------------------------
-         FIN DU JEU
-        ---------------------------------------------*/
-
-        if (
-            destinationTexte ===
-                "finJeu" ||
-            destinationTexte ===
-                "terminerJeu"
-        ) {
-
-            this.terminerJeu();
-
-            return true;
-
-        }
-
-
-        /*---------------------------------------------
-         CHANGEMENT DE CHAPITRE
-
-         Exemples :
-         chapitre2
-         chapitre3
-         chapitre13
-        ---------------------------------------------*/
-
-        const correspondanceChapitre =
-            destinationTexte.match(
-                /^chapitre(\d+)$/i
-            );
-
-
-        if (
-            correspondanceChapitre
-        ) {
-
-            const numeroChapitre =
-                Number.parseInt(
-                    correspondanceChapitre[
-                        1
-                    ],
-                    10
-                );
-
-
-            if (
-                !Number.isInteger(
-                    numeroChapitre
-                ) ||
-                numeroChapitre <
-                    1
-            ) {
-
-                this.afficherErreur(
-                    `Destination de chapitre invalide : "${destinationTexte}".`
-                );
-
-                return false;
-
-            }
-
-
-            const indexChapitre =
-                numeroChapitre -
-                1;
-
-
-            const chapitreCible =
-                chapitresManager
-                    .obtenir(
-                        indexChapitre
-                    );
-
-
-            if (
-                !chapitreCible
-            ) {
-
-                this.afficherErreur(
-                    `Le chapitre ${numeroChapitre} est introuvable.`
-                );
-
-                return false;
-
-            }
-
-
-            /*
-             Lorsque le JSON demande explicitement
-             "chapitre2", on charge le début
-             du chapitre correspondant.
-            */
-
-            return this.chargerChapitre(
-                indexChapitre,
-                chapitreCible.debut
+                }
             );
 
         }
 
 
         /*---------------------------------------------
-         SCÈNE DU CHAPITRE ACTUEL
-        ---------------------------------------------*/
-
-        return await this.chargerScene(
-            destinationTexte
-        );
-
-    },
-
-
-    /*=====================================================
-     GÉRER LE FOND DU CHAPITRE
-    =====================================================*/
-
-    gererFondChapitre(
-        chapitre
-    ) {
-
-        if (
-            !chapitre ||
-            typeof chapitre !==
-                "object"
-        ) {
-
-            return false;
-
-        }
-
-
-        if (
-            !chapitre.fond
-        ) {
-
-            return false;
-
-        }
-
-
-        /*
-         Le fond du chapitre sert de valeur
-         par défaut.
-
-         On évite de remplacer immédiatement
-         un fond restauré depuis une sauvegarde.
-        */
-
-        if (
-            this.fondActuel
-        ) {
-
-            return false;
-
-        }
-
-
-        const duree =
-            this.obtenirDureeTransitionFond(
-                chapitre
-            );
-
-
-        return this.changerFond(
-            chapitre.fond,
-            duree,
-            chapitre
-        );
-
-    },
-
-
-    /*=====================================================
-     GÉRER LE FOND D'UNE SCÈNE
-    =====================================================*/
-
-    gererFondScene(
-        scene
-    ) {
-
-        if (
-            !scene ||
-            typeof scene !==
-                "object"
-        ) {
-
-            return false;
-
-        }
-
-
-        /*---------------------------------------------
-         RETIRER LE FOND
-        ---------------------------------------------*/
-
-        if (
-            scene.fond ===
-                false ||
-            scene.fond ===
-                null
-        ) {
-
-            return this.retirerFond(
-                this.obtenirDureeTransitionFond(
-                    scene
-                )
-            );
-
-        }
-
-
-        /*---------------------------------------------
-         NOUVEAU FOND
-        ---------------------------------------------*/
-
-        if (
-            scene.fond
-        ) {
-
-            return this.changerFond(
-                scene.fond,
-                this.obtenirDureeTransitionFond(
-                    scene
-                ),
-                scene
-            );
-
-        }
-
-
-        /*---------------------------------------------
-         FOND DU CHAPITRE EN SECOURS
-        ---------------------------------------------*/
-
-        if (
-            !this.fondActuel &&
-            this.chapitre?.fond
-        ) {
-
-            return this.changerFond(
-                this.chapitre.fond,
-                this.obtenirDureeTransitionFond(
-                    this.chapitre
-                ),
-                this.chapitre
-            );
-
-        }
-
-
-        return false;
-
-    },
-
-
-    /*=====================================================
-     GÉRER LE FOND D'UN DIALOGUE
-    =====================================================*/
-
-    gererFondDialogue(
-        dialogue
-    ) {
-
-        if (
-            !dialogue ||
-            typeof dialogue !==
-                "object"
-        ) {
-
-            return false;
-
-        }
-
-
-        if (
-            !Object.prototype
-                .hasOwnProperty
-                .call(
-                    dialogue,
-                    "fond"
-                )
-        ) {
-
-            return false;
-
-        }
-
-
-        /*---------------------------------------------
-         RETIRER LE FOND
-        ---------------------------------------------*/
-
-        if (
-            dialogue.fond ===
-                false ||
-            dialogue.fond ===
-                null ||
-            dialogue.fond ===
-                ""
-        ) {
-
-            return this.retirerFond(
-                this.obtenirDureeTransitionFond(
-                    dialogue
-                )
-            );
-
-        }
-
-
-        /*---------------------------------------------
-         CHANGER LE FOND
-        ---------------------------------------------*/
-
-        return this.changerFond(
-            dialogue.fond,
-            this.obtenirDureeTransitionFond(
-                dialogue
-            ),
-            dialogue
-        );
-
-    },
-        /*=====================================================
-     CHARGER UN CHAPITRE
-    =====================================================*/
-
-    chargerChapitre(
-        index,
-        sceneDemandee = null
-    ) {
-
-        const indexChapitre =
-            Number(
-                index
-            );
-
-
-        if (
-            !Number.isInteger(
-                indexChapitre
-            ) ||
-            indexChapitre < 0
-        ) {
-
-            console.error(
-                "moteur.js : index de chapitre invalide :",
-                index
-            );
-
-            return false;
-
-        }
-
-
-        const chapitre =
-            chapitresManager
-                .obtenir(
-                    indexChapitre
-                );
-
-
-        if (
-            !chapitre
-        ) {
-
-            this.afficherErreur(
-                `Le chapitre ${indexChapitre + 1} est introuvable.`
-            );
-
-            return false;
-
-        }
-
-
-        this.annulerAttenteChoix();
-
-        this.annulerTransitionFond();
-
-
-        this.chapitreActuel =
-            indexChapitre;
-
-
-        this.chapitre =
-            chapitre;
-
-
-        const elementTitre =
-            document.getElementById(
-                "titre"
-            );
-
-
-        if (
-            elementTitre
-        ) {
-
-            elementTitre.textContent =
-                chapitre.titre ||
-                `Chapitre ${indexChapitre + 1}`;
-
-        }
-
-
-        this.gererGalerieElement(
-            chapitre
-        );
-
-
-        this.gererFondChapitre(
-            chapitre
-        );
-
-
-        this.gererAudioChapitre(
-            chapitre
-        );
-
-
-        let sceneCible =
-            sceneDemandee ||
-            chapitre.debut;
-
-
-        if (
-            !sceneCible ||
-            !chapitre.scenes?.[
-                sceneCible
-            ]
-        ) {
-
-            console.warn(
-                `moteur.js : scène "${sceneCible}" introuvable dans le chapitre ${indexChapitre + 1}.`
-            );
-
-
-            sceneCible =
-                chapitre.debut;
-
-        }
-
-
-        if (
-            !sceneCible ||
-            !chapitre.scenes?.[
-                sceneCible
-            ]
-        ) {
-
-            this.afficherErreur(
-                `Le chapitre ${indexChapitre + 1} ne possède pas de scène de départ valide.`
-            );
-
-            return false;
-
-        }
-
-
-        this.chargerScene(
-            sceneCible
-        );
-
-
-        return true;
-
-    },
-
-
-    /*=====================================================
-     CHARGER UNE SCÈNE
-    =====================================================*/
-
-    async chargerScene(
-        idScene
-    ) {
-
-        if (
-            !this.chapitre ||
-            !this.chapitre.scenes
-        ) {
-
-            console.error(
-                "moteur.js : aucun chapitre actif."
-            );
-
-            return false;
-
-        }
-
-
-        if (
-            !idScene
-        ) {
-
-            console.error(
-                "moteur.js : identifiant de scène manquant."
-            );
-
-            return false;
-
-        }
-
-
-        const scene =
-            this.chapitre
-                .scenes[
-                    idScene
-                ];
-
-
-        if (
-            !scene
-        ) {
-
-            console.error(
-                `moteur.js : scène introuvable : "${idScene}".`
-            );
-
-
-            this.afficherErreur(
-                `La scène "${idScene}" est introuvable.`
-            );
-
-            return false;
-
-        }
-
-
-        /*---------------------------------------------
-         ANNULER LES ÉTATS DE LA SCÈNE PRÉCÉDENTE
-        ---------------------------------------------*/
-
-        this.annulerAttenteChoix();
-
-
-        if (
-            typeof choixManager !==
-                "undefined" &&
-            choixManager !==
-                null &&
-            typeof choixManager
-                .fermerPopup ===
-                "function"
-        ) {
-
-            try {
-
-                choixManager
-                    .fermerPopup();
-
-            }
-            catch (
-                erreur
-            ) {
-
-                console.error(
-                    "moteur.js : erreur fermeture popup choix :",
-                    erreur
-                );
-
-            }
-
-        }
-
-
-        /*---------------------------------------------
-         ENREGISTRER LA SCÈNE ACTIVE
-        ---------------------------------------------*/
-
-        this.sceneActuelle =
-            idScene;
-
-
-        console.log(
-            `Chargement de la scène : ${idScene}`
-        );
-
-
-        /*---------------------------------------------
-         GALERIE DE LA SCÈNE
-        ---------------------------------------------*/
-
-        this.gererGalerieElement(
-            scene
-        );
-
-
-        /*---------------------------------------------
-         EFFETS DE SCÈNE
-        ---------------------------------------------*/
-
-        if (
-            scene.effet &&
-            typeof scene.effet ===
-                "object"
-        ) {
-
-            this.appliquerEffets(
-                scene.effet
-            );
-
-        }
-
-
-        /*---------------------------------------------
-         SUCCÈS
+            SUCCÈS
         ---------------------------------------------*/
 
         this.verifierSucces();
 
 
         /*---------------------------------------------
-         CONDITIONS DE REDIRECTION
+            CONDITIONS DE REDIRECTION
         ---------------------------------------------*/
 
         if (
@@ -2286,9 +1686,8 @@ const moteur = {
 
 
                 /*
-                 IMPORTANT :
-                 une redirection peut pointer
-                 vers une scène OU un chapitre.
+                    Une redirection peut pointer
+                    vers une scène ou un chapitre.
                 */
 
                 await this.gererDestination(
@@ -2304,7 +1703,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FOND DE LA SCÈNE
+            FOND DE LA SCÈNE
         ---------------------------------------------*/
 
         this.gererFondScene(
@@ -2313,7 +1712,16 @@ const moteur = {
 
 
         /*---------------------------------------------
-         AUDIO DE LA SCÈNE
+            AUDIO DE LA SCÈNE
+
+            C'est ici que les propriétés comme :
+
+            "volumeMusique": 0.85
+            "volumeAmbiance": 0.30
+            "volumeEffets": 0.75
+            "volumeSon": 0.90
+
+            seront appliquées par gererAudioScene().
         ---------------------------------------------*/
 
         this.gererAudioScene(
@@ -2322,20 +1730,20 @@ const moteur = {
 
 
         /*---------------------------------------------
-         SAUVEGARDE
+            SAUVEGARDE
         ---------------------------------------------*/
 
         this.sauvegarder();
 
 
         /*---------------------------------------------
-         VIDÉO DE LA SCÈNE
+            VIDÉO DE LA SCÈNE
 
-         La vidéo est jouée avant les dialogues.
+            La vidéo est jouée avant les dialogues.
 
-         Si la vidéo possède un "next",
-         la scène change directement après
-         la cinématique.
+            Si la vidéo possède un "next",
+            la scène change directement après
+            la cinématique.
         ---------------------------------------------*/
 
         if (
@@ -2349,8 +1757,8 @@ const moteur = {
 
 
             /*
-             Une autre scène pourrait avoir
-             été chargée pendant la vidéo.
+                Une autre scène pourrait avoir
+                été chargée pendant la vidéo.
             */
 
             if (
@@ -2381,7 +1789,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         DIALOGUES
+            DIALOGUES
         ---------------------------------------------*/
 
         if (
@@ -2424,8 +1832,8 @@ const moteur = {
 
 
         /*
-         Une autre scène peut avoir été chargée
-         pendant l'affichage des dialogues.
+            Une autre scène peut avoir été chargée
+            pendant l'affichage des dialogues.
         */
 
         if (
@@ -2439,12 +1847,12 @@ const moteur = {
 
 
         /*---------------------------------------------
-         NOTIFICATIONS DE SUCCÈS EN ATTENTE
+            NOTIFICATIONS DE SUCCÈS EN ATTENTE
 
-         Les succès débloqués par la scène précédente,
-         un choix ou les effets de la scène courante
-         sont affichés après les dialogues, avant les
-         choix ou la destination suivante.
+            Les succès débloqués par la scène précédente,
+            un choix ou les effets de la scène courante
+            sont affichés après les dialogues, avant les
+            choix ou la destination suivante.
         ---------------------------------------------*/
 
         if (
@@ -2478,7 +1886,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FIN D'AFFICHAGE
+            FIN D'AFFICHAGE
         ---------------------------------------------*/
 
         this.terminerAffichageScene(
@@ -2489,29 +1897,50 @@ const moteur = {
         return true;
 
     },
+        /*=====================================================
+        GÉRER UNE DESTINATION
 
+        Fonction centrale.
 
-    /*=====================================================
-     GÉRER UNE DESTINATION
+        Formats acceptés :
 
-     Fonction centrale.
+        "discussionEva"
+            -> scène du chapitre actuel
 
-     Une destination JSON peut être :
+        "chapitre2"
+            -> chapitre 2
 
-     "discussionEva"
-         -> scène du chapitre actuel
+        "finJeu"
+            -> fin du jeu
 
-     "chapitre2"
-         -> chapitre 2
+        {
+            "scene": "discussionEva"
+        }
 
-     "chapitre13"
-         -> chapitre 13
+        {
+            "chapitre": 3
+        }
 
-     "finJeu"
-         -> fin du jeu
+        {
+            "chapitre": 3,
+            "scene": "arrivee"
+        }
 
-     Tous les "next" du moteur doivent passer
-     par cette fonction.
+        {
+            "next": "discussionEva"
+        }
+
+        IMPORTANT :
+
+        Pour une destination objet avec "chapitre",
+        le numéro correspond au numéro humain :
+
+            1 = chapitre 1
+            2 = chapitre 2
+            13 = chapitre 13
+
+        tandis que chapitresManager travaille avec
+        des index commençant à 0.
     =====================================================*/
 
     async gererDestination(
@@ -2519,10 +1948,8 @@ const moteur = {
     ) {
 
         if (
-            destination ===
-                null ||
-            destination ===
-                undefined
+            destination === null ||
+            destination === undefined
         ) {
 
             console.warn(
@@ -2533,6 +1960,204 @@ const moteur = {
 
         }
 
+
+        /*---------------------------------------------
+            DESTINATION SOUS FORME D'OBJET
+        ---------------------------------------------*/
+
+        if (
+            typeof destination ===
+                "object" &&
+            !Array.isArray(
+                destination
+            )
+        ) {
+
+            /*-----------------------------------------
+                CHAPITRE + ÉVENTUELLE SCÈNE
+            -----------------------------------------*/
+
+            if (
+                Object.prototype
+                    .hasOwnProperty
+                    .call(
+                        destination,
+                        "chapitre"
+                    )
+            ) {
+
+                let numeroChapitre =
+                    destination.chapitre;
+
+
+                /*
+                    Accepte aussi :
+
+                    "chapitre": "chapitre13"
+                */
+
+                if (
+                    typeof numeroChapitre ===
+                        "string"
+                ) {
+
+                    const correspondance =
+                        numeroChapitre
+                            .trim()
+                            .match(
+                                /^chapitre(\d+)$/i
+                            );
+
+
+                    if (
+                        correspondance
+                    ) {
+
+                        numeroChapitre =
+                            Number.parseInt(
+                                correspondance[1],
+                                10
+                            );
+
+                    }
+
+                }
+
+
+                numeroChapitre =
+                    Number(
+                        numeroChapitre
+                    );
+
+
+                if (
+                    !Number.isInteger(
+                        numeroChapitre
+                    ) ||
+                    numeroChapitre < 1
+                ) {
+
+                    console.error(
+                        "moteur.js : numéro de chapitre invalide dans la destination :",
+                        destination
+                    );
+
+                    return false;
+
+                }
+
+
+                const indexChapitre =
+                    numeroChapitre -
+                    1;
+
+
+                const chapitreCible =
+                    chapitresManager
+                        .obtenir(
+                            indexChapitre
+                        );
+
+
+                if (
+                    !chapitreCible
+                ) {
+
+                    this.afficherErreur(
+                        `Le chapitre ${numeroChapitre} est introuvable.`
+                    );
+
+                    return false;
+
+                }
+
+
+                let sceneCible =
+                    null;
+
+
+                if (
+                    typeof destination.scene ===
+                        "string" &&
+                    destination.scene.trim() !==
+                        ""
+                ) {
+
+                    sceneCible =
+                        destination.scene.trim();
+
+                }
+
+
+                if (
+                    !sceneCible
+                ) {
+
+                    sceneCible =
+                        chapitreCible.debut;
+
+                }
+
+
+                return this.chargerChapitre(
+                    indexChapitre,
+                    sceneCible
+                );
+
+            }
+
+
+            /*-----------------------------------------
+                SCÈNE DU CHAPITRE ACTUEL
+            -----------------------------------------*/
+
+            if (
+                typeof destination.scene ===
+                    "string" &&
+                destination.scene.trim() !==
+                    ""
+            ) {
+
+                return await this.chargerScene(
+                    destination.scene.trim()
+                );
+
+            }
+
+
+            /*-----------------------------------------
+                DESTINATION IMBRIQUÉE
+            -----------------------------------------*/
+
+            if (
+                Object.prototype
+                    .hasOwnProperty
+                    .call(
+                        destination,
+                        "next"
+                    )
+            ) {
+
+                return await this.gererDestination(
+                    destination.next
+                );
+
+            }
+
+
+            console.warn(
+                "moteur.js : objet de destination non reconnu :",
+                destination
+            );
+
+            return false;
+
+        }
+
+
+        /*---------------------------------------------
+            DESTINATION TEXTE
+        ---------------------------------------------*/
 
         const destinationTexte =
             String(
@@ -2561,7 +2186,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FIN DU JEU
+            FIN DU JEU
         ---------------------------------------------*/
 
         if (
@@ -2579,12 +2204,48 @@ const moteur = {
 
 
         /*---------------------------------------------
-         CHANGEMENT DE CHAPITRE
+            FIN NOMMÉE
 
-         Exemples :
-         chapitre2
-         chapitre3
-         chapitre13
+            Exemple :
+
+            "fin:finEva"
+        ---------------------------------------------*/
+
+        if (
+            destinationTexte
+                .toLowerCase()
+                .startsWith(
+                    "fin:"
+                )
+        ) {
+
+            const nomFin =
+                destinationTexte
+                    .substring(
+                        4
+                    )
+                    .trim();
+
+
+            this.terminerJeu(
+                nomFin ||
+                "finNeutre"
+            );
+
+
+            return true;
+
+        }
+
+
+        /*---------------------------------------------
+            CHANGEMENT DE CHAPITRE
+
+            Exemples :
+
+            chapitre2
+            chapitre3
+            chapitre13
         ---------------------------------------------*/
 
         const correspondanceChapitre =
@@ -2610,8 +2271,7 @@ const moteur = {
                 !Number.isInteger(
                     numeroChapitre
                 ) ||
-                numeroChapitre <
-                    1
+                numeroChapitre < 1
             ) {
 
                 this.afficherErreur(
@@ -2648,12 +2308,6 @@ const moteur = {
             }
 
 
-            /*
-             Lorsque le JSON demande explicitement
-             "chapitre2", on charge le début
-             du chapitre correspondant.
-            */
-
             return this.chargerChapitre(
                 indexChapitre,
                 chapitreCible.debut
@@ -2663,7 +2317,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         SCÈNE DU CHAPITRE ACTUEL
+            SCÈNE DU CHAPITRE ACTUEL
         ---------------------------------------------*/
 
         return await this.chargerScene(
@@ -2674,7 +2328,7 @@ const moteur = {
 
 
     /*=====================================================
-     GÉRER LE FOND DU CHAPITRE
+        GÉRER LE FOND DU CHAPITRE
     =====================================================*/
 
     gererFondChapitre(
@@ -2702,11 +2356,11 @@ const moteur = {
 
 
         /*
-         Le fond du chapitre sert de valeur
-         par défaut.
+            Le fond du chapitre sert de valeur
+            par défaut.
 
-         On évite de remplacer immédiatement
-         un fond restauré depuis une sauvegarde.
+            On évite de remplacer immédiatement
+            un fond restauré depuis une sauvegarde.
         */
 
         if (
@@ -2734,7 +2388,7 @@ const moteur = {
 
 
     /*=====================================================
-     GÉRER LE FOND D'UNE SCÈNE
+        GÉRER LE FOND D'UNE SCÈNE
     =====================================================*/
 
     gererFondScene(
@@ -2753,7 +2407,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         RETIRER LE FOND
+            RETIRER LE FOND
         ---------------------------------------------*/
 
         if (
@@ -2773,7 +2427,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         NOUVEAU FOND
+            NOUVEAU FOND
         ---------------------------------------------*/
 
         if (
@@ -2792,7 +2446,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FOND DU CHAPITRE EN SECOURS
+            FOND DU CHAPITRE EN SECOURS
         ---------------------------------------------*/
 
         if (
@@ -2817,7 +2471,7 @@ const moteur = {
 
 
     /*=====================================================
-     GÉRER LE FOND D'UN DIALOGUE
+        GÉRER LE FOND D'UN DIALOGUE
     =====================================================*/
 
     gererFondDialogue(
@@ -2835,6 +2489,11 @@ const moteur = {
         }
 
 
+        /*
+            Un dialogue sans propriété "fond"
+            ne change rien.
+        */
+
         if (
             !Object.prototype
                 .hasOwnProperty
@@ -2850,7 +2509,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         RETIRER LE FOND
+            RETIRER LE FOND
         ---------------------------------------------*/
 
         if (
@@ -2872,7 +2531,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         CHANGER LE FOND
+            CHANGER LE FOND
         ---------------------------------------------*/
 
         return this.changerFond(
@@ -2884,8 +2543,10 @@ const moteur = {
         );
 
     },
-        /*=====================================================
-     VÉRIFIER SI UNE VIDÉO POSSÈDE UNE EXTENSION
+
+
+    /*=====================================================
+        VÉRIFIER SI UNE VIDÉO POSSÈDE UNE EXTENSION
     =====================================================*/
 
     videoPossedeExtension(
@@ -2909,8 +2570,10 @@ const moteur = {
             );
 
     },
-        /*=====================================================
-     VÉRIFIER SI LE CHEMIN VIDÉO EST DÉJÀ COMPLET
+
+
+    /*=====================================================
+        VÉRIFIER SI LE CHEMIN VIDÉO EST DÉJÀ COMPLET
     =====================================================*/
 
     videoEstCheminComplet(
@@ -2929,7 +2592,8 @@ const moteur = {
         const valeur =
             String(
                 video
-            );
+            )
+                .trim();
 
 
         return (
@@ -2964,7 +2628,25 @@ const moteur = {
 
 
     /*=====================================================
-     CONSTRUIRE LE CHEMIN D'UNE VIDÉO
+        CONSTRUIRE LE CHEMIN D'UNE VIDÉO
+
+        Exemples :
+
+        "surveillance"
+            ->
+        videos/surveillance.mp4
+
+        "surveillance.mp4"
+            ->
+        videos/surveillance.mp4
+
+        "videos/surveillance.mp4"
+            ->
+        videos/surveillance.mp4
+
+        "../videos/surveillance.mp4"
+            ->
+        ../videos/surveillance.mp4
     =====================================================*/
 
     construireCheminVideo(
@@ -2999,6 +2681,11 @@ const moteur = {
         }
 
 
+        /*
+            Un chemin déjà complet ne doit surtout
+            pas recevoir une seconde fois "videos/".
+        */
+
         if (
             this.videoEstCheminComplet(
                 nom
@@ -3009,6 +2696,10 @@ const moteur = {
 
         }
 
+
+        /*
+            Le fichier contient déjà une extension.
+        */
 
         if (
             this.videoPossedeExtension(
@@ -3024,6 +2715,10 @@ const moteur = {
         }
 
 
+        /*
+            Extension par défaut.
+        */
+
         return (
             this.cheminVideos +
             nom +
@@ -3035,23 +2730,24 @@ const moteur = {
 
 
     /*=====================================================
-     NORMALISER LA CONFIGURATION D'UNE VIDÉO
+        NORMALISER LA CONFIGURATION D'UNE VIDÉO
 
-     Formats acceptés :
+        Formats acceptés :
 
-     "video": "cinematique1"
+        "video": "cinematique1"
 
-     ou :
+        ou :
 
-     "video": {
-         "fichier": "cinematique1",
-         "controls": false,
-         "passable": true,
-         "pauseAudio": true,
-         "volume": 1,
-         "galerie": "cinematique1",
-         "next": "sceneApresVideo"
-     }
+        "video": {
+            "fichier": "cinematique1",
+            "controls": false,
+            "passable": true,
+            "pauseAudio": true,
+            "volume": 1,
+            "muted": false,
+            "galerie": "cinematique1",
+            "next": "sceneApresVideo"
+        }
     =====================================================*/
 
     normaliserConfigurationVideo(
@@ -3066,6 +2762,10 @@ const moteur = {
 
         }
 
+
+        /*---------------------------------------------
+            FORMAT SIMPLE
+        ---------------------------------------------*/
 
         if (
             typeof valeur ===
@@ -3103,9 +2803,16 @@ const moteur = {
         }
 
 
+        /*---------------------------------------------
+            FORMAT OBJET
+        ---------------------------------------------*/
+
         if (
             typeof valeur !==
-                "object"
+                "object" ||
+            Array.isArray(
+                valeur
+            )
         ) {
 
             return null;
@@ -3146,7 +2853,10 @@ const moteur = {
             ...valeur,
 
             fichier:
-                fichier,
+                String(
+                    fichier
+                )
+                    .trim(),
 
             controls:
                 valeur.controls ===
@@ -3164,6 +2874,7 @@ const moteur = {
                 Number.isFinite(
                     volume
                 )
+
                     ? Math.max(
                         0,
                         Math.min(
@@ -3171,6 +2882,7 @@ const moteur = {
                             volume
                         )
                     )
+
                     : 1,
 
             muted:
@@ -3180,23 +2892,21 @@ const moteur = {
                     true,
 
             next:
-                valeur.next ||
+                valeur.next ??
                 null,
 
             galerie:
-                valeur.galerie ||
+                valeur.galerie ??
                 null
 
         };
 
     },
+        /*=====================================================
+        CRÉER LE CONTENEUR VIDÉO
 
-
-    /*=====================================================
-     CRÉER LE CONTENEUR VIDÉO
-
-     Le conteneur est créé dynamiquement.
-     Aucun changement HTML obligatoire.
+        Le conteneur est créé dynamiquement.
+        Aucun changement HTML obligatoire.
     =====================================================*/
 
     creerConteneurVideo() {
@@ -3242,9 +2952,9 @@ const moteur = {
 
 
         /*
-         Styles directement ici pour que
-         le système fonctionne sans devoir
-         modifier immédiatement le CSS.
+            Styles directement ici pour que
+            le système fonctionne même sans
+            modification immédiate du CSS.
         */
 
         Object.assign(
@@ -3300,7 +3010,14 @@ const moteur = {
 
 
     /*=====================================================
-     METTRE L'AUDIO DU JEU EN PAUSE
+        METTRE L'AUDIO DU JEU EN PAUSE POUR UNE VIDÉO
+
+        On mémorise précisément ce qui jouait avant
+        la cinématique afin de ne reprendre ensuite
+        que ces pistes.
+
+        Le mixage artistique d'Audio Manager V4
+        n'est pas modifié.
     =====================================================*/
 
     mettreAudioEnPausePourVideo() {
@@ -3336,6 +3053,10 @@ const moteur = {
         };
 
 
+        /*---------------------------------------------
+            MUSIQUE
+        ---------------------------------------------*/
+
         try {
 
             if (
@@ -3345,6 +3066,10 @@ const moteur = {
                     .paused
             ) {
 
+                etat.musique =
+                    true;
+
+
                 audioManager
                     .musique
                     .pause();
@@ -3352,10 +3077,6 @@ const moteur = {
 
                 audioManager
                     .musiqueEnPause =
-                    true;
-
-
-                etat.musique =
                     true;
 
             }
@@ -3373,6 +3094,10 @@ const moteur = {
         }
 
 
+        /*---------------------------------------------
+            AMBIANCE
+        ---------------------------------------------*/
+
         try {
 
             if (
@@ -3382,6 +3107,10 @@ const moteur = {
                     .paused
             ) {
 
+                etat.ambiance =
+                    true;
+
+
                 audioManager
                     .ambiance
                     .pause();
@@ -3389,10 +3118,6 @@ const moteur = {
 
                 audioManager
                     .ambianceEnPause =
-                    true;
-
-
-                etat.ambiance =
                     true;
 
             }
@@ -3416,7 +3141,13 @@ const moteur = {
 
 
     /*=====================================================
-     REPRENDRE L'AUDIO APRÈS UNE VIDÉO
+        REPRENDRE L'AUDIO APRÈS UNE VIDÉO
+
+        Compatible avec Audio Manager V4.
+
+        On privilégie audioManager.lancerLecture()
+        afin de conserver sa gestion sécurisée
+        des restrictions du navigateur.
     =====================================================*/
 
     reprendreAudioApresVideo(
@@ -3436,28 +3167,50 @@ const moteur = {
         }
 
 
+        /*---------------------------------------------
+            REPRENDRE LA MUSIQUE
+        ---------------------------------------------*/
+
         if (
             etat.musique &&
-            audioManager.musique
+            audioManager.musique &&
+            audioManager.musiqueActuelle
         ) {
 
             try {
 
-                const lecture =
-                    audioManager
-                        .musique
-                        .play();
-
-
                 if (
-                    lecture &&
-                    typeof lecture.catch ===
+                    typeof audioManager
+                        .lancerLecture ===
                         "function"
                 ) {
 
-                    lecture.catch(
-                        () => {}
-                    );
+                    audioManager
+                        .lancerLecture(
+                            audioManager.musique,
+                            audioManager.musiqueActuelle
+                        );
+
+                }
+                else {
+
+                    const lecture =
+                        audioManager
+                            .musique
+                            .play();
+
+
+                    if (
+                        lecture &&
+                        typeof lecture.catch ===
+                            "function"
+                    ) {
+
+                        lecture.catch(
+                            () => {}
+                        );
+
+                    }
 
                 }
 
@@ -3481,28 +3234,50 @@ const moteur = {
         }
 
 
+        /*---------------------------------------------
+            REPRENDRE L'AMBIANCE
+        ---------------------------------------------*/
+
         if (
             etat.ambiance &&
-            audioManager.ambiance
+            audioManager.ambiance &&
+            audioManager.ambianceActuelle
         ) {
 
             try {
 
-                const lecture =
-                    audioManager
-                        .ambiance
-                        .play();
-
-
                 if (
-                    lecture &&
-                    typeof lecture.catch ===
+                    typeof audioManager
+                        .lancerLecture ===
                         "function"
                 ) {
 
-                    lecture.catch(
-                        () => {}
-                    );
+                    audioManager
+                        .lancerLecture(
+                            audioManager.ambiance,
+                            audioManager.ambianceActuelle
+                        );
+
+                }
+                else {
+
+                    const lecture =
+                        audioManager
+                            .ambiance
+                            .play();
+
+
+                    if (
+                        lecture &&
+                        typeof lecture.catch ===
+                            "function"
+                    ) {
+
+                        lecture.catch(
+                            () => {}
+                        );
+
+                    }
 
                 }
 
@@ -3529,7 +3304,7 @@ const moteur = {
 
 
     /*=====================================================
-     ARRÊTER LA VIDÉO EN COURS
+        ARRÊTER LA VIDÉO EN COURS
     =====================================================*/
 
     arreterVideo() {
@@ -3558,7 +3333,10 @@ const moteur = {
                 erreur
             ) {
 
-                /* Rien */
+                /*
+                    L'arrêt de la vidéo ne doit jamais
+                    bloquer le jeu.
+                */
 
             }
 
@@ -3589,12 +3367,21 @@ const moteur = {
 
 
     /*=====================================================
-     LANCER UNE VIDÉO
+        LANCER UNE VIDÉO
 
-     Retourne une Promise qui se termine lorsque :
-     - la vidéo arrive à la fin ;
-     - le joueur la passe ;
-     - une erreur se produit.
+        Retourne une Promise qui se termine lorsque :
+
+        - la vidéo arrive à la fin ;
+        - le joueur la passe ;
+        - une erreur de lecture se produit.
+
+        Résultat :
+
+        {
+            terminee: true,
+            raison: "fin" | "passee" | "erreur",
+            destination: ...
+        }
     =====================================================*/
 
     async jouerVideo(
@@ -3615,6 +3402,9 @@ const moteur = {
 
                 terminee:
                     false,
+
+                raison:
+                    "configuration-invalide",
 
                 destination:
                     null
@@ -3639,6 +3429,9 @@ const moteur = {
                 terminee:
                     false,
 
+                raison:
+                    "chemin-invalide",
+
                 destination:
                     configuration.next
 
@@ -3648,30 +3441,14 @@ const moteur = {
 
 
         /*---------------------------------------------
-         GALERIE
-
-         IMPORTANT :
-         le média n'est plus débloqué ici.
-
-         Il sera débloqué uniquement lorsque :
-         - la vidéo arrive réellement à sa fin ;
-         - ou le joueur choisit volontairement
-           de la passer.
-
-         Une erreur de lecture ne débloque pas
-         la vidéo dans la galerie.
-        ---------------------------------------------*/
-
-
-        /*---------------------------------------------
-         ARRÊTER UNE ANCIENNE VIDÉO
+            ARRÊTER UNE ANCIENNE VIDÉO
         ---------------------------------------------*/
 
         this.arreterVideo();
 
 
         /*---------------------------------------------
-         CONTENEUR
+            CONTENEUR
         ---------------------------------------------*/
 
         const conteneur =
@@ -3687,6 +3464,9 @@ const moteur = {
                 terminee:
                     false,
 
+                raison:
+                    "conteneur-introuvable",
+
                 destination:
                     configuration.next
 
@@ -3696,7 +3476,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         AUDIO DU JEU
+            AUDIO DU JEU
         ---------------------------------------------*/
 
         let etatAudio =
@@ -3714,7 +3494,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         CRÉER LA VIDÉO
+            CRÉER LA VIDÉO
         ---------------------------------------------*/
 
         const video =
@@ -3782,6 +3562,10 @@ const moteur = {
         );
 
 
+        /*---------------------------------------------
+            MASQUER LE JEU PENDANT LA CINÉMATIQUE
+        ---------------------------------------------*/
+
         const conversation =
             document.getElementById(
                 "conversation"
@@ -3819,7 +3603,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         BOUTON PASSER
+            BOUTON PASSER
         ---------------------------------------------*/
 
         let boutonPasser =
@@ -3894,7 +3678,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         ATTENDRE LA FIN
+            ATTENDRE LA FIN DE LA CINÉMATIQUE
         ---------------------------------------------*/
 
         return await new Promise(
@@ -3910,6 +3694,14 @@ const moteur = {
                             "fin"
                     ) => {
 
+                        /*
+                            Plusieurs événements pourraient
+                            théoriquement arriver presque
+                            simultanément.
+
+                            On ne termine qu'une seule fois.
+                        */
+
                         if (
                             termine
                         ) {
@@ -3923,6 +3715,10 @@ const moteur = {
                             true;
 
 
+                        /*---------------------------------
+                            ARRÊTER LA VIDÉO
+                        ---------------------------------*/
+
                         try {
 
                             video.pause();
@@ -3932,14 +3728,27 @@ const moteur = {
                             erreur
                         ) {
 
-                            /* Rien */
+                            /*
+                                Rien à faire.
+                            */
 
                         }
 
 
-                        this.videoEnCours =
-                            null;
+                        if (
+                            this.videoEnCours ===
+                            video
+                        ) {
 
+                            this.videoEnCours =
+                                null;
+
+                        }
+
+
+                        /*---------------------------------
+                            NETTOYER LE CONTENEUR
+                        ---------------------------------*/
 
                         conteneur.innerHTML =
                             "";
@@ -3948,6 +3757,10 @@ const moteur = {
                         conteneur.style.display =
                             "none";
 
+
+                        /*---------------------------------
+                            RÉAFFICHER LE JEU
+                        ---------------------------------*/
 
                         if (
                             conversation
@@ -3969,6 +3782,10 @@ const moteur = {
                         }
 
 
+                        /*---------------------------------
+                            REPRENDRE L'AUDIO
+                        ---------------------------------*/
+
                         if (
                             configuration.pauseAudio
                         ) {
@@ -3981,14 +3798,16 @@ const moteur = {
 
 
                         /*---------------------------------
-                         GALERIE
+                            GALERIE
 
-                         Débloquer seulement si la vidéo
-                         a réellement été vue ou passée
-                         volontairement.
+                            La vidéo n'est débloquée que si :
 
-                         Une erreur de lecture ne compte
-                         pas comme un déblocage.
+                            - elle arrive réellement à la fin ;
+                            - le joueur la passe volontairement.
+
+                            Une erreur de chargement ou de
+                            lecture ne doit pas débloquer
+                            automatiquement la cinématique.
                         ---------------------------------*/
 
                         if (
@@ -4008,6 +3827,10 @@ const moteur = {
                         }
 
 
+                        /*---------------------------------
+                            TERMINER LA PROMESSE
+                        ---------------------------------*/
+
                         resolve(
                             {
 
@@ -4018,7 +3841,7 @@ const moteur = {
                                     raison,
 
                                 destination:
-                                    configuration.next ||
+                                    configuration.next ??
                                     null
 
                             }
@@ -4026,6 +3849,10 @@ const moteur = {
 
                     };
 
+
+                /*-----------------------------------------
+                    FIN NORMALE
+                -----------------------------------------*/
 
                 video.addEventListener(
                     "ended",
@@ -4042,6 +3869,10 @@ const moteur = {
                     }
                 );
 
+
+                /*-----------------------------------------
+                    ERREUR
+                -----------------------------------------*/
 
                 video.addEventListener(
                     "error",
@@ -4063,6 +3894,10 @@ const moteur = {
                     }
                 );
 
+
+                /*-----------------------------------------
+                    PASSER LA VIDÉO
+                -----------------------------------------*/
 
                 if (
                     boutonPasser
@@ -4087,6 +3922,10 @@ const moteur = {
                 }
 
 
+                /*-----------------------------------------
+                    DÉMARRER LA LECTURE
+                -----------------------------------------*/
+
                 try {
 
                     const lecture =
@@ -4103,12 +3942,12 @@ const moteur = {
                             erreur => {
 
                                 /*
-                                 Autoplay avec son peut être bloqué
-                                 par certains navigateurs.
+                                    L'autoplay avec son peut être
+                                    bloqué par le navigateur.
 
-                                 Dans ce cas les contrôles peuvent
-                                 permettre au joueur de démarrer
-                                 manuellement la vidéo.
+                                    On active alors les contrôles
+                                    pour permettre au joueur de
+                                    démarrer manuellement.
                                 */
 
                                 console.warn(
@@ -4135,6 +3974,16 @@ const moteur = {
                         erreur
                     );
 
+
+                    /*
+                        Une exception réelle lors du démarrage
+                        est considérée comme une erreur vidéo.
+                    */
+
+                    terminer(
+                        "erreur"
+                    );
+
                 }
 
             }
@@ -4144,7 +3993,7 @@ const moteur = {
 
 
     /*=====================================================
-     GÉRER LA VIDÉO D'UNE SCÈNE
+        GÉRER LA VIDÉO D'UNE SCÈNE
     =====================================================*/
 
     async gererVideoScene(
@@ -4182,15 +4031,248 @@ const moteur = {
             video:
                 true,
 
+            raison:
+                resultat?.raison ||
+                null,
+
             destination:
-                resultat?.destination ||
+                resultat?.destination ??
                 null
 
         };
 
     },
         /*=====================================================
-     GÉRER L'AUDIO DU CHAPITRE
+        NORMALISER UN VOLUME ARTISTIQUE
+
+        Le moteur travaille avec des valeurs comprises
+        entre 0 et 1.
+
+        Exemples :
+
+        1
+            = niveau artistique maximal
+
+        0.80
+            = 80 % du réglage utilisateur
+
+        0
+            = silence
+
+        Si Audio Manager V4 possède sa propre fonction
+        de normalisation, elle est utilisée en priorité.
+    =====================================================*/
+
+    normaliserVolumeAudio(
+        valeur,
+        valeurParDefaut = 1
+    ) {
+
+        if (
+            valeur === undefined ||
+            valeur === null ||
+            valeur === ""
+        ) {
+
+            valeur =
+                valeurParDefaut;
+
+        }
+
+
+        if (
+            typeof audioManager !==
+                "undefined" &&
+            audioManager !==
+                null &&
+            typeof audioManager
+                .normaliserVolumeMix ===
+                "function"
+        ) {
+
+            return audioManager
+                .normaliserVolumeMix(
+                    valeur,
+                    valeurParDefaut
+                );
+
+        }
+
+
+        const nombre =
+            Number(
+                valeur
+            );
+
+
+        if (
+            !Number.isFinite(
+                nombre
+            )
+        ) {
+
+            return Math.max(
+                0,
+                Math.min(
+                    1,
+                    Number(
+                        valeurParDefaut
+                    ) || 0
+                )
+            );
+
+        }
+
+
+        return Math.max(
+            0,
+            Math.min(
+                1,
+                nombre
+            )
+        );
+
+    },
+
+
+    /*=====================================================
+        NORMALISER UNE DURÉE DE TRANSITION AUDIO
+
+        Les durées sont exprimées en millisecondes.
+
+        Exemple :
+
+        "transitionMusique": 1500
+
+        = fondu de 1,5 seconde.
+    =====================================================*/
+
+    normaliserDureeAudio(
+        valeur,
+        valeurParDefaut = 0
+    ) {
+
+        if (
+            valeur === undefined ||
+            valeur === null ||
+            valeur === ""
+        ) {
+
+            return Math.max(
+                0,
+                Number(
+                    valeurParDefaut
+                ) || 0
+            );
+
+        }
+
+
+        const nombre =
+            Number(
+                valeur
+            );
+
+
+        if (
+            !Number.isFinite(
+                nombre
+            )
+        ) {
+
+            return Math.max(
+                0,
+                Number(
+                    valeurParDefaut
+                ) || 0
+            );
+
+        }
+
+
+        return Math.max(
+            0,
+            nombre
+        );
+
+    },
+
+
+    /*=====================================================
+        VÉRIFIER SI UNE VALEUR AUDIO SIGNIFIE "AUCUNE"
+
+        Permet d'utiliser :
+
+        false
+        null
+        ""
+        "aucun"
+        "aucune"
+        "none"
+    =====================================================*/
+
+    audioEstDesactive(
+        valeur
+    ) {
+
+        if (
+            valeur === false ||
+            valeur === null ||
+            valeur === undefined ||
+            valeur === ""
+        ) {
+
+            return true;
+
+        }
+
+
+        if (
+            typeof valeur !==
+                "string"
+        ) {
+
+            return false;
+
+        }
+
+
+        const texte =
+            valeur
+                .trim()
+                .toLowerCase();
+
+
+        return (
+            texte === "aucun" ||
+            texte === "aucune" ||
+            texte === "none" ||
+            texte === "false"
+        );
+
+    },
+
+
+    /*=====================================================
+        GÉRER L'AUDIO DU CHAPITRE
+
+        Le chapitre définit le mixage de base.
+
+        Exemple :
+
+        {
+            "musique": "chapitre14",
+            "volumeMusique": 0.85,
+            "transitionMusique": 1200,
+
+            "ambiance": "pluie",
+            "volumeAmbiance": 0.35,
+            "transitionAmbiance": 800,
+
+            "volumeEffets": 0.90
+        }
+
+        Les scènes peuvent ensuite modifier ces valeurs.
     =====================================================*/
 
     gererAudioChapitre(
@@ -4207,31 +4289,192 @@ const moteur = {
                 null
         ) {
 
-            return;
+            return false;
 
         }
 
 
-        /*---------------------------------------------
-         MUSIQUE
-        ---------------------------------------------*/
+        /*=================================================
+            MIXAGE GLOBAL DES EFFETS
+        =================================================*/
+
+        const volumeEffets =
+            Object.prototype
+                .hasOwnProperty
+                .call(
+                    chapitre,
+                    "volumeEffets"
+                )
+
+                ? this.normaliserVolumeAudio(
+                    chapitre.volumeEffets,
+                    this.volumeMixEffetsParDefaut
+                )
+
+                : this.volumeMixEffetsParDefaut;
+
 
         if (
-            chapitre.musique
+            typeof audioManager
+                .setVolumeMixEffets ===
+                "function"
         ) {
 
+            try {
+
+                audioManager
+                    .setVolumeMixEffets(
+                        volumeEffets
+                    );
+
+            }
+            catch (
+                erreur
+            ) {
+
+                console.error(
+                    "moteur.js : erreur volume des effets du chapitre :",
+                    erreur
+                );
+
+            }
+
+        }
+
+
+        /*=================================================
+            MUSIQUE DU CHAPITRE
+        =================================================*/
+
+        const possedeMusique =
+            Object.prototype
+                .hasOwnProperty
+                .call(
+                    chapitre,
+                    "musique"
+                );
+
+
+        const possedeVolumeMusique =
+            Object.prototype
+                .hasOwnProperty
+                .call(
+                    chapitre,
+                    "volumeMusique"
+                );
+
+
+        const volumeMusique =
+            this.normaliserVolumeAudio(
+
+                possedeVolumeMusique
+
+                    ? chapitre.volumeMusique
+
+                    : this.volumeMixMusiqueParDefaut,
+
+                this.volumeMixMusiqueParDefaut
+
+            );
+
+
+        const transitionMusique =
+            this.normaliserDureeAudio(
+                chapitre.transitionMusique,
+                0
+            );
+
+
+        if (
+            possedeMusique
+        ) {
+
+            /*-----------------------------------------
+                ARRÊTER LA MUSIQUE
+            -----------------------------------------*/
+
             if (
-                typeof audioManager
-                    .jouerMusique ===
-                    "function"
+                this.audioEstDesactive(
+                    chapitre.musique
+                )
             ) {
 
                 try {
 
-                    audioManager
-                        .jouerMusique(
-                            chapitre.musique
-                        );
+                    if (
+                        transitionMusique > 0 &&
+                        typeof audioManager
+                            .fadeOut ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .fadeOut(
+                                transitionMusique
+                            );
+
+                    }
+                    else if (
+                        typeof audioManager
+                            .arreterMusique ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .arreterMusique();
+
+                    }
+
+                }
+                catch (
+                    erreur
+                ) {
+
+                    console.error(
+                        "moteur.js : erreur arrêt musique chapitre :",
+                        erreur
+                    );
+
+                }
+
+            }
+
+            /*-----------------------------------------
+                JOUER / CHANGER LA MUSIQUE
+            -----------------------------------------*/
+
+            else {
+
+                try {
+
+                    if (
+                        transitionMusique > 0 &&
+                        typeof audioManager
+                            .changerMusique ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .changerMusique(
+                                chapitre.musique,
+                                transitionMusique,
+                                volumeMusique
+                            );
+
+                    }
+                    else if (
+                        typeof audioManager
+                            .jouerMusique ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .jouerMusique(
+                                chapitre.musique,
+                                volumeMusique
+                            );
+
+                    }
 
                 }
                 catch (
@@ -4249,27 +4492,179 @@ const moteur = {
 
         }
 
+        /*
+            Le chapitre peut modifier uniquement
+            le volume de la musique déjà en cours.
 
-        /*---------------------------------------------
-         AMBIANCE
-        ---------------------------------------------*/
+            Exemple :
 
-        if (
-            chapitre.ambiance
+            "volumeMusique": 0.60
+
+            sans propriété "musique".
+        */
+
+        else if (
+            possedeVolumeMusique &&
+            typeof audioManager
+                .setVolumeMixMusique ===
+                "function"
         ) {
 
+            try {
+
+                audioManager
+                    .setVolumeMixMusique(
+                        volumeMusique
+                    );
+
+            }
+            catch (
+                erreur
+            ) {
+
+                console.error(
+                    "moteur.js : erreur mixage musique chapitre :",
+                    erreur
+                );
+
+            }
+
+        }
+
+
+        /*=================================================
+            AMBIANCE DU CHAPITRE
+        =================================================*/
+
+        const possedeAmbiance =
+            Object.prototype
+                .hasOwnProperty
+                .call(
+                    chapitre,
+                    "ambiance"
+                );
+
+
+        const possedeVolumeAmbiance =
+            Object.prototype
+                .hasOwnProperty
+                .call(
+                    chapitre,
+                    "volumeAmbiance"
+                );
+
+
+        const volumeAmbiance =
+            this.normaliserVolumeAudio(
+
+                possedeVolumeAmbiance
+
+                    ? chapitre.volumeAmbiance
+
+                    : this.volumeMixAmbianceParDefaut,
+
+                this.volumeMixAmbianceParDefaut
+
+            );
+
+
+        const transitionAmbiance =
+            this.normaliserDureeAudio(
+                chapitre.transitionAmbiance,
+                0
+            );
+
+
+        if (
+            possedeAmbiance
+        ) {
+
+            /*-----------------------------------------
+                ARRÊTER L'AMBIANCE
+            -----------------------------------------*/
+
             if (
-                typeof audioManager
-                    .jouerAmbiance ===
-                    "function"
+                this.audioEstDesactive(
+                    chapitre.ambiance
+                )
             ) {
 
                 try {
 
-                    audioManager
-                        .jouerAmbiance(
-                            chapitre.ambiance
-                        );
+                    if (
+                        transitionAmbiance > 0 &&
+                        typeof audioManager
+                            .fadeOutAmbiance ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .fadeOutAmbiance(
+                                transitionAmbiance
+                            );
+
+                    }
+                    else if (
+                        typeof audioManager
+                            .arreterAmbiance ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .arreterAmbiance();
+
+                    }
+
+                }
+                catch (
+                    erreur
+                ) {
+
+                    console.error(
+                        "moteur.js : erreur arrêt ambiance chapitre :",
+                        erreur
+                    );
+
+                }
+
+            }
+
+            /*-----------------------------------------
+                JOUER / CHANGER L'AMBIANCE
+            -----------------------------------------*/
+
+            else {
+
+                try {
+
+                    if (
+                        transitionAmbiance > 0 &&
+                        typeof audioManager
+                            .changerAmbiance ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .changerAmbiance(
+                                chapitre.ambiance,
+                                transitionAmbiance,
+                                volumeAmbiance
+                            );
+
+                    }
+                    else if (
+                        typeof audioManager
+                            .jouerAmbiance ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .jouerAmbiance(
+                                chapitre.ambiance,
+                                volumeAmbiance
+                            );
+
+                    }
 
                 }
                 catch (
@@ -4287,11 +4682,75 @@ const moteur = {
 
         }
 
+        /*
+            Même principe que pour la musique :
+            possibilité de modifier uniquement le mixage.
+        */
+
+        else if (
+            possedeVolumeAmbiance &&
+            typeof audioManager
+                .setVolumeMixAmbiance ===
+                "function"
+        ) {
+
+            try {
+
+                audioManager
+                    .setVolumeMixAmbiance(
+                        volumeAmbiance
+                    );
+
+            }
+            catch (
+                erreur
+            ) {
+
+                console.error(
+                    "moteur.js : erreur mixage ambiance chapitre :",
+                    erreur
+                );
+
+            }
+
+        }
+
+
+        return true;
+
     },
 
 
     /*=====================================================
-     GÉRER L'AUDIO D'UNE SCÈNE
+        GÉRER L'AUDIO D'UNE SCÈNE
+
+        Une scène peut :
+
+        - changer la musique ;
+        - changer uniquement son volume ;
+        - arrêter la musique ;
+        - changer l'ambiance ;
+        - changer uniquement son volume ;
+        - arrêter l'ambiance ;
+        - modifier le volume global des effets ;
+        - jouer un effet sonore individuel.
+
+        Exemple :
+
+        {
+            "musique": "tension",
+            "volumeMusique": 0.80,
+            "transitionMusique": 1200,
+
+            "ambiance": "pluie_ruelle",
+            "volumeAmbiance": 0.45,
+            "transitionAmbiance": 700,
+
+            "volumeEffets": 0.90,
+
+            "son": "tonnerre",
+            "volumeSon": 0.75
+        }
     =====================================================*/
 
     gererAudioScene(
@@ -4308,57 +4767,224 @@ const moteur = {
                 null
         ) {
 
-            return;
+            return false;
 
         }
 
 
-        /*---------------------------------------------
-         MUSIQUE
-        ---------------------------------------------*/
+        /*=================================================
+            VOLUME GLOBAL DES EFFETS DE LA SCÈNE
+
+            Contrairement au volumeSon, cette valeur
+            influence tous les effets sonores suivants.
+        =================================================*/
 
         if (
             Object.prototype
                 .hasOwnProperty
                 .call(
                     scene,
-                    "musique"
+                    "volumeEffets"
                 )
         ) {
 
+            const volumeEffets =
+                this.normaliserVolumeAudio(
+                    scene.volumeEffets,
+                    this.volumeMixEffetsParDefaut
+                );
+
+
             if (
-                scene.musique ===
-                    false ||
-                scene.musique ===
-                    null ||
-                scene.musique ===
-                    ""
-            ) {
-
-                if (
-                    typeof audioManager
-                        .arreterMusique ===
-                        "function"
-                ) {
-
-                    audioManager
-                        .arreterMusique();
-
-                }
-
-            }
-            else if (
                 typeof audioManager
-                    .jouerMusique ===
+                    .setVolumeMixEffets ===
                     "function"
             ) {
 
                 try {
 
                     audioManager
-                        .jouerMusique(
-                            scene.musique
+                        .setVolumeMixEffets(
+                            volumeEffets
                         );
+
+                }
+                catch (
+                    erreur
+                ) {
+
+                    console.error(
+                        "moteur.js : erreur volume des effets scène :",
+                        erreur
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        /*=================================================
+            MUSIQUE
+        =================================================*/
+
+        const possedeMusique =
+            Object.prototype
+                .hasOwnProperty
+                .call(
+                    scene,
+                    "musique"
+                );
+
+
+        const possedeVolumeMusique =
+            Object.prototype
+                .hasOwnProperty
+                .call(
+                    scene,
+                    "volumeMusique"
+                );
+
+
+        /*
+            Si la scène ne définit pas de nouveau
+            volume, on conserve le mixage actuellement
+            actif.
+
+            Cela permet par exemple :
+
+            scène A :
+                musique tension + volume 0.40
+
+            scène B :
+                aucun réglage audio
+
+            La musique continue à 0.40.
+        */
+
+        const volumeMusiqueActuel =
+            typeof audioManager
+                .volumeMixMusique ===
+                "number"
+
+                ? audioManager
+                    .volumeMixMusique
+
+                : this.volumeMixMusiqueParDefaut;
+
+
+        const volumeMusique =
+            this.normaliserVolumeAudio(
+
+                possedeVolumeMusique
+
+                    ? scene.volumeMusique
+
+                    : volumeMusiqueActuel,
+
+                volumeMusiqueActuel
+
+            );
+
+
+        const transitionMusique =
+            this.normaliserDureeAudio(
+                scene.transitionMusique,
+                0
+            );
+
+
+        if (
+            possedeMusique
+        ) {
+
+            /*-----------------------------------------
+                ARRÊT MUSIQUE
+            -----------------------------------------*/
+
+            if (
+                this.audioEstDesactive(
+                    scene.musique
+                )
+            ) {
+
+                try {
+
+                    if (
+                        transitionMusique > 0 &&
+                        typeof audioManager
+                            .fadeOut ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .fadeOut(
+                                transitionMusique
+                            );
+
+                    }
+                    else if (
+                        typeof audioManager
+                            .arreterMusique ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .arreterMusique();
+
+                    }
+
+                }
+                catch (
+                    erreur
+                ) {
+
+                    console.error(
+                        "moteur.js : erreur arrêt musique scène :",
+                        erreur
+                    );
+
+                }
+
+            }
+
+            /*-----------------------------------------
+                NOUVELLE MUSIQUE
+            -----------------------------------------*/
+
+            else {
+
+                try {
+
+                    if (
+                        transitionMusique > 0 &&
+                        typeof audioManager
+                            .changerMusique ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .changerMusique(
+                                scene.musique,
+                                transitionMusique,
+                                volumeMusique
+                            );
+
+                    }
+                    else if (
+                        typeof audioManager
+                            .jouerMusique ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .jouerMusique(
+                                scene.musique,
+                                volumeMusique
+                            );
+
+                    }
 
                 }
                 catch (
@@ -4376,53 +5002,183 @@ const moteur = {
 
         }
 
-
         /*---------------------------------------------
-         AMBIANCE
+            MODIFIER UNIQUEMENT LE VOLUME MUSIQUE
         ---------------------------------------------*/
 
-        if (
+        else if (
+            possedeVolumeMusique &&
+            typeof audioManager
+                .setVolumeMixMusique ===
+                "function"
+        ) {
+
+            try {
+
+                audioManager
+                    .setVolumeMixMusique(
+                        volumeMusique
+                    );
+
+            }
+            catch (
+                erreur
+            ) {
+
+                console.error(
+                    "moteur.js : erreur mixage musique scène :",
+                    erreur
+                );
+
+            }
+
+        }
+
+
+        /*=================================================
+            AMBIANCE
+        =================================================*/
+
+        const possedeAmbiance =
             Object.prototype
                 .hasOwnProperty
                 .call(
                     scene,
                     "ambiance"
-                )
+                );
+
+
+        const possedeVolumeAmbiance =
+            Object.prototype
+                .hasOwnProperty
+                .call(
+                    scene,
+                    "volumeAmbiance"
+                );
+
+
+        const volumeAmbianceActuel =
+            typeof audioManager
+                .volumeMixAmbiance ===
+                "number"
+
+                ? audioManager
+                    .volumeMixAmbiance
+
+                : this.volumeMixAmbianceParDefaut;
+
+
+        const volumeAmbiance =
+            this.normaliserVolumeAudio(
+
+                possedeVolumeAmbiance
+
+                    ? scene.volumeAmbiance
+
+                    : volumeAmbianceActuel,
+
+                volumeAmbianceActuel
+
+            );
+
+
+        const transitionAmbiance =
+            this.normaliserDureeAudio(
+                scene.transitionAmbiance,
+                0
+            );
+
+
+        if (
+            possedeAmbiance
         ) {
 
+            /*-----------------------------------------
+                ARRÊT AMBIANCE
+            -----------------------------------------*/
+
             if (
-                scene.ambiance ===
-                    false ||
-                scene.ambiance ===
-                    null ||
-                scene.ambiance ===
-                    ""
-            ) {
-
-                if (
-                    typeof audioManager
-                        .arreterAmbiance ===
-                        "function"
-                ) {
-
-                    audioManager
-                        .arreterAmbiance();
-
-                }
-
-            }
-            else if (
-                typeof audioManager
-                    .jouerAmbiance ===
-                    "function"
+                this.audioEstDesactive(
+                    scene.ambiance
+                )
             ) {
 
                 try {
 
-                    audioManager
-                        .jouerAmbiance(
-                            scene.ambiance
-                        );
+                    if (
+                        transitionAmbiance > 0 &&
+                        typeof audioManager
+                            .fadeOutAmbiance ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .fadeOutAmbiance(
+                                transitionAmbiance
+                            );
+
+                    }
+                    else if (
+                        typeof audioManager
+                            .arreterAmbiance ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .arreterAmbiance();
+
+                    }
+
+                }
+                catch (
+                    erreur
+                ) {
+
+                    console.error(
+                        "moteur.js : erreur arrêt ambiance scène :",
+                        erreur
+                    );
+
+                }
+
+            }
+
+            /*-----------------------------------------
+                NOUVELLE AMBIANCE
+            -----------------------------------------*/
+
+            else {
+
+                try {
+
+                    if (
+                        transitionAmbiance > 0 &&
+                        typeof audioManager
+                            .changerAmbiance ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .changerAmbiance(
+                                scene.ambiance,
+                                transitionAmbiance,
+                                volumeAmbiance
+                            );
+
+                    }
+                    else if (
+                        typeof audioManager
+                            .jouerAmbiance ===
+                            "function"
+                    ) {
+
+                        audioManager
+                            .jouerAmbiance(
+                                scene.ambiance,
+                                volumeAmbiance
+                            );
+
+                    }
 
                 }
                 catch (
@@ -4440,23 +5196,96 @@ const moteur = {
 
         }
 
-
         /*---------------------------------------------
-         EFFET SONORE DE SCÈNE
+            MODIFIER UNIQUEMENT LE VOLUME AMBIANCE
         ---------------------------------------------*/
 
-        if (
-            scene.son &&
+        else if (
+            possedeVolumeAmbiance &&
             typeof audioManager
-                .jouerSon ===
+                .setVolumeMixAmbiance ===
                 "function"
         ) {
 
             try {
 
                 audioManager
+                    .setVolumeMixAmbiance(
+                        volumeAmbiance
+                    );
+
+            }
+            catch (
+                erreur
+            ) {
+
+                console.error(
+                    "moteur.js : erreur mixage ambiance scène :",
+                    erreur
+                );
+
+            }
+
+        }
+
+
+        /*=================================================
+            EFFET SONORE UNIQUE DE LA SCÈNE
+
+            volumeSon est un multiplicateur local.
+
+            Exemple :
+
+            volume utilisateur effets = 0.70
+            volumeEffets scène        = 0.80
+            volumeSon                 = 0.50
+
+            résultat :
+
+            0.70 × 0.80 × 0.50
+            = 0.28
+        =================================================*/
+
+        if (
+            Object.prototype
+                .hasOwnProperty
+                .call(
+                    scene,
+                    "son"
+                ) &&
+            !this.audioEstDesactive(
+                scene.son
+            ) &&
+            typeof audioManager
+                .jouerSon ===
+                "function"
+        ) {
+
+            const volumeSon =
+                this.normaliserVolumeAudio(
+
+                    Object.prototype
+                        .hasOwnProperty
+                        .call(
+                            scene,
+                            "volumeSon"
+                        )
+
+                        ? scene.volumeSon
+
+                        : 1,
+
+                    1
+
+                );
+
+
+            try {
+
+                audioManager
                     .jouerSon(
-                        scene.son
+                        scene.son,
+                        volumeSon
                     );
 
             }
@@ -4473,9 +5302,28 @@ const moteur = {
 
         }
 
+
+        return true;
+
     },
         /*=====================================================
-     ÉVALUER LES CONDITIONS D'UNE SCÈNE
+        ÉVALUER LES CONDITIONS D'UNE SCÈNE
+
+        Exemple :
+
+        "conditions": [
+            {
+                "si": {
+                    "relationEva": {
+                        "min": 5
+                    }
+                },
+                "next": "sceneBonneRelation"
+            },
+            {
+                "sinon": "sceneRelationFaible"
+            }
+        ]
     =====================================================*/
 
     evaluerConditionsScene(
@@ -4516,7 +5364,7 @@ const moteur = {
 
 
             /*-----------------------------------------
-             SINON
+                SINON
             -----------------------------------------*/
 
             if (
@@ -4532,7 +5380,7 @@ const moteur = {
 
 
             /*-----------------------------------------
-             SI
+                SI
             -----------------------------------------*/
 
             if (
@@ -4565,15 +5413,15 @@ const moteur = {
 
 
     /*=====================================================
-     VÉRIFIER UNE CONDITION AU FORMAT HISTORIQUE
+        VÉRIFIER UNE CONDITION AU FORMAT HISTORIQUE
 
-     Exemple :
+        Exemple :
 
-     "condition": {
-         "variable": "rencontreZoe",
-         "operateur": "===",
-         "valeur": true
-     }
+        "condition": {
+            "variable": "rencontreZoe",
+            "operateur": "===",
+            "valeur": true
+        }
     =====================================================*/
 
     verifierConditionClassique(
@@ -4711,23 +5559,42 @@ const moteur = {
 
 
     /*=====================================================
-     VÉRIFIER UN OBJET DE CONDITION
+        VÉRIFIER UN OBJET DE CONDITION
 
-     Deux formats sont acceptés.
+        Deux formats sont acceptés.
 
-     FORMAT 1 :
+        FORMAT HISTORIQUE :
 
-     {
-         "rencontreZoe": true
-     }
+        {
+            "variable": "relationEva",
+            "operateur": ">=",
+            "valeur": 5
+        }
 
-     FORMAT 2 :
+        FORMAT MODERNE SIMPLE :
 
-     {
-         "variable": "relationEva",
-         "operateur": ">=",
-         "valeur": 5
-     }
+        {
+            "rencontreZoe": true
+        }
+
+        FORMAT MODERNE AVANCÉ :
+
+        {
+            "relationEva": {
+                "min": 5
+            },
+
+            "confianceEva": {
+                "max": 10
+            }
+        }
+
+        Opérateurs modernes :
+
+        min
+        max
+        egal
+        different
     =====================================================*/
 
     verifierObjetCondition(
@@ -4747,7 +5614,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FORMAT HISTORIQUE
+            FORMAT HISTORIQUE
         ---------------------------------------------*/
 
         if (
@@ -4768,7 +5635,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FORMAT MODERNE
+            FORMAT MODERNE
         ---------------------------------------------*/
 
         return Object
@@ -4788,12 +5655,11 @@ const moteur = {
 
 
                     /*---------------------------------
-                     VALEUR SIMPLE
+                        VALEUR SIMPLE
 
-                     Exemple :
-                     {
-                         "rencontreEva": true
-                     }
+                        {
+                            "rencontreEva": true
+                        }
                     ---------------------------------*/
 
                     if (
@@ -4815,13 +5681,7 @@ const moteur = {
 
 
                     /*---------------------------------
-                     MINIMUM
-
-                     {
-                         "relationEva": {
-                             "min": 5
-                         }
-                     }
+                        MINIMUM
                     ---------------------------------*/
 
                     if (
@@ -4845,7 +5705,7 @@ const moteur = {
 
 
                     /*---------------------------------
-                     MAXIMUM
+                        MAXIMUM
                     ---------------------------------*/
 
                     if (
@@ -4869,7 +5729,7 @@ const moteur = {
 
 
                     /*---------------------------------
-                     ÉGAL
+                        ÉGAL
                     ---------------------------------*/
 
                     if (
@@ -4889,7 +5749,7 @@ const moteur = {
 
 
                     /*---------------------------------
-                     DIFFÉRENT
+                        DIFFÉRENT
                     ---------------------------------*/
 
                     if (
@@ -4917,7 +5777,7 @@ const moteur = {
 
 
     /*=====================================================
-     FIN DE L'AFFICHAGE D'UNE SCÈNE
+        FIN DE L'AFFICHAGE D'UNE SCÈNE
     =====================================================*/
 
     terminerAffichageScene(
@@ -4934,7 +5794,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         CHOIX
+            CHOIX
         ---------------------------------------------*/
 
         if (
@@ -4956,7 +5816,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         SCÈNE / CHAPITRE SUIVANT
+            SCÈNE / CHAPITRE SUIVANT
         ---------------------------------------------*/
 
         if (
@@ -4973,7 +5833,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FIN DE CHAPITRE
+            FIN DE CHAPITRE
         ---------------------------------------------*/
 
         if (
@@ -4991,7 +5851,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FIN DU JEU
+            FIN DU JEU
         ---------------------------------------------*/
 
         if (
@@ -5011,7 +5871,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         SAUVEGARDE FINALE DE LA SCÈNE
+            SAUVEGARDE FINALE DE LA SCÈNE
         ---------------------------------------------*/
 
         this.sauvegarder();
@@ -5020,7 +5880,7 @@ const moteur = {
 
 
     /*=====================================================
-     PRÉPARER LES CHOIX
+        PRÉPARER LES CHOIX
     =====================================================*/
 
     preparerChoix(
@@ -5042,14 +5902,14 @@ const moteur = {
 
 
         /*---------------------------------------------
-         ANNULER UN ANCIEN TIMER DE CHOIX
+            ANNULER UN ANCIEN TIMER DE CHOIX
         ---------------------------------------------*/
 
         this.annulerAttenteChoix();
 
 
         /*---------------------------------------------
-         FILTRER LES CHOIX DISPONIBLES
+            FILTRER LES CHOIX DISPONIBLES
         ---------------------------------------------*/
 
         const choixDisponibles =
@@ -5067,7 +5927,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         AUCUN CHOIX DISPONIBLE
+            AUCUN CHOIX DISPONIBLE
         ---------------------------------------------*/
 
         if (
@@ -5081,12 +5941,13 @@ const moteur = {
 
 
             /*
-             Si un next existe,
-             la scène peut continuer automatiquement.
+                Si aucun choix n'est disponible mais
+                que la scène possède un next,
+                on continue automatiquement.
 
-             IMPORTANT :
-             on passe aussi par gererDestination()
-             pour accepter un changement de chapitre.
+                gererDestination() accepte maintenant
+                aussi bien une scène qu'un chapitre
+                ou une destination objet.
             */
 
             if (
@@ -5106,7 +5967,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         DÉLAI AVANT AFFICHAGE
+            DÉLAI AVANT AFFICHAGE
         ---------------------------------------------*/
 
         const delai =
@@ -5150,7 +6011,7 @@ const moteur = {
 
 
     /*=====================================================
-     VÉRIFIER SI UN CHOIX EST DISPONIBLE
+        VÉRIFIER SI UN CHOIX EST DISPONIBLE
     =====================================================*/
 
     choixEstDisponible(
@@ -5169,7 +6030,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         CHOIX DÉSACTIVÉ
+            CHOIX DÉSACTIVÉ
         ---------------------------------------------*/
 
         if (
@@ -5183,7 +6044,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         CHOIX VERROUILLÉ EXPLICITEMENT
+            CHOIX VERROUILLÉ EXPLICITEMENT
         ---------------------------------------------*/
 
         if (
@@ -5197,7 +6058,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         CONDITION SIMPLE
+            CONDITION
         ---------------------------------------------*/
 
         if (
@@ -5220,7 +6081,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         CONDITION "si"
+            CONDITION "SI"
         ---------------------------------------------*/
 
         if (
@@ -5245,8 +6106,16 @@ const moteur = {
         return true;
 
     },
-        /*=====================================================
-     OBTENIR LE DÉLAI AVANT LES CHOIX
+
+
+    /*=====================================================
+        OBTENIR LE DÉLAI AVANT LES CHOIX
+
+        Compatibilité avec :
+
+        delaiChoix
+        choixDelai
+        delayChoix
     =====================================================*/
 
     obtenirDelaiChoix(
@@ -5307,7 +6176,7 @@ const moteur = {
 
 
     /*=====================================================
-     AFFICHER LES CHOIX
+        AFFICHER LES CHOIX
     =====================================================*/
 
     afficherChoix(
@@ -5380,7 +6249,7 @@ const moteur = {
 
 
     /*=====================================================
-     TRAITER UN CHOIX
+        TRAITER UN CHOIX
     =====================================================*/
 
     async traiterChoix(
@@ -5399,7 +6268,12 @@ const moteur = {
 
 
         /*---------------------------------------------
-         VÉRIFICATION FINALE DE DISPONIBILITÉ
+            VÉRIFICATION FINALE DE DISPONIBILITÉ
+
+            La condition est revérifiée au moment du
+            clic afin qu'un choix devenu invalide entre
+            son affichage et son activation ne soit pas
+            exécuté.
         ---------------------------------------------*/
 
         if (
@@ -5414,7 +6288,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FERMER LA POPUP
+            FERMER LA POPUP
         ---------------------------------------------*/
 
         if (
@@ -5448,7 +6322,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         MESSAGE DU JOUEUR ASSOCIÉ AU CHOIX
+            MESSAGE DU JOUEUR ASSOCIÉ AU CHOIX
         ---------------------------------------------*/
 
         if (
@@ -5464,7 +6338,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         GALERIE DU CHOIX
+            GALERIE DU CHOIX
         ---------------------------------------------*/
 
         this.gererGalerieElement(
@@ -5473,13 +6347,22 @@ const moteur = {
 
 
         /*---------------------------------------------
-         EFFETS DU CHOIX
+            EFFET UNIQUE DU CHOIX
+
+            Format historique :
+
+            "effet": {
+                "relationEva": 1
+            }
         ---------------------------------------------*/
 
         if (
             choix.effet &&
             typeof choix.effet ===
-                "object"
+                "object" &&
+            !Array.isArray(
+                choix.effet
+            )
         ) {
 
             this.appliquerEffets(
@@ -5490,21 +6373,73 @@ const moteur = {
 
 
         /*---------------------------------------------
-         SUCCÈS
+            PLUSIEURS EFFETS
+
+            Nouveau format également accepté :
+
+            "effets": [
+                {
+                    "relationEva": 1
+                },
+                {
+                    "confianceEva": 2
+                },
+                {
+                    "aDefenduEva": true
+                }
+            ]
+        ---------------------------------------------*/
+
+        if (
+            Array.isArray(
+                choix.effets
+            )
+        ) {
+
+            choix.effets.forEach(
+                effet => {
+
+                    if (
+                        effet &&
+                        typeof effet ===
+                            "object" &&
+                        !Array.isArray(
+                            effet
+                        )
+                    ) {
+
+                        this.appliquerEffets(
+                            effet
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /*---------------------------------------------
+            SUCCÈS
         ---------------------------------------------*/
 
         this.verifierSucces();
 
 
         /*---------------------------------------------
-         SAUVEGARDE IMMÉDIATE APRÈS LE CHOIX
+            SAUVEGARDE IMMÉDIATE APRÈS LE CHOIX
+
+            C'est important :
+            les conséquences du choix sont enregistrées
+            avant le chargement de la prochaine scène.
         ---------------------------------------------*/
 
         this.sauvegarder();
 
 
         /*---------------------------------------------
-         POURSUITE
+            POURSUITE
         ---------------------------------------------*/
 
         await this
@@ -5519,7 +6454,7 @@ const moteur = {
 
 
     /*=====================================================
-     AFFICHER LE MESSAGE ASSOCIÉ AU CHOIX
+        AFFICHER LE MESSAGE ASSOCIÉ AU CHOIX
     =====================================================*/
 
     async afficherMessageChoix(
@@ -5536,7 +6471,11 @@ const moteur = {
 
 
         /*---------------------------------------------
-         CHAÎNE SIMPLE
+            CHAÎNE SIMPLE
+
+            Exemple :
+
+            "message": "Je vais venir avec toi."
         ---------------------------------------------*/
 
         if (
@@ -5580,7 +6519,14 @@ const moteur = {
 
 
         /*---------------------------------------------
-         GALERIE DU MESSAGE
+            GALERIE DU MESSAGE
+
+            dialogueManager gère normalement le
+            déblocage lorsqu'il affiche réellement
+            le message.
+
+            Ce secours ne s'exécute que si le
+            dialogueManager est absent.
         ---------------------------------------------*/
 
         if (
@@ -5598,7 +6544,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FOND DU MESSAGE
+            FOND DU MESSAGE
         ---------------------------------------------*/
 
         this.gererFondDialogue(
@@ -5607,7 +6553,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         API MODERNE
+            API MODERNE
         ---------------------------------------------*/
 
         if (
@@ -5653,7 +6599,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         API DE SECOURS
+            API DE SECOURS
         ---------------------------------------------*/
 
         if (
@@ -5694,7 +6640,7 @@ const moteur = {
 
 
     /*=====================================================
-     POURSUIVRE APRÈS UN CHOIX
+        POURSUIVRE APRÈS UN CHOIX
     =====================================================*/
 
     async poursuivreApresChoix(
@@ -5711,7 +6657,23 @@ const moteur = {
 
 
         /*---------------------------------------------
-         CONDITIONS DE REDIRECTION
+            CONDITIONS DE REDIRECTION
+
+            Exemple :
+
+            "conditions": [
+                {
+                    "si": {
+                        "relationEva": {
+                            "min": 8
+                        }
+                    },
+                    "next": "evaSeConfie"
+                },
+                {
+                    "sinon": "evaResteDistante"
+                }
+            ]
         ---------------------------------------------*/
 
         if (
@@ -5732,15 +6694,10 @@ const moteur = {
                 destination
             ) {
 
-                /*
-                 Une condition de choix peut pointer vers :
-                 - une scène ;
-                 - un chapitre.
-                */
-
                 await this.gererDestination(
                     destination
                 );
+
 
                 return;
 
@@ -5750,7 +6707,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         NEXT
+            NEXT
         ---------------------------------------------*/
 
         if (
@@ -5761,13 +6718,14 @@ const moteur = {
                 choix.next
             );
 
+
             return;
 
         }
 
 
         /*---------------------------------------------
-         FIN DE CHAPITRE
+            FIN DE CHAPITRE
         ---------------------------------------------*/
 
         if (
@@ -5785,7 +6743,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FIN DU JEU
+            FIN DU JEU
         ---------------------------------------------*/
 
         if (
@@ -5804,8 +6762,39 @@ const moteur = {
         }
 
     },
-        /*=====================================================
-     APPLIQUER LES EFFETS
+
+
+    /*=====================================================
+        APPLIQUER LES EFFETS
+
+        Deux systèmes sont conservés :
+
+        1. conditionsManager.appliquerEffet()
+           s'il est disponible ;
+
+        2. système interne de secours.
+
+        Formats internes acceptés :
+
+        "relationEva": 2
+
+            ajoute 2
+
+        "relationEva": {
+            "ajouter": 2
+        }
+
+        "relationEva": {
+            "retirer": 1
+        }
+
+        "relationEva": {
+            "definir": 10
+        }
+
+        "rencontreEva": true
+
+        "brancheChapitre6": "solo"
     =====================================================*/
 
     appliquerEffets(
@@ -5816,6 +6805,9 @@ const moteur = {
             !effets ||
             typeof effets !==
                 "object" ||
+            Array.isArray(
+                effets
+            ) ||
             !this.joueur
         ) {
 
@@ -5825,7 +6817,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         GESTIONNAIRE EXTERNE SI DISPONIBLE
+            GESTIONNAIRE EXTERNE SI DISPONIBLE
         ---------------------------------------------*/
 
         if (
@@ -5848,13 +6840,8 @@ const moteur = {
 
 
                 /*
-                 Toute modification d'une variable du joueur
-                 peut maintenant faire progresser ou débloquer
-                 un succès.
-
-                 Cette vérification centralisée permet aussi
-                 aux futurs appels directs à appliquerEffets()
-                 de déclencher correctement les succès.
+                    Une modification de variable peut
+                    immédiatement débloquer un succès.
                 */
 
                 this.verifierSucces();
@@ -5872,13 +6859,19 @@ const moteur = {
                     erreur
                 );
 
+
+                /*
+                    On continue volontairement vers
+                    le système interne de secours.
+                */
+
             }
 
         }
 
 
         /*---------------------------------------------
-         APPLICATION INTERNE
+            APPLICATION INTERNE
         ---------------------------------------------*/
 
         for (
@@ -5892,11 +6885,13 @@ const moteur = {
         ) {
 
             /*-----------------------------------------
-             NOMBRE = MODIFICATION RELATIVE
+                NOMBRE = MODIFICATION RELATIVE
 
-             Exemple :
-             "relationEva": 2
-             ajoute +2.
+                Exemple :
+
+                "relationEva": 2
+
+                ajoute +2 à la valeur actuelle.
             -----------------------------------------*/
 
             if (
@@ -5931,7 +6926,7 @@ const moteur = {
 
 
             /*-----------------------------------------
-             OBJET SPÉCIAL
+                OBJET SPÉCIAL
             -----------------------------------------*/
 
             if (
@@ -5944,7 +6939,7 @@ const moteur = {
             ) {
 
                 /*-------------------------------------
-                 AJOUT
+                    AJOUTER
                 -------------------------------------*/
 
                 if (
@@ -5995,7 +6990,7 @@ const moteur = {
 
 
                 /*-------------------------------------
-                 RETIRER
+                    RETIRER
                 -------------------------------------*/
 
                 if (
@@ -6046,7 +7041,7 @@ const moteur = {
 
 
                 /*-------------------------------------
-                 DÉFINIR
+                    DÉFINIR
                 -------------------------------------*/
 
                 if (
@@ -6072,16 +7067,18 @@ const moteur = {
 
 
             /*-----------------------------------------
-             BOOLÉEN / CHAÎNE / NULL / TABLEAU
+                BOOLÉEN / CHAÎNE / NULL / TABLEAU
 
-             Les nouveaux flags de succès passent
-             notamment par cette section :
+                Exemples :
 
-             "numeroEva": true
-             "evaAParleDeSesPeurs": true
-             "evaAParleDeSonAvenir": true
-             "baiserEvaAccepte": true
-             "baiserEvaRefuse": true
+                "numeroEva": true
+
+                "brancheChapitre6": "solo"
+
+                "indicesTrouves": [
+                    "telephone",
+                    "camera"
+                ]
             -----------------------------------------*/
 
             this.joueur[
@@ -6093,13 +7090,16 @@ const moteur = {
 
 
         /*
-         Vérification centralisée des succès après
-         l'application de tous les effets.
+            Vérification centralisée des succès après
+            l'application de tous les effets.
 
-         Les autres appels à verifierSucces() présents
-         dans traiterChoix() et chargerScene() sont
-         conservés pour la compatibilité. Un succès
-         déjà débloqué ne sera pas créé deux fois.
+            traiterChoix() et chargerScene() effectuent
+            également une vérification pour préserver
+            le fonctionnement existant.
+
+            succesManager doit donc rester idempotent :
+            un succès déjà débloqué ne doit pas être
+            créé une deuxième fois.
         */
 
         this.verifierSucces();
@@ -6109,7 +7109,7 @@ const moteur = {
 
     },
         /*=====================================================
-     ANNULER L'ATTENTE DES CHOIX
+        ANNULER L'ATTENTE DES CHOIX
     =====================================================*/
 
     annulerAttenteChoix() {
@@ -6144,7 +7144,9 @@ const moteur = {
                 erreur
             ) {
 
-                /* Rien */
+                /*
+                    Le bouton a peut-être déjà été retiré.
+                */
 
             }
 
@@ -6158,7 +7160,14 @@ const moteur = {
 
 
     /*=====================================================
-     OBTENIR LA DURÉE DE TRANSITION D'UN FOND
+        OBTENIR LA DURÉE DE TRANSITION D'UN FOND
+
+        Plusieurs noms historiques sont conservés :
+
+        transitionFond
+        dureeFond
+        fondDuree
+        delaiFond
     =====================================================*/
 
     obtenirDureeTransitionFond(
@@ -6223,7 +7232,7 @@ const moteur = {
 
 
     /*=====================================================
-     NORMALISER UN NOM DE FOND
+        NORMALISER UN NOM DE FOND
     =====================================================*/
 
     normaliserNomFond(
@@ -6251,7 +7260,7 @@ const moteur = {
 
 
     /*=====================================================
-     VÉRIFIER SI LE FOND POSSÈDE UNE EXTENSION
+        VÉRIFIER SI LE FOND POSSÈDE UNE EXTENSION
     =====================================================*/
 
     fondPossedeExtension(
@@ -6269,14 +7278,24 @@ const moteur = {
 
         return /\.(png|jpe?g|webp|gif|avif)$/i
             .test(
-                fond
+                String(
+                    fond
+                )
             );
 
     },
 
 
     /*=====================================================
-     VÉRIFIER SI LE FOND EST UN CHEMIN
+        VÉRIFIER SI LE FOND EST DÉJÀ UN CHEMIN COMPLET
+
+        Exemples acceptés :
+
+        images/fonds/chambre.jpg
+        ./images/fonds/chambre.jpg
+        ../images/fonds/chambre.jpg
+        /images/fonds/chambre.jpg
+        https://...
     =====================================================*/
 
     fondEstCheminComplet(
@@ -6292,29 +7311,36 @@ const moteur = {
         }
 
 
+        const valeur =
+            String(
+                fond
+            )
+                .trim();
+
+
         return (
 
-            fond.startsWith(
+            valeur.startsWith(
                 "http://"
             ) ||
 
-            fond.startsWith(
+            valeur.startsWith(
                 "https://"
             ) ||
 
-            fond.startsWith(
+            valeur.startsWith(
                 "/"
             ) ||
 
-            fond.startsWith(
+            valeur.startsWith(
                 "./"
             ) ||
 
-            fond.startsWith(
+            valeur.startsWith(
                 "../"
             ) ||
 
-            fond.includes(
+            valeur.includes(
                 "/"
             )
 
@@ -6324,7 +7350,21 @@ const moteur = {
 
 
     /*=====================================================
-     CONSTRUIRE LE CHEMIN D'UN FOND
+        CONSTRUIRE LE CHEMIN D'UN FOND
+
+        Exemples :
+
+        "chambre"
+            ->
+        images/fonds/chambre.jpg
+
+        "chambre.png"
+            ->
+        images/fonds/chambre.png
+
+        "images/fonds/chambre.png"
+            ->
+        images/fonds/chambre.png
     =====================================================*/
 
     construireCheminFond(
@@ -6347,7 +7387,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         CHEMIN DÉJÀ COMPLET
+            CHEMIN DÉJÀ COMPLET
         ---------------------------------------------*/
 
         if (
@@ -6362,7 +7402,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         NOM AVEC EXTENSION
+            NOM AVEC EXTENSION
         ---------------------------------------------*/
 
         if (
@@ -6380,7 +7420,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         NOM SIMPLE
+            NOM SIMPLE
         ---------------------------------------------*/
 
         return (
@@ -6394,7 +7434,32 @@ const moteur = {
 
 
     /*=====================================================
-     OBTENIR LES OPTIONS VISUELLES DU FOND
+        OBTENIR LES OPTIONS VISUELLES DU FOND
+
+        Deux syntaxes restent compatibles.
+
+        FORMAT DIRECT :
+
+        {
+            "fond": "chambre",
+            "positionFond": "center top",
+            "tailleFond": "cover",
+            "opaciteFond": 0.9
+        }
+
+        FORMAT REGROUPÉ :
+
+        {
+            "fond": "chambre",
+
+            "optionsFond": {
+                "position": "center top",
+                "taille": "cover",
+                "repetition": "no-repeat",
+                "filtre": "",
+                "opacite": 0.9
+            }
+        }
     =====================================================*/
 
     obtenirOptionsFond(
@@ -6523,7 +7588,7 @@ const moteur = {
 
 
     /*=====================================================
-     APPLIQUER LES OPTIONS VISUELLES DU FOND
+        APPLIQUER LES OPTIONS VISUELLES DU FOND
     =====================================================*/
 
     appliquerOptionsFond(
@@ -6571,8 +7636,12 @@ const moteur = {
 
 
         /*
-         L'opacité du fond lui-même est distincte
-         de l'animation de transition.
+            L'opacité du fond lui-même est distincte
+            de l'opacité temporaire utilisée pendant
+            l'animation de transition.
+
+            On conserve donc la valeur cible dans
+            dataset.opaciteCible.
         */
 
         elementFond.dataset
@@ -6585,7 +7654,7 @@ const moteur = {
 
 
     /*=====================================================
-     OBTENIR L'OPACITÉ CIBLE DU FOND
+        OBTENIR L'OPACITÉ CIBLE DU FOND
     =====================================================*/
 
     obtenirOpaciteFond(
@@ -6631,7 +7700,13 @@ const moteur = {
 
 
     /*=====================================================
-     PRÉCHARGER UNE IMAGE DE FOND
+        PRÉCHARGER UNE IMAGE DE FOND
+
+        Le fond n'est remplacé qu'une fois l'image
+        réellement chargée.
+
+        Cela évite autant que possible un écran vide
+        pendant les transitions.
     =====================================================*/
 
     prechargerFond(
@@ -6692,8 +7767,10 @@ const moteur = {
         );
 
     },
-        /*=====================================================
-     CHANGER LE FOND
+
+
+    /*=====================================================
+        CHANGER LE FOND
     =====================================================*/
 
     changerFond(
@@ -6737,7 +7814,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         APPLIQUER LES OPTIONS
+            APPLIQUER LES OPTIONS
         ---------------------------------------------*/
 
         this.appliquerOptionsFond(
@@ -6753,10 +7830,10 @@ const moteur = {
 
 
         /*---------------------------------------------
-         MÊME FOND
+            MÊME FOND
 
-         Même si l'image ne change pas,
-         les options visuelles peuvent avoir changé.
+            L'image ne redémarre pas de transition,
+            mais les options peuvent quand même changer.
         ---------------------------------------------*/
 
         if (
@@ -6778,14 +7855,14 @@ const moteur = {
 
 
         /*---------------------------------------------
-         ANNULER L'ANCIENNE TRANSITION
+            ANNULER L'ANCIENNE TRANSITION
         ---------------------------------------------*/
 
         this.annulerTransitionFond();
 
 
         /*---------------------------------------------
-         DURÉE
+            DURÉE
         ---------------------------------------------*/
 
         let dureeTransition =
@@ -6810,7 +7887,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         CHEMIN
+            CONSTRUIRE LE CHEMIN
         ---------------------------------------------*/
 
         const chemin =
@@ -6833,7 +7910,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         CHANGEMENT IMMÉDIAT
+            CHANGEMENT IMMÉDIAT
         ---------------------------------------------*/
 
         if (
@@ -6883,6 +7960,11 @@ const moteur = {
                 );
 
 
+            /*
+                Force le navigateur à appliquer l'état
+                immédiat avant de remettre la transition CSS.
+            */
+
             void elementFond
                 .offsetWidth;
 
@@ -6907,7 +7989,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         PRÉCHARGEMENT
+            PRÉCHARGEMENT
         ---------------------------------------------*/
 
         this.prechargerFond(
@@ -6915,6 +7997,11 @@ const moteur = {
         )
             .then(
                 () => {
+
+                    /*
+                        Une nouvelle transition a peut-être
+                        été demandée pendant le chargement.
+                    */
 
                     if (
                         !this.changementFondEnCours
@@ -6926,7 +8013,7 @@ const moteur = {
 
 
                     /*---------------------------------
-                     FONDU DE SORTIE
+                        FONDU DE SORTIE
                     ---------------------------------*/
 
                     elementFond
@@ -6956,7 +8043,7 @@ const moteur = {
 
 
                     /*---------------------------------
-                     CHANGEMENT D'IMAGE
+                        CHANGEMENT D'IMAGE
                     ---------------------------------*/
 
                     this.timerFond =
@@ -6987,7 +8074,7 @@ const moteur = {
 
 
                                 /*---------------------
-                                 FONDU D'ENTRÉE
+                                    FONDU D'ENTRÉE
                                 ---------------------*/
 
                                 requestAnimationFrame(
@@ -7050,7 +8137,11 @@ const moteur = {
 
 
                     /*---------------------------------
-                     SOLUTION DE SECOURS
+                        SOLUTION DE SECOURS
+
+                        Même si le préchargement signale
+                        une erreur, on laisse le navigateur
+                        essayer directement l'URL.
                     ---------------------------------*/
 
                     elementFond
@@ -7089,12 +8180,22 @@ const moteur = {
                         );
 
 
+                    elementFond
+                        .style
+                        .transition =
+                        "";
+
+
                     this.fondActuel =
                         nomFond;
 
 
                     this.changementFondEnCours =
                         false;
+
+
+                    this.timerFond =
+                        null;
 
                 }
             );
@@ -7106,10 +8207,10 @@ const moteur = {
 
 
     /*=====================================================
-     APPLIQUER UN FOND IMMÉDIATEMENT
+        APPLIQUER UN FOND IMMÉDIATEMENT
 
-     Utilisé notamment lors du chargement
-     d'une sauvegarde.
+        Utilisé notamment lors du chargement
+        d'une sauvegarde.
     =====================================================*/
 
     appliquerFondImmediat(
@@ -7231,7 +8332,7 @@ const moteur = {
 
 
     /*=====================================================
-     RETIRER LE FOND
+        RETIRER LE FOND
     =====================================================*/
 
     retirerFond(
@@ -7280,7 +8381,75 @@ const moteur = {
 
 
         /*---------------------------------------------
-         SUPPRESSION IMMÉDIATE
+            FONCTION DE NETTOYAGE
+
+            Centralise l'état final du fond.
+        ---------------------------------------------*/
+
+        const nettoyerFond =
+            () => {
+
+                elementFond
+                    .style
+                    .backgroundImage =
+                    "none";
+
+
+                elementFond
+                    .style
+                    .opacity =
+                    "1";
+
+
+                elementFond
+                    .style
+                    .filter =
+                    "";
+
+
+                elementFond
+                    .style
+                    .backgroundPosition =
+                    "center";
+
+
+                elementFond
+                    .style
+                    .backgroundSize =
+                    "cover";
+
+
+                elementFond
+                    .style
+                    .backgroundRepeat =
+                    "no-repeat";
+
+
+                elementFond
+                    .classList
+                    .remove(
+                        "changement-fond",
+                        "fond-charge"
+                    );
+
+
+                elementFond.dataset
+                    .opaciteCible =
+                    "1";
+
+
+                this.fondActuel =
+                    "";
+
+
+                this.changementFondEnCours =
+                    false;
+
+            };
+
+
+        /*---------------------------------------------
+            SUPPRESSION IMMÉDIATE
         ---------------------------------------------*/
 
         if (
@@ -7288,61 +8457,13 @@ const moteur = {
                 0
         ) {
 
-            elementFond
-                .style
-                .backgroundImage =
-                "none";
+            nettoyerFond();
 
 
             elementFond
                 .style
-                .opacity =
-                "1";
-
-
-            elementFond
-                .style
-                .filter =
+                .transition =
                 "";
-
-
-            elementFond
-                .style
-                .backgroundPosition =
-                "center";
-
-
-            elementFond
-                .style
-                .backgroundSize =
-                "cover";
-
-
-            elementFond
-                .style
-                .backgroundRepeat =
-                "no-repeat";
-
-
-            elementFond
-                .classList
-                .remove(
-                    "changement-fond",
-                    "fond-charge"
-                );
-
-
-            elementFond.dataset
-                .opaciteCible =
-                "1";
-
-
-            this.fondActuel =
-                "";
-
-
-            this.changementFondEnCours =
-                false;
 
 
             return true;
@@ -7351,7 +8472,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FONDU
+            FONDU
         ---------------------------------------------*/
 
         this.changementFondEnCours =
@@ -7381,53 +8502,7 @@ const moteur = {
             setTimeout(
                 () => {
 
-                    elementFond
-                        .style
-                        .backgroundImage =
-                        "none";
-
-
-                    elementFond
-                        .style
-                        .opacity =
-                        "1";
-
-
-                    elementFond
-                        .style
-                        .filter =
-                        "";
-
-
-                    elementFond
-                        .style
-                        .backgroundPosition =
-                        "center";
-
-
-                    elementFond
-                        .style
-                        .backgroundSize =
-                        "cover";
-
-
-                    elementFond
-                        .style
-                        .backgroundRepeat =
-                        "no-repeat";
-
-
-                    elementFond
-                        .classList
-                        .remove(
-                            "changement-fond",
-                            "fond-charge"
-                        );
-
-
-                    elementFond.dataset
-                        .opaciteCible =
-                        "1";
+                    nettoyerFond();
 
 
                     elementFond
@@ -7436,16 +8511,8 @@ const moteur = {
                         "";
 
 
-                    this.fondActuel =
-                        "";
-
-
                     this.timerFond =
                         null;
-
-
-                    this.changementFondEnCours =
-                        false;
 
                 },
                 dureeTransition
@@ -7458,7 +8525,7 @@ const moteur = {
 
 
     /*=====================================================
-     ANNULER UNE TRANSITION DE FOND
+        ANNULER UNE TRANSITION DE FOND
     =====================================================*/
 
     annulerTransitionFond() {
@@ -7511,7 +8578,7 @@ const moteur = {
 
 
     /*=====================================================
-     OBTENIR LE FOND ACTUEL
+        OBTENIR LE FOND ACTUEL
     =====================================================*/
 
     obtenirFondActuel() {
@@ -7523,7 +8590,7 @@ const moteur = {
 
 
     /*=====================================================
-     VÉRIFIER SI UN FOND EST ACTIF
+        VÉRIFIER SI UN FOND EST ACTIF
     =====================================================*/
 
     fondActif() {
@@ -7534,7 +8601,7 @@ const moteur = {
 
     },
         /*=====================================================
-     TERMINER LE CHAPITRE ACTUEL
+        TERMINER LE CHAPITRE ACTUEL
     =====================================================*/
 
     terminerChapitre() {
@@ -7553,7 +8620,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         ANNULER LES ÉTATS TEMPORAIRES
+            ANNULER LES ÉTATS TEMPORAIRES
         ---------------------------------------------*/
 
         this.annulerAttenteChoix();
@@ -7562,14 +8629,14 @@ const moteur = {
 
 
         /*---------------------------------------------
-         SAUVEGARDE AVANT TRANSITION
+            SAUVEGARDE AVANT TRANSITION
         ---------------------------------------------*/
 
         this.sauvegarder();
 
 
         /*---------------------------------------------
-         CHAPITRE SUIVANT
+            CHAPITRE SUIVANT
         ---------------------------------------------*/
 
         const indexSuivant =
@@ -7585,7 +8652,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         PLUS AUCUN CHAPITRE
+            PLUS AUCUN CHAPITRE
         ---------------------------------------------*/
 
         if (
@@ -7610,7 +8677,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         LANCER LE CHAPITRE SUIVANT
+            LANCER LE CHAPITRE SUIVANT
         ---------------------------------------------*/
 
         const lancerChapitreSuivant =
@@ -7629,7 +8696,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         TRANSITION VISUELLE
+            TRANSITION VISUELLE
         ---------------------------------------------*/
 
         if (
@@ -7668,7 +8735,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         SECOURS
+            SECOURS
         ---------------------------------------------*/
 
         lancerChapitreSuivant();
@@ -7677,16 +8744,17 @@ const moteur = {
 
 
     /*=====================================================
-     TERMINER UNE SCÈNE AVEC EFFETS
+        TERMINER UNE SCÈNE AVEC EFFETS
 
-     Utile pour une scène terminale qui possède
-     encore :
-     - galerie ;
-     - effet ;
-     - succès ;
-     - next ;
-     - finChapitre ;
-     - finJeu.
+        Utile pour une scène terminale qui possède :
+
+        - galerie ;
+        - effet ;
+        - effets ;
+        - succès ;
+        - next ;
+        - finChapitre ;
+        - finJeu.
     =====================================================*/
 
     terminerSceneAvecEffets(
@@ -7705,7 +8773,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         GALERIE
+            GALERIE
         ---------------------------------------------*/
 
         this.gererGalerieElement(
@@ -7714,13 +8782,16 @@ const moteur = {
 
 
         /*---------------------------------------------
-         EFFETS
+            EFFET UNIQUE
         ---------------------------------------------*/
 
         if (
             scene.effet &&
             typeof scene.effet ===
-                "object"
+                "object" &&
+            !Array.isArray(
+                scene.effet
+            )
         ) {
 
             this.appliquerEffets(
@@ -7731,21 +8802,55 @@ const moteur = {
 
 
         /*---------------------------------------------
-         SUCCÈS
+            PLUSIEURS EFFETS
+        ---------------------------------------------*/
+
+        if (
+            Array.isArray(
+                scene.effets
+            )
+        ) {
+
+            scene.effets.forEach(
+                effet => {
+
+                    if (
+                        effet &&
+                        typeof effet ===
+                            "object" &&
+                        !Array.isArray(
+                            effet
+                        )
+                    ) {
+
+                        this.appliquerEffets(
+                            effet
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /*---------------------------------------------
+            SUCCÈS
         ---------------------------------------------*/
 
         this.verifierSucces();
 
 
         /*---------------------------------------------
-         SAUVEGARDE
+            SAUVEGARDE
         ---------------------------------------------*/
 
         this.sauvegarder();
 
 
         /*---------------------------------------------
-         FIN DU JEU
+            FIN DU JEU
         ---------------------------------------------*/
 
         if (
@@ -7766,7 +8871,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FIN DE CHAPITRE
+            FIN DE CHAPITRE
         ---------------------------------------------*/
 
         if (
@@ -7785,12 +8890,12 @@ const moteur = {
 
 
         /*---------------------------------------------
-         DESTINATION SUIVANTE
+            DESTINATION SUIVANTE
 
-         IMPORTANT :
-         scene.next peut être une scène normale
-         ou un identifiant de chapitre comme :
-         "chapitre2".
+            Peut être :
+            - une scène ;
+            - chapitre2 ;
+            - une destination objet.
         ---------------------------------------------*/
 
         if (
@@ -7807,7 +8912,7 @@ const moteur = {
 
 
     /*=====================================================
-     TERMINER LE JEU
+        TERMINER LE JEU
     =====================================================*/
 
     terminerJeu(
@@ -7819,8 +8924,19 @@ const moteur = {
         this.annulerTransitionFond();
 
 
+        this.transitionChapitreEnCours =
+            false;
+
+
         /*---------------------------------------------
-         GALERIE FINALE
+            ARRÊTER UNE ÉVENTUELLE VIDÉO
+        ---------------------------------------------*/
+
+        this.arreterVideo();
+
+
+        /*---------------------------------------------
+            GALERIE FINALE
         ---------------------------------------------*/
 
         if (
@@ -7837,13 +8953,16 @@ const moteur = {
 
 
         /*---------------------------------------------
-         EFFETS FINAUX
+            EFFET FINAL UNIQUE
         ---------------------------------------------*/
 
         if (
             source?.effet &&
             typeof source.effet ===
-                "object"
+                "object" &&
+            !Array.isArray(
+                source.effet
+            )
         ) {
 
             this.appliquerEffets(
@@ -7854,18 +8973,51 @@ const moteur = {
 
 
         /*---------------------------------------------
-         SUCCÈS FINAUX
+            PLUSIEURS EFFETS FINAUX
+        ---------------------------------------------*/
+
+        if (
+            Array.isArray(
+                source?.effets
+            )
+        ) {
+
+            source.effets.forEach(
+                effet => {
+
+                    if (
+                        effet &&
+                        typeof effet ===
+                            "object" &&
+                        !Array.isArray(
+                            effet
+                        )
+                    ) {
+
+                        this.appliquerEffets(
+                            effet
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /*---------------------------------------------
+            SUCCÈS FINAUX
         ---------------------------------------------*/
 
         this.verifierSucces();
 
 
         /*---------------------------------------------
-         AFFICHER LES SUCCÈS FINAUX EN ATTENTE
+            AFFICHER LES SUCCÈS FINAUX EN ATTENTE
 
-         Certains succès peuvent être débloqués par
-         les derniers effets du jeu. Ils doivent être
-         affichés avant le message de fin.
+            Certains succès peuvent être débloqués
+            par les derniers effets du jeu.
         ---------------------------------------------*/
 
         if (
@@ -7899,18 +9051,21 @@ const moteur = {
 
 
         /*---------------------------------------------
-         SAUVEGARDE FINALE
+            SAUVEGARDE FINALE
         ---------------------------------------------*/
 
         this.sauvegarder();
 
 
         /*---------------------------------------------
-         CRÉATION DE L'HÉRITAGE
+            CRÉATION DE L'HÉRITAGE
 
-         Cette sauvegarde est indépendante
-         des slots du premier jeu.
-         Elle sera utilisée par le jeu suivant.
+            Cette sauvegarde est indépendante
+            des slots de Friendzoné Reborn.
+
+            Elle pourra être utilisée par le jeu
+            suivant afin de conserver les décisions
+            importantes du joueur.
         ---------------------------------------------*/
 
         if (
@@ -7959,7 +9114,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         ARRÊT DES CHOIX
+            ARRÊT DES CHOIX
         ---------------------------------------------*/
 
         if (
@@ -7993,7 +9148,13 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FONDU AUDIO
+            FONDU AUDIO
+
+            Compatible Audio Manager V4.
+
+            On utilise le volume réel actuellement
+            calculé par le mixage sans modifier
+            les paramètres utilisateur.
         ---------------------------------------------*/
 
         if (
@@ -8004,6 +9165,10 @@ const moteur = {
         ) {
 
             try {
+
+                /*-------------------------------------
+                    MUSIQUE
+                -------------------------------------*/
 
                 if (
                     typeof audioManager
@@ -8028,6 +9193,10 @@ const moteur = {
 
                 }
 
+
+                /*-------------------------------------
+                    AMBIANCE
+                -------------------------------------*/
 
                 if (
                     typeof audioManager
@@ -8068,7 +9237,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         MESSAGE DE FIN
+            MESSAGE DE FIN
         ---------------------------------------------*/
 
         this.afficherMessageFin(
@@ -8077,7 +9246,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         BOUTON RETOUR MENU
+            BOUTON RETOUR MENU
         ---------------------------------------------*/
 
         this.creerBoutonRetourMenuFin();
@@ -8086,7 +9255,7 @@ const moteur = {
 
 
     /*=====================================================
-     AFFICHER LE MESSAGE DE FIN
+        AFFICHER LE MESSAGE DE FIN
     =====================================================*/
 
     afficherMessageFin(
@@ -8131,13 +9300,37 @@ const moteur = {
         );
 
 
-        bulle.textContent =
+        /*
+            Si terminerJeu() reçoit directement une
+            chaîne, elle peut également servir de
+            message de fin.
 
-            source?.messageFin ||
+            Sinon on utilise les propriétés JSON
+            habituelles.
+        */
 
-            source?.texteFin ||
+        if (
+            typeof source ===
+                "string" &&
+            source.trim() !==
+                ""
+        ) {
 
-            "Fin de cette version de Friendzoné Reborn.";
+            bulle.textContent =
+                source.trim();
+
+        }
+        else {
+
+            bulle.textContent =
+
+                source?.messageFin ||
+
+                source?.texteFin ||
+
+                "Fin de cette version de Friendzoné Reborn.";
+
+        }
 
 
         message.appendChild(
@@ -8181,7 +9374,7 @@ const moteur = {
 
 
     /*=====================================================
-     CRÉER LE BOUTON RETOUR MENU
+        CRÉER LE BOUTON RETOUR MENU
     =====================================================*/
 
     creerBoutonRetourMenuFin() {
@@ -8202,7 +9395,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         ÉVITER LES DOUBLONS
+            ÉVITER LES DOUBLONS
         ---------------------------------------------*/
 
         if (
@@ -8251,6 +9444,11 @@ const moteur = {
         bouton.addEventListener(
             "click",
             () => {
+
+                /*
+                    Dernière sauvegarde avant
+                    de retourner au menu.
+                */
 
                 this.sauvegarder();
 
@@ -8343,8 +9541,10 @@ const moteur = {
         return true;
 
     },
-        /*=====================================================
-     TERMINER UN CHAPITRE AVEC UN MÉDIA GALERIE
+
+
+    /*=====================================================
+        TERMINER UN CHAPITRE AVEC UN MÉDIA GALERIE
     =====================================================*/
 
     terminerChapitreAvecGalerie(
@@ -8368,7 +9568,7 @@ const moteur = {
 
 
     /*=====================================================
-     DÉBLOQUER UNE CINÉMATIQUE
+        DÉBLOQUER UNE CINÉMATIQUE
     =====================================================*/
 
     debloquerCinematique(
@@ -8392,7 +9592,7 @@ const moteur = {
 
 
     /*=====================================================
-     DÉBLOQUER UN APPEL AUDIO
+        DÉBLOQUER UN APPEL AUDIO
     =====================================================*/
 
     debloquerAppel(
@@ -8416,7 +9616,7 @@ const moteur = {
 
 
     /*=====================================================
-     AFFICHER UNE ERREUR
+        AFFICHER UNE ERREUR
     =====================================================*/
 
     afficherErreur(
@@ -8512,7 +9712,7 @@ const moteur = {
 
 
     /*=====================================================
-     OBTENIR LA SCÈNE ACTUELLE
+        OBTENIR LA SCÈNE ACTUELLE
     =====================================================*/
 
     obtenirSceneActuelle() {
@@ -8539,7 +9739,7 @@ const moteur = {
 
 
     /*=====================================================
-     OBTENIR LE CHAPITRE ACTUEL
+        OBTENIR LE CHAPITRE ACTUEL
     =====================================================*/
 
     obtenirChapitreActuel() {
@@ -8551,7 +9751,7 @@ const moteur = {
 
 
     /*=====================================================
-     OBTENIR LE JOUEUR
+        OBTENIR LE JOUEUR
     =====================================================*/
 
     obtenirJoueur() {
@@ -8563,7 +9763,7 @@ const moteur = {
 
 
     /*=====================================================
-     OBTENIR LE SLOT ACTIF
+        OBTENIR LE SLOT ACTIF
     =====================================================*/
 
     obtenirSlotActif() {
@@ -8587,8 +9787,10 @@ const moteur = {
             .obtenirSlotActif();
 
     },
-        /*=====================================================
-     FORCER UNE SAUVEGARDE
+
+
+    /*=====================================================
+        FORCER UNE SAUVEGARDE
     =====================================================*/
 
     sauvegardeManuelle() {
@@ -8621,7 +9823,7 @@ const moteur = {
 
 
     /*=====================================================
-     RECHARGER LA SCÈNE ACTUELLE
+        RECHARGER LA SCÈNE ACTUELLE
     =====================================================*/
 
     rechargerScene() {
@@ -8646,9 +9848,9 @@ const moteur = {
 
 
     /*=====================================================
-     ALLER À UNE SCÈNE
+        ALLER À UNE SCÈNE
 
-     Fonction de développement.
+        Fonction de développement.
     =====================================================*/
 
     allerScene(
@@ -8675,9 +9877,19 @@ const moteur = {
 
 
     /*=====================================================
-     ALLER À UN CHAPITRE
+        ALLER À UN CHAPITRE
 
-     Fonction de développement.
+        Fonction de développement.
+
+        IMPORTANT :
+
+        index commence à 0.
+
+        moteur.allerChapitre(0)
+            = chapitre 1
+
+        moteur.allerChapitre(12)
+            = chapitre 13
     =====================================================*/
 
     allerChapitre(
@@ -8719,7 +9931,7 @@ const moteur = {
 
 
     /*=====================================================
-     TESTER LA GALERIE
+        TESTER LA GALERIE
     =====================================================*/
 
     testGalerie(
@@ -8743,7 +9955,7 @@ const moteur = {
 
 
     /*=====================================================
-     TESTER PLUSIEURS MÉDIAS DE GALERIE
+        TESTER PLUSIEURS MÉDIAS DE GALERIE
     =====================================================*/
 
     testGalerieMultiple(
@@ -8769,7 +9981,7 @@ const moteur = {
 
 
     /*=====================================================
-     TESTER UN SUCCÈS
+        TESTER UN SUCCÈS
     =====================================================*/
 
     testSucces(
@@ -8826,7 +10038,7 @@ const moteur = {
 
 
     /*=====================================================
-     MODIFIER UNE VARIABLE DU JOUEUR
+        MODIFIER UNE VARIABLE DU JOUEUR
     =====================================================*/
 
     definirVariable(
@@ -8861,7 +10073,7 @@ const moteur = {
 
 
     /*=====================================================
-     OBTENIR UNE VARIABLE DU JOUEUR
+        OBTENIR UNE VARIABLE DU JOUEUR
     =====================================================*/
 
     obtenirVariable(
@@ -8886,7 +10098,7 @@ const moteur = {
 
 
     /*=====================================================
-     AJOUTER UNE VALEUR À UNE VARIABLE
+        AJOUTER UNE VALEUR À UNE VARIABLE
     =====================================================*/
 
     ajouterVariable(
@@ -8948,7 +10160,11 @@ const moteur = {
 
 
     /*=====================================================
-     VÉRIFIER LE MOTEUR
+        VÉRIFIER LES DÉPENDANCES DU MOTEUR
+
+        Fonction pratique pour la console :
+
+        moteur.verifierDependances()
     =====================================================*/
 
     verifierDependances() {
@@ -9001,7 +10217,91 @@ const moteur = {
 
 
     /*=====================================================
-     NETTOYER LES ÉTATS TEMPORAIRES
+        AFFICHER L'ÉTAT AUDIO
+
+        Fonction de développement spécifique
+        à Audio Manager V4.
+
+        Dans la console :
+
+        moteur.verifierAudio()
+    =====================================================*/
+
+    verifierAudio() {
+
+        if (
+            typeof audioManager ===
+                "undefined" ||
+            audioManager ===
+                null
+        ) {
+
+            console.warn(
+                "moteur.js : audioManager est indisponible."
+            );
+
+            return null;
+
+        }
+
+
+        if (
+            typeof audioManager
+                .obtenirEtatMixage ===
+                "function"
+        ) {
+
+            const etat =
+                audioManager
+                    .obtenirEtatMixage();
+
+
+            console.log(
+                "moteur.js : état du mixage audio :",
+                etat
+            );
+
+
+            return etat;
+
+        }
+
+
+        const etat = {
+
+            musique:
+                audioManager.musiqueActuelle ||
+                "",
+
+            ambiance:
+                audioManager.ambianceActuelle ||
+                "",
+
+            volumeMusique:
+                audioManager.volumeMusique,
+
+            volumeAmbiance:
+                audioManager.volumeAmbiance,
+
+            volumeEffets:
+                audioManager.volumeEffets
+
+        };
+
+
+        console.log(
+            "moteur.js : état audio :",
+            etat
+        );
+
+
+        return etat;
+
+    },
+
+
+    /*=====================================================
+        NETTOYER LES ÉTATS TEMPORAIRES
     =====================================================*/
 
     nettoyer() {
@@ -9022,7 +10322,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         ARRÊTER LES DIALOGUES EN COURS
+            ARRÊTER LES DIALOGUES EN COURS
         ---------------------------------------------*/
 
         if (
@@ -9056,7 +10356,7 @@ const moteur = {
 
 
         /*---------------------------------------------
-         FERMER LES CHOIX
+            FERMER LES CHOIX
         ---------------------------------------------*/
 
         if (
@@ -9092,7 +10392,7 @@ const moteur = {
 
 
     /*=====================================================
-     PRÉPARER LE MOTEUR AVANT DE QUITTER
+        PRÉPARER LE MOTEUR AVANT DE QUITTER
     =====================================================*/
 
     avantQuitter() {
@@ -9129,7 +10429,7 @@ const moteur = {
 
 
 /*=========================================================
- SAUVEGARDE AVANT FERMETURE OU CHANGEMENT DE PAGE
+    SAUVEGARDE AVANT FERMETURE OU CHANGEMENT DE PAGE
 =========================================================*/
 
 window.addEventListener(
@@ -9158,7 +10458,7 @@ window.addEventListener(
 
 
 /*=========================================================
- INITIALISATION AUTOMATIQUE
+    INITIALISATION AUTOMATIQUE
 =========================================================*/
 
 document.addEventListener(

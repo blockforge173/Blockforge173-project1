@@ -4,7 +4,7 @@
     "debut": "debutVacances",
     "scenes": {
         "debutVacances": {
-            "fond": "chambre_joueur2",
+            "fond": "discussion_eva_message",
             "ambiance": "chambre_joueur",
             "dialogues": [
                 {
@@ -249,7 +249,8 @@
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "{{nomJoueur}} ouvre sa conversation avec Émelyne."
+                    "texte": "{{nomJoueur}} ouvre sa conversation avec Émelyne.",
+                    "fond":"discussion_emelyne_message"
                 }
             ],
             "choix": [
@@ -364,7 +365,6 @@
             ]
         },
         "preparationTrois": {
-            "fond": "rue_parisienne",
             "ambiance": "rue parisienne",
             "dialogues": [
                 {
@@ -373,7 +373,8 @@
                 },
                 {
                     "personnage": "narrateur",
-                    "texte": "Le ciel s'assombrit déjà et les rues deviennent progressivement plus calmes."
+                    "texte": "Le ciel s'assombrit déjà et les rues deviennent progressivement plus calmes.",
+                    "fond":"direction_maison_zoe"
                 }
             ],
             "choix": [
@@ -388,12 +389,12 @@
             ]
         },
         "preparationQuatre": {
-            "fond": "rue_parisienne",
             "ambiance": "rue parisienne",
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "À l'approche de vingt heures, {{nomJoueur}} quitte son domicile pour rejoindre Zoé, Eva et Émelyne."
+                    "texte": "À l'approche de vingt heures, {{nomJoueur}} quitte son domicile pour rejoindre Zoé, Eva et Émelyne.",
+                    "fond":"direction_maison_zoe"
                 },
                 {
                     "personnage": "narrateur",
@@ -421,25 +422,25 @@
                     "galerie":"chap7SoireeHorreur"
                 },
                 {
-                    "fond": "entrée_maison_zoe",
                     "personnage": "zoe",
                     "son": "zoe",
                     "variantes": {
                         "negative": "Tu es venu.",
                         "neutre": "Tu es là !",
                         "amicale": "{{nomJoueur}} ! Entre vite.",
-                        "proche": "Enfin ! J'allais commencer le film sans toi uniquement pour te faire culpabiliser."
+                        "proche": "Enfin ! J'allais commencer le film sans toi uniquement pour te faire culpabiliser.",
+                        "fond": "entrée_maison_zoe"
                     }
                 },
                 {
-                    "fond": "salon_zoe_trois",
                     "personnage": "eva",
                     "son": "eva",
                     "variantes": {
                         "negative": "Bonsoir.",
                         "neutre": "Salut, {{nomJoueur}}.",
                         "amicale": "Salut. Je suis contente que tu sois venu.",
-                        "proche": "Salut, {{nomJoueur}}. Je commençais à regarder l'heure."
+                        "proche": "Salut, {{nomJoueur}}. Je commençais à regarder l'heure.",
+                        "fond": "salon_zoe_trois"
                     },
                     "galerie":"chap7GroupeReuni"
                 },
@@ -478,13 +479,13 @@
             ]
         },
         "arriveeQuatre": {
-            "fond": "salon_zoe_a_quatre",
             "ambiance": "maison_zoe_exterieur",
             "dialogues": [
                 {
                     "personnage": "narrateur",
                     "texte": "{{nomJoueur}} arrive devant la maison de Zoé presque en même temps qu'Émelyne.",
-                    "galerie":"chap7SoireeHorreur"
+                    "galerie":"chap7SoireeHorreur",
+                    "fond": "devant_maison_zoe_a_quatre"
                 },
                 {
                     "personnage": "emelyne",
@@ -499,7 +500,8 @@
                 {
                     "personnage": "zoe",
                     "son": "zoe",
-                    "texte": "Vous êtes enfin là ! Entrez avant que le premier monstre vous attrape sur le pas de la porte."
+                    "texte": "Vous êtes enfin là ! Entrez avant que le premier monstre vous attrape sur le pas de la porte.",
+                    "fond":"entrée_maison_zoe_a_quatre"
                 },
                 {
                     "personnage": "emelyne",
@@ -512,7 +514,8 @@
                         "negative": "Bonsoir.",
                         "neutre": "Salut, vous deux.",
                         "amicale": "Salut. Je suis contente que vous ayez accepté.",
-                        "proche": "Salut, {{nomJoueur}}. Et bienvenue, Émelyne."
+                        "proche": "Salut, {{nomJoueur}}. Et bienvenue, Émelyne.",
+                        "fond":"salon_zoe_a_quatre"
                     },
                     "galerie":"chap7GroupeReuni"
                 }
@@ -684,7 +687,8 @@
                     "texte": "S'asseoir près d'Eva",
                     "message": {
                         "personnage": "narrateur",
-                        "texte": "{{nomJoueur}} s'installe à côté d'Eva."
+                        "texte": "{{nomJoueur}} s'installe à côté d'Eva.",
+                        "fond":"joueur_assis_eva"
                     },
                     "effet": {
                         "relationEva": 3,
@@ -696,7 +700,8 @@
                     "texte": "S'asseoir près de Zoé",
                     "message": {
                         "personnage": "narrateur",
-                        "texte": "{{nomJoueur}} s'installe à côté de Zoé."
+                        "texte": "{{nomJoueur}} s'installe à côté de Zoé.",
+                        "fond":"joueur_assis_zoe"
                     },
                     "effet": {
                         "relationZoe": 3,
@@ -723,7 +728,8 @@
                     "texte": "S'asseoir près d'Eva",
                     "message": {
                         "personnage": "narrateur",
-                        "texte": "{{nomJoueur}} choisit la place près d'Eva."
+                        "texte": "{{nomJoueur}} choisit la place près d'Eva.",
+                        "fond":"joueur_assis_eva"
                     },
                     "effet": {
                         "relationEva": 3,
@@ -736,7 +742,8 @@
                     "texte": "S'asseoir près d'Émelyne",
                     "message": {
                         "personnage": "narrateur",
-                        "texte": "{{nomJoueur}} choisit la place près d'Émelyne."
+                        "texte": "{{nomJoueur}} choisit la place près d'Émelyne.",
+                        "fond":"joueur_assis_emelyne"
                     },
                     "effet": {
                         "relationEmelyne": 3,
@@ -749,7 +756,8 @@
                     "texte": "S'asseoir près de Zoé",
                     "message": {
                         "personnage": "narrateur",
-                        "texte": "{{nomJoueur}} choisit la place près de Zoé."
+                        "texte": "{{nomJoueur}} choisit la place près de Zoé.",
+                        "fond":"joueur_assis_zoe"
                     },
                     "effet": {
                         "relationZoe": 3,
@@ -876,7 +884,8 @@
                 },
                 {
                     "personnage": "narrateur",
-                    "texte": "Pendant quelques instants, {{nomJoueur}} reste seul avec Eva dans le salon."
+                    "texte": "Pendant quelques instants, {{nomJoueur}} reste seul avec Eva dans le salon.",
+                    "fond":"départ_zoe"
                 },
                 {
                     "personnage": "eva",
@@ -921,7 +930,8 @@
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "À la moitié du film, Zoé met la lecture en pause pour aller chercher d'autres boissons."
+                    "texte": "À la moitié du film, Zoé met la lecture en pause pour aller chercher d'autres boissons.",
+                    "fond":"départ_zoe"
                 },
                 {
                     "personnage": "emelyne",
@@ -1089,7 +1099,7 @@
             ]
         },
         "retourMaison": {
-            "fond": "rue parisienne",
+            "fond": "rue_maison_joueur",
             "ambiance": "rue parisienne",
             "dialogues": [
                 {
@@ -1265,7 +1275,8 @@
                         "negative": "D’accord.",
                         "neutre": "Oui, d’accord. Je te préviendrai.",
                         "amicale": "Oui, bien sûr. Je t’enverrai un message dès que je serai rentrée.",
-                        "proche": "Promis. Je t’écris dès que je suis chez moi."
+                        "proche": "Promis. Je t’écris dès que je suis chez moi.",
+                        "fond":"devant_maison_zoe"
                     }
                 },
                 {
@@ -1275,7 +1286,8 @@
                         "negative": "Eva te salue brièvement avant de partir.",
                         "neutre": "Eva te sourit légèrement avant de rejoindre le chemin du retour.",
                         "amicale": "Eva te fait un dernier signe avant de s’éloigner.",
-                        "proche": "Eva garde les yeux sur toi quelques secondes avant de finalement partir."
+                        "proche": "Eva garde les yeux sur toi quelques secondes avant de finalement partir.",
+                        "fond":"depart_eva"
                     }
                 }
             ],
@@ -1291,8 +1303,8 @@
             ]
         },
         "attenteMessageEva": {
-            "fond": "chambre_joueur2",
-            "ambiance": "chambre_joueur",
+            "fond": "chambre_joueur",
+            "ambiance": "appartement_joueur",
             "musique": "chapitre7",
             "dialogues": [
                 {
@@ -1336,7 +1348,7 @@
             ]
         },
         "finChapitre7Refus": {
-            "fond": "chambre_joueur2",
+            "fond": "chambre_joueur",
             "ambiance": "chambre_joueur",
             "musique": "chapitre7",
             "dialogues": [

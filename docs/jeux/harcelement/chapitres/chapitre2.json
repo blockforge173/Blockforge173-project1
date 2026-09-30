@@ -1,0 +1,1068 @@
+{
+    "titre":"Chapitre 2 - Une journée avec Inès",
+    "musique":"chapitre2",
+    "debut":"Devant-l'école",
+    "scenes":{
+        "Devant-l'école":{
+            "fond":"devant-école",
+            "ambiance":"rue_école",
+            "volumeAmbiance":0.1,
+            "dialogues":[
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé rejoint rapidement inès devant le portail de l'école. Son amie l'attend près de l'entrée, son cartable posé contre ses jambes."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Tu l'as terminé ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Quoi ?"
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Ton dessin! Tu m'as dit que tu le terminerais ce matin."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Oui, mais j'ai failli l'oublier dans ma chambre."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Fais voir !"
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé ouvre son cartable et sort soigneusement la pochette contenant son dessin."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Attention, il ne faut pas le plier."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Je sais tenir une feuille, quand même."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Inès observe la danseuse dessinée au milieu de la scène et les nombreuses lumières qui l'entourent."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"C'est vraiment toi qui as fait tout ça ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Evidemment que c'est moi !"
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Même les mains ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Oui."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Mois, quand  je dessine des mains, on dirait des râteaux."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Il faut commencer par faire les doigts doucement."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Ou alors, je peux dessiner tout le monde avec les mains dans les poches."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"C'est plus simple."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Tu devrais l'accrocher dans ta chambre."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Je vais peut-être le donner à maman."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Tu pourrais devenir une artiste célèbre."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Et toi, tu pourras dire que tu me connaissait avant."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Je pourrai surtout vendre tes vieux dessins."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Tu n'as pas le droit !"
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Les deux filles éclatent de rire. La sonnerie retentit quelques secondes plus tard."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Vite, sinon on va encore arriver les dernières !"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"C'est toi qui voulais regarder mon dessin."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé range rapideent la feuille dans son cartable et entre dans l'école avec Inès."
+                }
+            ],
+            "next":"L'exposé"
+        },
+        "L'exposé":{
+            "dialogues":[
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Un peu plus tard dans la matinée, l'enseignante demande aux élèves de reprendre leur travail en groupe."
+                },
+                {
+                    "personnage":"Enseignante",
+                    "texte":"Vous avez trente minutes pour terminer vos exposés. Ensuite, chaque groupe viendra présenter son travail devant la classe."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Trente minutes ? On n'auras jamais terminé."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Il reste seulement le dessin du renard."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Tu avait dit ça il y a vingts minutes."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé regarde l'illustration posée devant elle."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Ses pattes ne sont pas bien faites."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Personne ne va compter les doigts de notre renard."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Moi je les vois."
+                },
+                {
+                  "personnage":"Inès",
+                  "texte":"Mais si tu recommences encore, on n'auras pas le temps d'écrire la conclusion."  
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Je peux dessiner et tu peux écrire."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Je ne vais pas tout écrire toute seule."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé pose son crayon et regarde son amie."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Je n'ai pas dit que tu devais tout faire."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Moi non plus."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Pendant quelques secondes, les deux filles restent silencieuses."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"On fait la conclusion ensemble et après tu corriges les pattes ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"D'accord. Mais je les corrige vraiment."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Si on a le temps."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"On aura le temps."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Elles rapprochent leurs chaises et relisent leur texte."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"« Pour conclure, le renard est un animal... »"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":" « ... qui peut vivre dans plusieurs endroits différents. »"
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"On pourrait aussi dire qu'il s'adapte facilement."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Oui. Et après, je corrige les pattes."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Tu n'abandonnes jamais."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Non."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Quelque minutes plus tard, leur exposé est terminé. Les pattes du renard sont également corrigées."
+                },
+                {
+                    "personnage":"Enseignante",
+                    "texte":"Zoé et Inès, vous êtes prètes ?"
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Oui."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Presque."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Zoé !"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"C'est bon, je suis prête !"
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Les deux amies se lèvent avec leur affiche et rejoingne le devant de la classe."
+                }
+            ],
+            "next":"La cantine"
+        },
+        "La cantine":{
+            "dialogues":[
+                {
+                    "personnage":"Narrateur",
+                    "texte":"A idi, Zoé et Inès s'installent côte à côte à la cantine."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Tu crois qu'on  aura une bonne note ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"La maîtresse a dit que notre affiche était très bien faite."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Elle a surtout regardé ton renard."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Parce que ses pattes étaient réussies."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Heuresement que tu les as recommencées trois fois."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Seulement deux fois."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Trois."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Deux et demie."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Inès mélange les légumes dans son assiette sans vraiment les manger."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Tu as danse ce soir ?"
+                },
+                {
+                    "personnage":"Oui. On répète pour le spétacle."
+                },
+                {
+                    "personnage":"Tu connais déjà toute la chorégraphie ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Presque. Il y a un mouvement que je rate souvent."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Tu e montrera ?"
+                },
+                {
+                    "personnage":"Ici ?"
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Oui."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Au milieu de la cantine ?"
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Pourquoi pas ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Parce que tout le monde vas regarder !"
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Ils vont croire que tu es une artiste célèbre."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Arrête avec ça !"
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Inès sourit avant de prendre un morceau de pain."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Mon père a dit qu'il viendrait au spectacle avec ma mère."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Même s'il travaille ?"
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Il va essayer de finir plus tôt. Et ta mère viendra ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Oui elle vient toujours"
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Et Bryan"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Sûrement. Il va parler pendant toute la danse."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Il pourra dire à tout le monde que c'est sa soeur sur la scène."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Il va surtout demander quand on rentre."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé sourit, mais la phrase d'Inès reste quelque part dans ses pansées: son père viendra assister au spectacle."
+                }
+            ],
+            "next":"La fin de l'école"
+        },
+        "La fin de l'école":{
+            "dialogues":[
+                {
+                    "personnage":"Narrateur",
+                    "texte":"A la fin de la fournée, les élèves rangent leurs affaires."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Tu es sûre que tu ne peux pas venir jouer chez moi ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Je ne peux pas. J'ai danse"
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Tu as toujours danse."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Seulement le mardi."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"C'est déjà trop."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Tu dis ça parce que tu n'arrives pas à toucher tes pieds sans plier les jambes."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"C'est faux;"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Tu veux essayer ?"
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Pas ici."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Elles quittent la claasse et traversent la cour ensemble."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Devant l'école, le père d'Inès les attend."
+                },
+                {
+                    "personnage":"Père d'Inès",
+                    "texte":"Bonjour, les filles. Bonne journée ?"
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Oui. On a présenté notre exposè sur le renard."
+                },
+                {
+                    "personnage":"Père d'Inès",
+                    "texte":"Et ça s'est bien passé ?"
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"Oui, grâce aux pattes du renard de Zoé."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Elles étaient importantes."
+                },
+                {
+                    "personnage":"Père d'Inès",
+                    "texte":"Je n'en doute pas."
+                },
+                {
+                    "personnage":"Inès",
+                    "texte":"A demain Zoé !"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"A demain !"
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé regarde Inès repartir avec son père. Elle ajuste la lanière de son sac de danse et rejoint le petit groupe d'enfants qui se dirige vers le centre celturel."
+                }
+            ],
+            "next":"Le cours de danse"
+        },
+        "Le cours de danse":{
+            "dialogues":[
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Dans le vestiaire, Zoé enfile rapidement ses vêtements de danse. Elle attache ses cheveux, range ses affaires et rejoint les autres élèves dans la salle."
+                },
+                {
+                    "personnage":"Professeure de danse",
+                    "texte":"Mettez-vous en place, s'il vous plaît. Nous allons reprendre la chorégraphie depuis le début."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé rejoint sa position. La musique commence."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Pendant les premières secondes, elle suit parfaitement le rythme? Mais au moment de tourner, son pied glisse légèrement et elle pers l'équillibre."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Oh non..."
+                },
+                {
+                    "personnage":"Professeure de danse",
+                    "texte":"Ce n'est pas grave, Zoé. Replace-toi."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Je rate toujours ce passage."
+                },
+                {
+                    "personnage":"Professeure de danse",
+                    "texte":"Tu ne ratas pas toujours. Tu le trouves simplement plus difficile."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"C'est pareil."
+                },
+                {
+                    "personnage":"Professeure de danse",
+                    "texte":"Non. Si tu te dis que tu le rates toujours tu vas avoir peur avent même d'essayer."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé reprend sa place en regarrdant attentivement ses pieds."
+                },
+                {
+                    "personnage":"Professeure de danse",
+                    "texte":"Ne regarde pas seulement le sol. Regarde devant toi et prends ton temps."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"D'accord."
+                },
+                {
+                    "personnage":"Professeure de danse",
+                    "texte":"Nous reprenons juste avant le mouvement."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"La musique recommence. Zoé inspire, avance son pied, tourne et retrouve son équilibre au bon moment."
+                },
+                {
+                    "personnage":"Professeure de danse",
+                    "texte":"Voilà ! C'estait beaucoup mieux."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"J'ai réussi ?"
+                },
+                {
+                    "personnage":"Professeure de danse",
+                    "texte":"Oui. Maintenant, essaie de ne pas avoir l'air aussi surprise."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé sourit et reprend la chorégraphie avec les autres élèves."
+                }
+            ],
+            "next":"A la sortie de la danse"
+        },
+        "A la sortie de la danse":{
+            "dialogues":[
+                {
+                    "personnage":"Narrateur",
+                    "texte":"A la fin du cours, Zoé remet son manteau et sort du bâtiment avec son sac."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Claire l'attend près de l'entrée."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Maman !"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Alors, la danseuse ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"J'ai réussi le mouvement !"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Celui que tu répètes dans le salon depuis une semaine ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Oui. J'ai d'abord failli tombern mais après j'ai réussi."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Tu vous que ton entrainement finit par fonctionner."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Claire prend le sac de danse de Zoé."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Et le reste de ta journée ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"On a présenté notre exposé. Inès disait qu'on n'aurait jamais terminé parce que j'ai recommencéé les pattes du renard."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Combien de fois ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Deux"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Seulement deux ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Deux et demie."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Comment peut-on recommencer une moitié de dessin ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"C'est compliqué."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Elles commencent à marcher en direction de la maison."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Et vous vous êtes disputées ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Pas vraiment. Inès voulait écrire-la conclusion et moi, je voulais finir le dessin. Après, on a fait les deux ensemble."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Vouq avez donc trouvé une solution."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Oui. Et la maîtresse a aimé notre affiche."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Je suis fière de toi."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Tu pourras venir au spectacle de danse ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Bien sûr."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Même si tu travailles ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Je vais m'organiser."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Et bryan ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Je suppose qu'il est également invité."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Il va parler pendant tout le spectacle."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Alors, nous lui apporteront quelque chose pour l'occuper."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé continue de raconter sa  journée pendant tout le trajet : la cantine, les plaisanteries d'Inès, son exposé et le mouvement de danse qu'elle a enfin réussi."
+                }
+            ],
+            "next":"Le goûter"
+        },
+        "Le goûter":{
+            "dialogues":[
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Une fois rentrée, Zoé pose son sac dans l'entrée et retire ses chaussures."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Dans le salon, Bryan joue avec ses petites voitures sur le tapis."
+                },
+                {
+                    "personnage":"Bryan",
+                    "texte":"Tu as fait ma voiture rouge ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Je viens juste de rentrer !"
+                },
+                {
+                    "personnage":"Bryan",
+                    "texte":"Mais tu avais promis."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Je la ferai après le goûter."
+                },
+                {
+                    "personnage":"Bryan",
+                    "texte":"Avec des flammes ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Tu avait pas demandé de flammes."
+                },
+                {
+                    "personnage":"Bryan",
+                    "texte":"J'en veux maintenant."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Laisse au moins ta soeur retirer son manteau avant de modifier ta commande."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Quelques minutes plus tard. Zoé s'installe dans la cuisine. Une tartine et un verre de jus de fruits sont posés devant elle."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Claire s'assoit en face de sa fille."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Tu as encore faim après ton goûter de la danse ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"C'était une petite compote."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Je vous. Une compote ne compte donc pas vraiment."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Exactement."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé mord dans sa tartine. Claire remarque cependant que sa fille semble pensive."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Tu es fatiguée ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Un peu."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Seulement un peu ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Oui."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé regarde son verre et fait lentement tourner son doigt autour du bord."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Tu sais que tu peux me dire si quelque chose te travaille."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Inès a dit que son père viendrait au spectacle."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"D'accord."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Il va essayer de finir son travail plus tôt pour venir."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"C'est une bonne chose pour elle."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Tu viendras vraiment, toi ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Evidemment que je viendrai."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Tu seras au premier rang ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Si j'arrive assez tôt pour avoir une place."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Il faudra arriver très tôt."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Alorsn nous arriverons très tôt."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé prend une nouvelle bouchée, mais sa question ne semble pas complètement terminée."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Maman ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Oui ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Tu crois que mon père sait que je fais de la danse ?"
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Claire reste silencieuse quelques secondes."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Je ne saais pas, ma puce."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Tu ne lui as jamais dit ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Je n'ai plus de nouvelles de lui depuis longtemps. Je pourrais te répondre qu'il le sait, mais je n'en suis pas certaine. Je ne veux pas te mentir."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Pourquoi il est parti ?"
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Claire rapproche  légèrement sa chaise et prend doucement la main de sa fille."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Quand tu es née, ton père n'était pas prêt à prendre sa place dans notre famille. Il a choisi de partir."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"C'était a cause de moi ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Non !"
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Claire répond sans hésiter."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Tu étais un bébé. Tu n'avais rien fait de mal et tu n'avais rien à prouver. Son départ était une décision d'adulte. Ce n'était pas ta faute."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Même si je pleurais beaucoup ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Tout les bébés pleurent. Bryan pleurait tellement que je me demandais parfois comment une aussi petite personne pouvait faire autant de bruit."
+                },
+                {
+                    "personnage":"Bryan",
+                    "texte":"Je fait pas de bruit !"
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Claire et Zoé se regardent avant de sourire."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Evidemment que non."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Tu crois qu'il pense quelquefois à moi ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Je ne sais pas. J'aimerais pouvoir te donner une réponse certaine, mais je ne l'ai pas."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Moi, j'y pense quelquefois."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Tu en as le droit."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Même si ça me rend triste ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Même si cela te rend triste. Tu as le droit d'être triste, en colère ou simplement curieuse."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Et ça ne te dérange pas si je t'en parle ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Non. Tu n'as pas  besoin de cacher tes questions pour me protéger."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Même si ça te rend triste aussi ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Même dans ce cas. Je suis l'adulte, je peux m'occuper de ma tristesse toi, tu peux simplement me dire ce que tu ressens."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé quitte sa chaise et vient se blottir contre sa mère."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Claire referme doucement ses bras autour d'elle."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Je n'aurai peut-être pas toujours toutes les réponses mais je pourrai toujours t'écouter."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Tu promets ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Je te le promets."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Et tu promets d'être au sectacle ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Je serai là."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Avec Bryan ?"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Avec Bryan."
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Il va applaudir avant la fin."
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Probablement"
+                },
+                {
+                    "personnage":"Bryan",
+                    "texte":"J'ai faim !"
+                },
+                {
+                    "personnage":"Claire",
+                    "texte":"Ton goûter est sur la table !"
+                },
+                {
+                    "personnage":"Bryan",
+                    "texte":"Je veux celui de Zoé !"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Tu n'auras pas ma tartine !"
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Bryan rejoint la cuisine avec sa voiture dans une main."
+                },
+                {
+                    "personnage":"Bryan",
+                    "texte":"Tu fais mon dessin maintenant ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Après avoir terminé mon goûter."
+                },
+                {
+                    "personnage":"Bryan",
+                    "texte":"Avec les flammes ?"
+                },
+                {
+                    "personnage":"Zoé",
+                    "texte":"Oui, avec les flammes."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Zoé retourne s'assoir près de sa mère."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Sa question n'a pas complètement disparu et Claire ne possède pas toutes les réponses. Mais autour de cette table, Zoé sait qu'aucune de ses question n'est interdite."
+                },
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Pour le moment, elle raconte encore tout à sa mère: les bonnes nouvelles, ses petites disputes, ses réussites et même les pensées qui lui font mal."
+                }
+            ],
+            "next":"fin chapitre2"
+        },
+        "fin chapitre2":{
+            "dialogues":[
+                {
+                    "personnage":"Narrateur",
+                    "texte":"Chapitre 2 terminé"
+                }
+            ],
+            "choix":[
+                {
+                    "texte":"continuer vers le chapitre 3",
+                    "message":{
+                        "personnage":"Narrateur",
+                        "texte":"l'histoire continue"
+                    },
+                    "next":"chapitre3"
+                }
+            ]
+        }
+    }
+}    

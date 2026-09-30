@@ -2,16 +2,28 @@
 
 /*=========================================================
  FRIENDZONÉ REBORN
- parametres.js
+ parametres.js — V4
 
  Gestion :
- - volume musique ;
- - volume ambiance ;
- - volume effets ;
+ - volume utilisateur musique ;
+ - volume utilisateur ambiance ;
+ - volume utilisateur effets ;
  - assombrissement du fond ;
  - synchronisation des sliders ;
  - sauvegarde locale ;
- - compatibilité menu / jeu.
+ - migration des anciens volumes ;
+ - réinitialisation ;
+ - compatibilité menu / jeu ;
+ - compatibilité Audio Manager V4.
+
+ IMPORTANT AUDIO V4
+ ------------------
+ parametres.js contrôle uniquement les volumes utilisateur.
+
+ Les volumes artistiques provenant des chapitres et scènes
+ sont gérés par moteur.js / audioManager.js :
+
+ volume final = volume utilisateur × volume artistique
 =========================================================*/
 
 const parametresManager = {
@@ -23,13 +35,22 @@ const parametresManager = {
     cleParametres:
         "friendzoneRebornParametres",
 
+    /*
+     Ancienne sauvegarde autonome d'audioManager.
+
+     Elle est conservée pour permettre une migration
+     transparente des anciennes installations.
+    */
+    cleVolumesLegacy:
+        "friendzoneRebornVolumes",
+
     valeursParDefaut: {
 
-        volumeMusique: 0.40,
+        volumeMusique: 0.50,
 
         volumeAmbiance: 0.25,
 
-        volumeEffets: 0.70,
+        volumeEffets: 0.15,
 
         assombrissementFond: 0.35
 
@@ -54,7 +75,9 @@ const parametresManager = {
         valeurVolumeEffets: null,
         valeurAssombrissementFond: null,
 
-        voileFond: null
+        voileFond: null,
+
+        reinitialiserParametres: null
 
     },
 
@@ -63,7 +86,11 @@ const parametresManager = {
      ÉTAT COURANT
     =====================================================*/
 
-    valeurs: null,
+    valeurs:
+        null,
+
+    evenementsInstalles:
+        false,
 
 
     /*=====================================================
@@ -84,7 +111,7 @@ const parametresManager = {
         this.installerEvenements();
 
         console.log(
-            "parametresManager initialisé."
+            "parametresManager V4 initialisé."
         );
 
     },
@@ -155,88 +182,15 @@ const parametresManager = {
                 "voile-fond"
             );
 
-    },
 
+        /*---------------------------------------------
+         BOUTON RÉINITIALISER
+        ---------------------------------------------*/
 
-    /*=====================================================
-     CHARGER LES PARAMÈTRES
-    =====================================================*/
-
-    charger() {
-
-        const sauvegarde =
-            localStorage.getItem(
-                this.cleParametres
+        this.elements.reinitialiserParametres =
+            document.getElementById(
+                "reinitialiserParametres"
             );
-
-        if (!sauvegarde) {
-
-            return {
-                ...this.valeursParDefaut
-            };
-
-        }
-
-        try {
-
-            const donnees =
-                JSON.parse(
-                    sauvegarde
-                );
-
-            return {
-
-                ...this.valeursParDefaut,
-
-                ...donnees
-
-            };
-
-        }
-        catch (erreur) {
-
-            console.error(
-                "Impossible de charger les paramètres :",
-                erreur
-            );
-
-            return {
-                ...this.valeursParDefaut
-            };
-
-        }
-
-    },
-
-
-    /*=====================================================
-     SAUVEGARDER LES PARAMÈTRES
-    =====================================================*/
-
-    sauvegarder() {
-
-        if (!this.valeurs) {
-            return;
-        }
-
-        try {
-
-            localStorage.setItem(
-                this.cleParametres,
-                JSON.stringify(
-                    this.valeurs
-                )
-            );
-
-        }
-        catch (erreur) {
-
-            console.error(
-                "Impossible de sauvegarder les paramètres :",
-                erreur
-            );
-
-        }
 
     },
 
@@ -246,7 +200,8 @@ const parametresManager = {
     =====================================================*/
 
     limiterValeur(
-        valeur
+        valeur,
+        valeurParDefaut = 0
     ) {
 
         const nombre =
@@ -260,7 +215,22 @@ const parametresManager = {
             )
         ) {
 
-            return 0;
+            const secours =
+                Number(
+                    valeurParDefaut
+                );
+
+            return Math.max(
+                0,
+                Math.min(
+                    1,
+                    Number.isFinite(
+                        secours
+                    )
+                        ? secours
+                        : 0
+                )
+            );
 
         }
 
@@ -276,9 +246,346 @@ const parametresManager = {
 
 
     /*=====================================================
+     NORMALISER UN OBJET DE PARAMÈTRES
+
+     Seules les propriétés connues sont conservées.
+     Cela évite qu'une ancienne donnée invalide ou une
+     valeur hors limites se propage dans le jeu.
+    =====================================================*/
+
+    normaliserParametres(
+        donnees = {}
+    ) {
+
+        const source =
+            donnees &&
+            typeof donnees === "object" &&
+            !Array.isArray(
+                donnees
+            )
+
+                ? donnees
+
+                : {};
+
+        return {
+
+            volumeMusique:
+                this.limiterValeur(
+                    source.volumeMusique,
+                    this.valeursParDefaut.volumeMusique
+                ),
+
+            volumeAmbiance:
+                this.limiterValeur(
+                    source.volumeAmbiance,
+                    this.valeursParDefaut.volumeAmbiance
+                ),
+
+            volumeEffets:
+                this.limiterValeur(
+                    source.volumeEffets,
+                    this.valeursParDefaut.volumeEffets
+                ),
+
+            assombrissementFond:
+                this.limiterValeur(
+                    source.assombrissementFond,
+                    this.valeursParDefaut.assombrissementFond
+                )
+
+        };
+
+    },
+
+
+    /*=====================================================
+     LIRE LES ANCIENS VOLUMES D'AUDIOMANAGER
+
+     Ancien format attendu :
+
+     {
+         "musique": 0.4,
+         "ambiance": 0.25,
+         "effets": 0.7
+     }
+    =====================================================*/
+
+    chargerVolumesLegacy() {
+
+        let sauvegarde =
+            null;
+
+        try {
+
+            sauvegarde =
+                localStorage.getItem(
+                    this.cleVolumesLegacy
+                );
+
+        }
+        catch (
+            erreur
+        ) {
+
+            console.warn(
+                "parametres.js : impossible de lire les anciens volumes.",
+                erreur
+            );
+
+            return null;
+
+        }
+
+        if (
+            !sauvegarde
+        ) {
+
+            return null;
+
+        }
+
+        try {
+
+            const donnees =
+                JSON.parse(
+                    sauvegarde
+                );
+
+            if (
+                !donnees ||
+                typeof donnees !== "object"
+            ) {
+
+                return null;
+
+            }
+
+            return {
+
+                volumeMusique:
+                    this.limiterValeur(
+                        donnees.musique,
+                        this.valeursParDefaut.volumeMusique
+                    ),
+
+                volumeAmbiance:
+                    this.limiterValeur(
+                        donnees.ambiance,
+                        this.valeursParDefaut.volumeAmbiance
+                    ),
+
+                volumeEffets:
+                    this.limiterValeur(
+                        donnees.effets,
+                        this.valeursParDefaut.volumeEffets
+                    )
+
+            };
+
+        }
+        catch (
+            erreur
+        ) {
+
+            console.warn(
+                "parametres.js : anciens volumes invalides.",
+                erreur
+            );
+
+            return null;
+
+        }
+
+    },
+
+
+    /*=====================================================
+     CHARGER LES PARAMÈTRES
+
+     Ordre de priorité :
+
+     1. friendzoneRebornParametres ;
+     2. migration de friendzoneRebornVolumes ;
+     3. valeurs par défaut.
+
+     friendzoneRebornParametres devient donc la référence
+     principale pour les réglages du joueur.
+    =====================================================*/
+
+    charger() {
+
+        let sauvegarde =
+            null;
+
+        try {
+
+            sauvegarde =
+                localStorage.getItem(
+                    this.cleParametres
+                );
+
+        }
+        catch (
+            erreur
+        ) {
+
+            console.error(
+                "Impossible de lire les paramètres :",
+                erreur
+            );
+
+        }
+
+
+        /*---------------------------------------------
+         SAUVEGARDE PRINCIPALE DISPONIBLE
+        ---------------------------------------------*/
+
+        if (
+            sauvegarde
+        ) {
+
+            try {
+
+                const donnees =
+                    JSON.parse(
+                        sauvegarde
+                    );
+
+                return this.normaliserParametres(
+                    {
+                        ...this.valeursParDefaut,
+                        ...donnees
+                    }
+                );
+
+            }
+            catch (
+                erreur
+            ) {
+
+                console.error(
+                    "Impossible de charger les paramètres :",
+                    erreur
+                );
+
+            }
+
+        }
+
+
+        /*---------------------------------------------
+         MIGRATION DES ANCIENS VOLUMES
+        ---------------------------------------------*/
+
+        const anciensVolumes =
+            this.chargerVolumesLegacy();
+
+        if (
+            anciensVolumes
+        ) {
+
+            const valeursMigrees =
+                this.normaliserParametres(
+                    {
+                        ...this.valeursParDefaut,
+                        ...anciensVolumes
+                    }
+                );
+
+            try {
+
+                localStorage.setItem(
+                    this.cleParametres,
+                    JSON.stringify(
+                        valeursMigrees
+                    )
+                );
+
+                console.log(
+                    "parametres.js : anciens volumes migrés vers friendzoneRebornParametres."
+                );
+
+            }
+            catch (
+                erreur
+            ) {
+
+                console.warn(
+                    "parametres.js : migration effectuée en mémoire mais impossible à sauvegarder.",
+                    erreur
+                );
+
+            }
+
+            return valeursMigrees;
+
+        }
+
+
+        /*---------------------------------------------
+         VALEURS PAR DÉFAUT
+        ---------------------------------------------*/
+
+        return this.normaliserParametres(
+            this.valeursParDefaut
+        );
+
+    },
+
+
+    /*=====================================================
+     SAUVEGARDER LES PARAMÈTRES
+    =====================================================*/
+
+    sauvegarder() {
+
+        if (
+            !this.valeurs
+        ) {
+
+            return false;
+
+        }
+
+        this.valeurs =
+            this.normaliserParametres(
+                this.valeurs
+            );
+
+        try {
+
+            localStorage.setItem(
+                this.cleParametres,
+                JSON.stringify(
+                    this.valeurs
+                )
+            );
+
+            return true;
+
+        }
+        catch (
+            erreur
+        ) {
+
+            console.error(
+                "Impossible de sauvegarder les paramètres :",
+                erreur
+            );
+
+            return false;
+
+        }
+
+    },
+
+
+    /*=====================================================
      CONVERTIR UN SLIDER EN VALEUR 0 → 1
 
-     Les sliders HTML utiliseront 0 → 100.
+     Les sliders HTML utilisent 0 → 100.
     =====================================================*/
 
     sliderVersValeur(
@@ -317,86 +624,57 @@ const parametresManager = {
 
     appliquerValeursAuxElements() {
 
-        if (!this.valeurs) {
+        if (
+            !this.valeurs
+        ) {
+
             return;
+
         }
-
-
-        /*---------------------------------------------
-         MUSIQUE
-        ---------------------------------------------*/
 
         if (
             this.elements.volumeMusique
         ) {
 
-            this.elements
-                .volumeMusique
-                .value =
+            this.elements.volumeMusique.value =
                 this.valeurVersPourcentage(
                     this.valeurs.volumeMusique
                 );
 
         }
 
-
-        /*---------------------------------------------
-         AMBIANCE
-        ---------------------------------------------*/
-
         if (
             this.elements.volumeAmbiance
         ) {
 
-            this.elements
-                .volumeAmbiance
-                .value =
+            this.elements.volumeAmbiance.value =
                 this.valeurVersPourcentage(
                     this.valeurs.volumeAmbiance
                 );
 
         }
 
-
-        /*---------------------------------------------
-         EFFETS
-        ---------------------------------------------*/
-
         if (
             this.elements.volumeEffets
         ) {
 
-            this.elements
-                .volumeEffets
-                .value =
+            this.elements.volumeEffets.value =
                 this.valeurVersPourcentage(
                     this.valeurs.volumeEffets
                 );
 
         }
 
-
-        /*---------------------------------------------
-         ASSOMBRISSEMENT
-        ---------------------------------------------*/
-
         if (
             this.elements.assombrissementFond
         ) {
 
-            this.elements
-                .assombrissementFond
-                .value =
+            this.elements.assombrissementFond.value =
                 this.valeurVersPourcentage(
                     this.valeurs.assombrissementFond
                 );
 
         }
-
-
-        /*---------------------------------------------
-         TEXTES DES POURCENTAGES
-        ---------------------------------------------*/
 
         this.actualiserAffichageValeurs();
 
@@ -409,60 +687,52 @@ const parametresManager = {
 
     actualiserAffichageValeurs() {
 
-        if (!this.valeurs) {
-            return;
-        }
+        if (
+            !this.valeurs
+        ) {
 
+            return;
+
+        }
 
         if (
             this.elements.valeurVolumeMusique
         ) {
 
-            this.elements
-                .valeurVolumeMusique
-                .textContent =
+            this.elements.valeurVolumeMusique.textContent =
                 this.valeurVersPourcentage(
                     this.valeurs.volumeMusique
                 ) + " %";
 
         }
 
-
         if (
             this.elements.valeurVolumeAmbiance
         ) {
 
-            this.elements
-                .valeurVolumeAmbiance
-                .textContent =
+            this.elements.valeurVolumeAmbiance.textContent =
                 this.valeurVersPourcentage(
                     this.valeurs.volumeAmbiance
                 ) + " %";
 
         }
 
-
         if (
             this.elements.valeurVolumeEffets
         ) {
 
-            this.elements
-                .valeurVolumeEffets
-                .textContent =
+            this.elements.valeurVolumeEffets.textContent =
                 this.valeurVersPourcentage(
                     this.valeurs.volumeEffets
                 ) + " %";
 
         }
 
-
         if (
             this.elements.valeurAssombrissementFond
         ) {
 
-            this.elements
-                .valeurAssombrissementFond
-                .textContent =
+            this.elements.valeurAssombrissementFond.textContent =
                 this.valeurVersPourcentage(
                     this.valeurs.assombrissementFond
                 ) + " %";
@@ -470,17 +740,14 @@ const parametresManager = {
         }
 
     },
-
-
-    /*=====================================================
+        /*=====================================================
      VÉRIFIER AUDIO MANAGER
     =====================================================*/
 
     audioDisponible() {
 
         return (
-            typeof audioManager !==
-                "undefined" &&
+            typeof audioManager !== "undefined" &&
             audioManager !== null
         );
 
@@ -488,152 +755,159 @@ const parametresManager = {
 
 
     /*=====================================================
-     APPLIQUER LE VOLUME MUSIQUE
+     APPLIQUER LE VOLUME UTILISATEUR DE LA MUSIQUE
+
+     Audio Manager V4 se charge ensuite de calculer :
+
+     utilisateur × mix artistique
     =====================================================*/
 
     appliquerVolumeMusique() {
 
         if (
-            !this.audioDisponible()
+            !this.audioDisponible() ||
+            !this.valeurs
         ) {
-            return;
+
+            return false;
+
         }
 
         const valeur =
             this.limiterValeur(
-                this.valeurs.volumeMusique
+                this.valeurs.volumeMusique,
+                this.valeursParDefaut.volumeMusique
             );
 
-
         if (
-            typeof audioManager
-                .setVolumeMusique ===
+            typeof audioManager.setVolumeMusique ===
                 "function"
         ) {
 
-            audioManager
-                .setVolumeMusique(
-                    valeur
-                );
+            audioManager.setVolumeMusique(
+                valeur
+            );
 
-            return;
+            return true;
 
         }
 
-
         /*
-         Compatibilité de secours.
+         Compatibilité avec un ancien audioManager.
+         Ce secours ne doit pas être utilisé avec V4.
         */
-
         if (
             audioManager.musique
         ) {
 
-            audioManager
-                .musique
-                .volume =
+            audioManager.musique.volume =
                 valeur;
 
+            return true;
+
         }
+
+        return false;
 
     },
 
 
     /*=====================================================
-     APPLIQUER LE VOLUME AMBIANCE
+     APPLIQUER LE VOLUME UTILISATEUR DE L'AMBIANCE
     =====================================================*/
 
     appliquerVolumeAmbiance() {
 
         if (
-            !this.audioDisponible()
+            !this.audioDisponible() ||
+            !this.valeurs
         ) {
-            return;
+
+            return false;
+
         }
 
         const valeur =
             this.limiterValeur(
-                this.valeurs.volumeAmbiance
+                this.valeurs.volumeAmbiance,
+                this.valeursParDefaut.volumeAmbiance
             );
 
-
         if (
-            typeof audioManager
-                .setVolumeAmbiance ===
+            typeof audioManager.setVolumeAmbiance ===
                 "function"
         ) {
 
-            audioManager
-                .setVolumeAmbiance(
-                    valeur
-                );
+            audioManager.setVolumeAmbiance(
+                valeur
+            );
 
-            return;
+            return true;
 
         }
-
 
         if (
             audioManager.ambiance
         ) {
 
-            audioManager
-                .ambiance
-                .volume =
+            audioManager.ambiance.volume =
                 valeur;
 
+            return true;
+
         }
+
+        return false;
 
     },
 
 
     /*=====================================================
-     APPLIQUER LE VOLUME DES EFFETS
+     APPLIQUER LE VOLUME UTILISATEUR DES EFFETS
     =====================================================*/
 
     appliquerVolumeEffets() {
 
         if (
-            !this.audioDisponible()
+            !this.audioDisponible() ||
+            !this.valeurs
         ) {
-            return;
+
+            return false;
+
         }
 
         const valeur =
             this.limiterValeur(
-                this.valeurs.volumeEffets
+                this.valeurs.volumeEffets,
+                this.valeursParDefaut.volumeEffets
             );
 
-
         if (
-            typeof audioManager
-                .setVolumeEffets ===
+            typeof audioManager.setVolumeEffets ===
                 "function"
         ) {
 
-            audioManager
-                .setVolumeEffets(
-                    valeur
-                );
+            audioManager.setVolumeEffets(
+                valeur
+            );
 
-            return;
+            return true;
 
         }
 
-
-        /*
-         Compatibilité de secours.
-        */
-
         if (
-            "volumeEffets" in
-            audioManager
+            "volumeEffets" in audioManager
         ) {
 
             audioManager.volumeEffets =
                 valeur;
 
+            return true;
+
         }
+
+        return false;
 
     },
 
@@ -645,21 +919,24 @@ const parametresManager = {
     appliquerAssombrissementFond() {
 
         if (
-            !this.elements.voileFond
+            !this.elements.voileFond ||
+            !this.valeurs
         ) {
-            return;
+
+            return false;
+
         }
 
         const valeur =
             this.limiterValeur(
-                this.valeurs.assombrissementFond
+                this.valeurs.assombrissementFond,
+                this.valeursParDefaut.assombrissementFond
             );
 
-        this.elements
-            .voileFond
-            .style
-            .background =
+        this.elements.voileFond.style.background =
             `rgba(0, 0, 0, ${valeur})`;
+
+        return true;
 
     },
 
@@ -670,19 +947,21 @@ const parametresManager = {
 
     appliquerTousLesParametres() {
 
-        if (!this.valeurs) {
-            return;
+        if (
+            !this.valeurs
+        ) {
+
+            return false;
+
         }
 
         this.appliquerVolumeMusique();
-
         this.appliquerVolumeAmbiance();
-
         this.appliquerVolumeEffets();
-
         this.appliquerAssombrissementFond();
-
         this.actualiserAffichageValeurs();
+
+        return true;
 
     },
 
@@ -693,6 +972,22 @@ const parametresManager = {
 
     installerEvenements() {
 
+        /*
+         Empêche l'installation multiple des mêmes
+         listeners si initialiser() est rappelé.
+        */
+        if (
+            this.evenementsInstalles
+        ) {
+
+            return;
+
+        }
+
+        this.evenementsInstalles =
+            true;
+
+
         /*---------------------------------------------
          MUSIQUE
         ---------------------------------------------*/
@@ -701,26 +996,21 @@ const parametresManager = {
             this.elements.volumeMusique
         ) {
 
-            this.elements
-                .volumeMusique
-                .addEventListener(
-                    "input",
-                    event => {
+            this.elements.volumeMusique.addEventListener(
+                "input",
+                event => {
 
-                        this.valeurs
-                            .volumeMusique =
-                            this.sliderVersValeur(
-                                event.target.value
-                            );
+                    this.valeurs.volumeMusique =
+                        this.sliderVersValeur(
+                            event.target.value
+                        );
 
-                        this.appliquerVolumeMusique();
+                    this.appliquerVolumeMusique();
+                    this.actualiserAffichageValeurs();
+                    this.sauvegarder();
 
-                        this.actualiserAffichageValeurs();
-
-                        this.sauvegarder();
-
-                    }
-                );
+                }
+            );
 
         }
 
@@ -733,26 +1023,21 @@ const parametresManager = {
             this.elements.volumeAmbiance
         ) {
 
-            this.elements
-                .volumeAmbiance
-                .addEventListener(
-                    "input",
-                    event => {
+            this.elements.volumeAmbiance.addEventListener(
+                "input",
+                event => {
 
-                        this.valeurs
-                            .volumeAmbiance =
-                            this.sliderVersValeur(
-                                event.target.value
-                            );
+                    this.valeurs.volumeAmbiance =
+                        this.sliderVersValeur(
+                            event.target.value
+                        );
 
-                        this.appliquerVolumeAmbiance();
+                    this.appliquerVolumeAmbiance();
+                    this.actualiserAffichageValeurs();
+                    this.sauvegarder();
 
-                        this.actualiserAffichageValeurs();
-
-                        this.sauvegarder();
-
-                    }
-                );
+                }
+            );
 
         }
 
@@ -765,26 +1050,21 @@ const parametresManager = {
             this.elements.volumeEffets
         ) {
 
-            this.elements
-                .volumeEffets
-                .addEventListener(
-                    "input",
-                    event => {
+            this.elements.volumeEffets.addEventListener(
+                "input",
+                event => {
 
-                        this.valeurs
-                            .volumeEffets =
-                            this.sliderVersValeur(
-                                event.target.value
-                            );
+                    this.valeurs.volumeEffets =
+                        this.sliderVersValeur(
+                            event.target.value
+                        );
 
-                        this.appliquerVolumeEffets();
+                    this.appliquerVolumeEffets();
+                    this.actualiserAffichageValeurs();
+                    this.sauvegarder();
 
-                        this.actualiserAffichageValeurs();
-
-                        this.sauvegarder();
-
-                    }
-                );
+                }
+            );
 
         }
 
@@ -797,26 +1077,54 @@ const parametresManager = {
             this.elements.assombrissementFond
         ) {
 
-            this.elements
-                .assombrissementFond
-                .addEventListener(
-                    "input",
-                    event => {
+            this.elements.assombrissementFond.addEventListener(
+                "input",
+                event => {
 
-                        this.valeurs
-                            .assombrissementFond =
-                            this.sliderVersValeur(
-                                event.target.value
-                            );
+                    this.valeurs.assombrissementFond =
+                        this.sliderVersValeur(
+                            event.target.value
+                        );
 
-                        this.appliquerAssombrissementFond();
+                    this.appliquerAssombrissementFond();
+                    this.actualiserAffichageValeurs();
+                    this.sauvegarder();
 
-                        this.actualiserAffichageValeurs();
+                }
+            );
 
-                        this.sauvegarder();
+        }
+
+
+        /*---------------------------------------------
+         RÉINITIALISER LES PARAMÈTRES
+        ---------------------------------------------*/
+
+        if (
+            this.elements.reinitialiserParametres
+        ) {
+
+            this.elements.reinitialiserParametres.addEventListener(
+                "click",
+                () => {
+
+                    const confirmation =
+                        window.confirm(
+                            "Réinitialiser tous les paramètres par défaut ?"
+                        );
+
+                    if (
+                        !confirmation
+                    ) {
+
+                        return;
 
                     }
-                );
+
+                    this.reinitialiser();
+
+                }
+            );
 
         }
 
@@ -866,12 +1174,10 @@ const parametresManager = {
         }
 
         if (
-            !Object.prototype
-                .hasOwnProperty
-                .call(
-                    this.valeursParDefaut,
-                    nom
-                )
+            !Object.prototype.hasOwnProperty.call(
+                this.valeursParDefaut,
+                nom
+            )
         ) {
 
             console.warn(
@@ -885,13 +1191,12 @@ const parametresManager = {
 
         this.valeurs[nom] =
             this.limiterValeur(
-                valeur
+                valeur,
+                this.valeursParDefaut[nom]
             );
 
         this.sauvegarder();
-
         this.appliquerValeursAuxElements();
-
         this.appliquerTousLesParametres();
 
         return true;
@@ -905,19 +1210,88 @@ const parametresManager = {
 
     reinitialiser() {
 
-        this.valeurs = {
-            ...this.valeursParDefaut
-        };
+        this.valeurs =
+            this.normaliserParametres(
+                this.valeursParDefaut
+            );
 
         this.sauvegarder();
-
         this.appliquerValeursAuxElements();
-
         this.appliquerTousLesParametres();
 
         console.log(
             "Paramètres réinitialisés."
         );
+
+        return true;
+
+    },
+
+
+    /*=====================================================
+     VÉRIFIER L'ÉTAT DES PARAMÈTRES
+
+     Fonction de développement :
+
+     parametresManager.verifier()
+    =====================================================*/
+
+    verifier() {
+
+        if (
+            !this.valeurs
+        ) {
+
+            this.valeurs =
+                this.charger();
+
+        }
+
+        const etat = {
+
+            parametres:
+                {
+                    ...this.valeurs
+                },
+
+            audioDisponible:
+                this.audioDisponible(),
+
+            audio:
+                this.audioDisponible()
+
+                    ? {
+
+                        volumeUtilisateurMusique:
+                            audioManager.volumeMusique,
+
+                        volumeUtilisateurAmbiance:
+                            audioManager.volumeAmbiance,
+
+                        volumeUtilisateurEffets:
+                            audioManager.volumeEffets,
+
+                        volumeMixMusique:
+                            audioManager.volumeMixMusique,
+
+                        volumeMixAmbiance:
+                            audioManager.volumeMixAmbiance,
+
+                        volumeMixEffets:
+                            audioManager.volumeMixEffets
+
+                    }
+
+                    : null
+
+        };
+
+        console.log(
+            "parametresManager : état :",
+            etat
+        );
+
+        return etat;
 
     }
 

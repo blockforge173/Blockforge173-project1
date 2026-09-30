@@ -79,7 +79,7 @@
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "Dans la d'attente, plusieurs visages familliers sont déjàs présents.",
+                    "texte": "Dans la salle d'attente, plusieurs visages familliers sont déjàs présents.",
                     "galerie":"chap10SalleAttente"
                 },
                 {
@@ -378,8 +378,9 @@
         "appelPourDeposition": {
             "dialogues": [
                 {
-                    "personnage": "enqueteur",
-                    "texte": "{{nomJoueur}} ?"
+                    "personnage": "lieutenant Morel",
+                    "texte": "{{nomJoueur}} ?",
+                    "fond":"arrivee_enqueteur"
                 },
                 {
                     "personnage": "narrateur",
@@ -654,7 +655,8 @@
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "Le lieutenant Morel parcourt lentement la conversation."
+                    "texte": "Le lieutenant Morel parcourt lentement la conversation.",
+                    "fond":"enqueteur_regarde_téléphone"
                 },
                 {
                     "personnage": "narrateur",
@@ -846,11 +848,11 @@
             ]
         },
         "couloirApresDeposition": {
-            "fond": "salle_attente",
             "dialogues": [
                 {
                     "personnage": "narrateur",
-                    "texte": "Zoé vient de sortir d'une autre salle. Ses yeux sont rouges."
+                    "texte": "Zoé vient de sortir d'une autre salle. Ses yeux sont rouges.",
+                    "fond":"sortie_zoe_interogatoire"
                 },
                 {
                     "personnage": "narrateur",
@@ -960,7 +962,7 @@
             ]
         },
         "revelationVideosurveillance": {
-            "fond": "accueil_commissaria",
+            "fond": "sortie_commissariat",
             "ambiance": "accueil_commissaria",
             "dialogues": [
                 {
@@ -1026,7 +1028,7 @@
             ]
         },
         "sortieCommissariat": {
-            "fond": "devant_commissaria",
+            "fond": "devant_commissaria_sortie",
             "ambiance": "rue parisienne",
             "dialogues": [
                 {
@@ -1077,7 +1079,8 @@
                         "operateur": ">=",
                         "valeur": 15
                     },
-                    "texte": "Je viens de sortir. Tu es bien rentré ?"
+                    "texte": "Je viens de sortir. Tu es bien rentré ?",
+                    "fond":"discussion_message_emelyne"
                 },
                 {
                     "personnage": "systeme",

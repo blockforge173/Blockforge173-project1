@@ -1,0 +1,2656 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Casernes - Gestion Secours</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --fond: #081018;
+            --panneau: #121f2a;
+            --panneau-2: #182733;
+            --panneau-3: #20313e;
+            --bordure: #2b3e4c;
+
+            --texte: #f5f7f9;
+            --texte-secondaire: #94a8b7;
+
+            --rouge: #d63031;
+            --orange: #f39c12;
+            --vert: #27ae60;
+            --bleu: #3498db;
+            --violet: #8e44ad;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--fond);
+            color: var(--texte);
+            min-height: 100vh;
+        }
+
+        /* =========================
+           HEADER
+        ========================== */
+
+        header {
+            min-height: 70px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 12px 30px;
+
+            background: #0b141c;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--rouge);
+
+            border-radius: 9px;
+
+            font-weight: bold;
+        }
+
+        .logo h1 {
+            font-size: 19px;
+        }
+
+        .logo p {
+            margin-top: 3px;
+
+            color: var(--texte-secondaire);
+
+            font-size: 12px;
+        }
+
+        nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #cbd6de;
+
+            text-decoration: none;
+
+            padding: 9px 13px;
+
+            border-radius: 6px;
+
+            transition: 0.2s;
+        }
+
+        nav a:hover {
+            background: var(--panneau-2);
+        }
+
+        .horloge {
+            text-align: right;
+        }
+
+        #heure {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #date {
+            color: var(--texte-secondaire);
+            font-size: 11px;
+        }
+
+        /* =========================
+           MAIN
+        ========================== */
+
+        main {
+            padding: 20px;
+        }
+
+        .titre-page {
+            margin-bottom: 20px;
+        }
+
+        .titre-page h2 {
+            font-size: 25px;
+        }
+
+        .titre-page p {
+            margin-top: 5px;
+            color: var(--texte-secondaire);
+        }
+
+        /* =========================
+           STATS
+        ========================== */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 10px;
+
+            padding: 16px;
+        }
+
+        .stat-label {
+            color: var(--texte-secondaire);
+            font-size: 12px;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: bold;
+            margin-top: 6px;
+        }
+
+        /* =========================
+           TOOLBAR
+        ========================== */
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+
+            margin-bottom: 18px;
+        }
+
+        .toolbar input,
+        .toolbar select {
+            padding: 10px;
+
+            background: #0d1820;
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 7px;
+
+            color: white;
+        }
+
+        .toolbar input {
+            min-width: 250px;
+            flex: 1;
+        }
+
+        .toolbar select {
+            min-width: 180px;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .btn {
+            border: none;
+
+            padding: 10px 14px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: var(--rouge);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #233746;
+            color: white;
+
+            border: 1px solid var(--bordure);
+        }
+
+        .btn-success {
+            background: var(--vert);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--orange);
+            color: #111;
+        }
+
+        .btn-danger {
+            background: #7a2424;
+            color: white;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================== */
+
+        .casernes-layout {
+            display: grid;
+
+            grid-template-columns:
+                1fr 390px;
+
+            gap: 15px;
+
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 14px;
+
+            border-bottom: 1px solid var(--bordure);
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .panel-header h3 {
+            font-size: 16px;
+        }
+
+        .panel-content {
+            padding: 13px;
+        }
+
+        /* =========================
+           CARTES CASERNES
+        ========================== */
+
+        .casernes-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(280px, 1fr));
+
+            gap: 14px;
+        }
+
+        .caserne-card {
+            background: var(--panneau-2);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 10px;
+
+            padding: 16px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .caserne-card:hover {
+            border-color: var(--rouge);
+
+            transform: translateY(-2px);
+        }
+
+        .caserne-card.selected {
+            border-color: var(--rouge);
+
+            background: #20313c;
+        }
+
+        .caserne-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 13px;
+        }
+
+        .caserne-title {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .caserne-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background: #283c49;
+
+            font-size: 22px;
+        }
+
+        .caserne-title h4 {
+            font-size: 14px;
+        }
+
+        .caserne-title p {
+            color: var(--texte-secondaire);
+            font-size: 11px;
+            margin-top: 3px;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 5px 8px;
+
+            border-radius: 20px;
+
+            font-size: 10px;
+
+            font-weight: bold;
+        }
+
+        .badge-active {
+            color: #82e2a7;
+
+            background:
+                rgba(39, 174, 96, 0.18);
+        }
+
+        .badge-construction {
+            color: #ffca66;
+
+            background:
+                rgba(243, 156, 18, 0.18);
+        }
+
+        .badge-fermee {
+            color: #ff8b82;
+
+            background:
+                rgba(214, 48, 49, 0.18);
+        }
+
+        .caserne-info {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 8px;
+        }
+
+        .info-box {
+            background: #0d1820;
+
+            border-radius: 7px;
+
+            padding: 9px;
+
+            border: 1px solid #273946;
+        }
+
+        .info-box span {
+            display: block;
+
+            color: var(--texte-secondaire);
+
+            font-size: 10px;
+
+            margin-bottom: 4px;
+        }
+
+        .info-box strong {
+            font-size: 12px;
+        }
+
+        /* =========================
+           PROGRESS
+        ========================== */
+
+        .progress-zone {
+            margin-top: 12px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+
+            font-size: 10px;
+
+            margin-bottom: 5px;
+        }
+
+        .progress-label span {
+            color: var(--texte-secondaire);
+        }
+
+        .progress {
+            height: 7px;
+
+            background: #09131a;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+
+            background: var(--vert);
+
+            border-radius: 20px;
+        }
+
+        .progress-orange {
+            background: var(--orange);
+        }
+
+        .progress-red {
+            background: var(--rouge);
+        }
+
+        /* =========================
+           DETAILS
+        ========================== */
+
+        .detail-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            margin-bottom: 15px;
+        }
+
+        .detail-icon {
+            width: 58px;
+            height: 58px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #263b49;
+
+            border-radius: 10px;
+
+            font-size: 30px;
+        }
+
+        .detail-title h3 {
+            font-size: 19px;
+        }
+
+        .detail-title p {
+            color: var(--texte-secondaire);
+
+            margin-top: 4px;
+
+            font-size: 12px;
+        }
+
+        .detail-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 8px;
+        }
+
+        .detail-box {
+            background: #0d1820;
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 7px;
+
+            padding: 10px;
+        }
+
+        .detail-box span {
+            display: block;
+
+            font-size: 10px;
+
+            color: var(--texte-secondaire);
+
+            margin-bottom: 4px;
+        }
+
+        .detail-box strong {
+            font-size: 12px;
+        }
+
+        .separator {
+            height: 1px;
+
+            background: var(--bordure);
+
+            margin: 15px 0;
+        }
+
+        .detail-section h4 {
+            margin-bottom: 10px;
+
+            font-size: 13px;
+        }
+
+        .liste {
+            display: grid;
+            gap: 7px;
+        }
+
+        .liste-item {
+            display: flex;
+            justify-content: space-between;
+
+            gap: 8px;
+
+            padding: 9px;
+
+            background: #0c171f;
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 7px;
+
+            font-size: 11px;
+        }
+
+        .liste-item span {
+            color: var(--texte-secondaire);
+        }
+
+        .actions {
+            display: grid;
+            gap: 8px;
+
+            margin-top: 15px;
+        }
+
+        /* =========================
+           MODAL
+        ========================== */
+
+        .modal-overlay {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(0, 0, 0, 0.72);
+
+            align-items: center;
+            justify-content: center;
+
+            z-index: 100;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            width: 95%;
+            max-width: 520px;
+
+            background: var(--panneau);
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 14px;
+
+            border-bottom: 1px solid var(--bordure);
+        }
+
+        .modal-content {
+            padding: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: var(--texte-secondaire);
+
+            font-size: 11px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+
+            padding: 10px;
+
+            background: #0c171f;
+
+            border: 1px solid var(--bordure);
+
+            border-radius: 6px;
+
+            color: white;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+
+            margin-top: 15px;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 1100px) {
+
+            .stats {
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+            .casernes-layout {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 750px) {
+
+            header {
+                flex-direction: column;
+
+                gap: 14px;
+            }
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .toolbar {
+                flex-direction: column;
+            }
+
+            .toolbar input,
+            .toolbar select {
+                width: 100%;
+            }
+
+            .caserne-info,
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            18
+        </div>
+
+        <div>
+
+            <h1>
+                Gestion Secours
+            </h1>
+
+            <p>
+                Gestion des casernes
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a href="index.html">
+            Accueil
+        </a>
+
+        <a href="cta.html">
+            CTA
+        </a>
+
+        <a href="operations.html">
+            Opérations
+        </a>
+
+        <a href="vehicules.html">
+            Véhicules
+        </a>
+
+        <a href="personnel.html">
+            Personnel
+        </a>
+
+    </nav>
+
+
+    <div class="horloge">
+
+        <div id="heure">
+            00:00:00
+        </div>
+
+        <div id="date">
+            --
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <div class="titre-page">
+
+        <h2>
+            Casernes et centres de secours
+        </h2>
+
+        <p>
+            Gérez vos bâtiments, leur capacité, leurs véhicules, leur personnel et leurs améliorations.
+        </p>
+
+    </div>
+
+
+    <!-- ======================
+         STATISTIQUES
+    ======================= -->
+
+    <section class="stats">
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Casernes
+            </div>
+
+            <div
+                class="stat-value"
+                id="statTotal"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Opérationnelles
+            </div>
+
+            <div
+                class="stat-value"
+                id="statActives"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Véhicules affectés
+            </div>
+
+            <div
+                class="stat-value"
+                id="statVehicules"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Personnel
+            </div>
+
+            <div
+                class="stat-value"
+                id="statPersonnel"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Coût mensuel
+            </div>
+
+            <div
+                class="stat-value"
+                id="statCout"
+            >
+                0 €
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ======================
+         OUTILS
+    ======================= -->
+
+    <section class="toolbar">
+
+        <input
+            type="text"
+            id="recherche"
+            placeholder="Rechercher une caserne..."
+            oninput="afficherCasernes()"
+        >
+
+
+        <select
+            id="filtreStatut"
+            onchange="afficherCasernes()"
+        >
+
+            <option value="">
+                Tous les statuts
+            </option>
+
+            <option value="ACTIVE">
+                Opérationnelle
+            </option>
+
+            <option value="CONSTRUCTION">
+                En travaux
+            </option>
+
+            <option value="FERMEE">
+                Fermée
+            </option>
+
+        </select>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="ouvrirAjout()"
+        >
+            + Construire une caserne
+        </button>
+
+    </section>
+
+
+    <section class="casernes-layout">
+
+        <!-- ======================
+             LISTE CASERNES
+        ======================= -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Centres de secours
+                </h3>
+
+                <span id="resultats">
+                    0 résultat
+                </span>
+
+            </div>
+
+
+            <div class="panel-content">
+
+                <div
+                    class="casernes-grid"
+                    id="listeCasernes"
+                >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======================
+             DETAILS
+        ======================= -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Fiche caserne
+                </h3>
+
+            </div>
+
+
+            <div
+                class="panel-content"
+                id="detailCaserne"
+            >
+
+                <p style="color:#94a8b7;">
+                    Sélectionnez une caserne.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     MODAL CREATION
+========================== -->
+
+<div
+    class="modal-overlay"
+    id="modalAjout"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3>
+                Construire une caserne
+            </h3>
+
+            <button
+                class="btn btn-secondary"
+                onclick="fermerAjout()"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <div class="modal-content">
+
+            <div class="form-group">
+
+                <label>
+                    Nom de la caserne
+                </label>
+
+                <input
+                    type="text"
+                    id="nouveauNom"
+                    placeholder="Exemple : Centre de secours Nord"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Localisation
+                </label>
+
+                <input
+                    type="text"
+                    id="nouvelleAdresse"
+                    placeholder="Adresse ou secteur"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Type de centre
+                </label>
+
+                <select id="nouveauType">
+
+                    <option value="CSP">
+                        Centre de secours principal
+                    </option>
+
+                    <option value="CS">
+                        Centre de secours
+                    </option>
+
+                    <option value="CPI">
+                        Centre de première intervention
+                    </option>
+
+                    <option value="SPECIALISE">
+                        Centre spécialisé
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Capacité véhicules
+                </label>
+
+                <input
+                    type="number"
+                    id="nouvelleCapacite"
+                    value="6"
+                    min="1"
+                >
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="fermerAjout()"
+                >
+                    Annuler
+                </button>
+
+
+                <button
+                    class="btn btn-primary"
+                    onclick="ajouterCaserne()"
+                >
+                    Construire
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+        =====================================================
+        DONNÉES DES CASERNES
+        =====================================================
+    */
+
+    let casernes = [
+
+        {
+            id: 1,
+
+            nom:
+                "Centre de secours principal",
+
+            type:
+                "CSP",
+
+            adresse:
+                "12 avenue des Secours",
+
+            secteur:
+                "Secteur Centre",
+
+            niveau:
+                3,
+
+            statut:
+                "ACTIVE",
+
+            capaciteVehicules:
+                12,
+
+            vehicules:
+                [
+                    "FPT 01",
+                    "FPT 02",
+                    "VSAV 01",
+                    "VSAV 03",
+                    "VSR 01",
+                    "EPA 01",
+                    "VLCDG 01"
+                ],
+
+            personnel:
+                42,
+
+            capacitePersonnel:
+                60,
+
+            etat:
+                92,
+
+            cout:
+                18200,
+
+            extensions:
+                [
+                    "Atelier mécanique",
+                    "Salle de formation",
+                    "Vestiaires niveau 2"
+                ]
+        },
+
+
+        {
+            id: 2,
+
+            nom:
+                "Centre de secours secondaire",
+
+            type:
+                "CS",
+
+            adresse:
+                "5 route du Lac",
+
+            secteur:
+                "Secteur Ouest",
+
+            niveau:
+                2,
+
+            statut:
+                "ACTIVE",
+
+            capaciteVehicules:
+                7,
+
+            vehicules:
+                [
+                    "VSAV 02",
+                    "CCF 01"
+                ],
+
+            personnel:
+                21,
+
+            capacitePersonnel:
+                32,
+
+            etat:
+                84,
+
+            cout:
+                9800,
+
+            extensions:
+                [
+                    "Réserve matériel"
+                ]
+        },
+
+
+        {
+            id: 3,
+
+            nom:
+                "Centre de secours Nord",
+
+            type:
+                "CPI",
+
+            adresse:
+                "Zone industrielle Nord",
+
+            secteur:
+                "Secteur Nord",
+
+            niveau:
+                1,
+
+            statut:
+                "CONSTRUCTION",
+
+            capaciteVehicules:
+                4,
+
+            vehicules:
+                [],
+
+            personnel:
+                0,
+
+            capacitePersonnel:
+                16,
+
+            etat:
+                61,
+
+            cout:
+                3200,
+
+            extensions:
+                []
+        }
+
+    ];
+
+
+    let caserneSelectionnee = null;
+
+
+    /*
+        =====================================================
+        HORLOGE
+        =====================================================
+    */
+
+    function mettreAJourHorloge() {
+
+        const maintenant =
+            new Date();
+
+
+        document.getElementById(
+            "heure"
+        ).textContent =
+            maintenant.toLocaleTimeString(
+                "fr-FR"
+            );
+
+
+        document.getElementById(
+            "date"
+        ).textContent =
+            maintenant.toLocaleDateString(
+                "fr-FR"
+            );
+
+    }
+
+
+    setInterval(
+        mettreAJourHorloge,
+        1000
+    );
+
+
+    mettreAJourHorloge();
+
+
+    /*
+        =====================================================
+        AFFICHAGE CASERNES
+        =====================================================
+    */
+
+    function afficherCasernes() {
+
+        const recherche =
+            document.getElementById(
+                "recherche"
+            )
+            .value
+            .toLowerCase();
+
+
+        const filtreStatut =
+            document.getElementById(
+                "filtreStatut"
+            ).value;
+
+
+        const filtres =
+            casernes.filter(
+                caserne => {
+
+                    const correspondRecherche =
+
+                        caserne.nom
+                            .toLowerCase()
+                            .includes(
+                                recherche
+                            )
+
+                        ||
+
+                        caserne.adresse
+                            .toLowerCase()
+                            .includes(
+                                recherche
+                            );
+
+
+                    const correspondStatut =
+
+                        !filtreStatut
+
+                        ||
+
+                        caserne.statut ===
+                            filtreStatut;
+
+
+                    return (
+
+                        correspondRecherche
+
+                        &&
+
+                        correspondStatut
+
+                    );
+
+                }
+            );
+
+
+        const zone =
+            document.getElementById(
+                "listeCasernes"
+            );
+
+
+        zone.innerHTML = "";
+
+
+        filtres.forEach(
+            caserne => {
+
+                const carte =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                carte.className =
+                    "caserne-card";
+
+
+                if (
+                    caserneSelectionnee &&
+                    caserneSelectionnee.id ===
+                    caserne.id
+                ) {
+
+                    carte.classList.add(
+                        "selected"
+                    );
+
+                }
+
+
+                carte.onclick =
+                    () =>
+                        selectionnerCaserne(
+                            caserne.id
+                        );
+
+
+                const occupationVehicules =
+
+                    Math.round(
+
+                        (
+                            caserne.vehicules.length
+                            /
+                            caserne.capaciteVehicules
+                        )
+
+                        * 100
+
+                    );
+
+
+                const occupationPersonnel =
+
+                    Math.round(
+
+                        (
+                            caserne.personnel
+                            /
+                            caserne.capacitePersonnel
+                        )
+
+                        * 100
+
+                    );
+
+
+                carte.innerHTML = `
+
+                    <div class="caserne-top">
+
+                        <div class="caserne-title">
+
+                            <div class="caserne-icon">
+                                🏢
+                            </div>
+
+                            <div>
+
+                                <h4>
+                                    ${caserne.nom}
+                                </h4>
+
+                                <p>
+                                    ${libelleType(
+                                        caserne.type
+                                    )}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        ${htmlStatut(
+                            caserne.statut
+                        )}
+
+                    </div>
+
+
+                    <div class="caserne-info">
+
+                        <div class="info-box">
+
+                            <span>
+                                Niveau
+                            </span>
+
+                            <strong>
+                                ${caserne.niveau}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <span>
+                                Secteur
+                            </span>
+
+                            <strong>
+                                ${caserne.secteur}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <span>
+                                Véhicules
+                            </span>
+
+                            <strong>
+                                ${caserne.vehicules.length}
+                                /
+                                ${caserne.capaciteVehicules}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <span>
+                                Personnel
+                            </span>
+
+                            <strong>
+                                ${caserne.personnel}
+                                /
+                                ${caserne.capacitePersonnel}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="progress-zone">
+
+                        <div class="progress-label">
+
+                            <span>
+                                Occupation véhicules
+                            </span>
+
+                            <strong>
+                                ${occupationVehicules} %
+                            </strong>
+
+                        </div>
+
+                        ${htmlProgression(
+                            occupationVehicules
+                        )}
+
+                    </div>
+
+
+                    <div class="progress-zone">
+
+                        <div class="progress-label">
+
+                            <span>
+                                État du bâtiment
+                            </span>
+
+                            <strong>
+                                ${caserne.etat} %
+                            </strong>
+
+                        </div>
+
+                        ${htmlProgression(
+                            caserne.etat
+                        )}
+
+                    </div>
+
+                `;
+
+
+                zone.appendChild(
+                    carte
+                );
+
+            }
+        );
+
+
+        document.getElementById(
+            "resultats"
+        ).textContent =
+            filtres.length +
+            (
+                filtres.length > 1
+                    ? " résultats"
+                    : " résultat"
+            );
+
+
+        mettreAJourStats();
+
+    }
+
+
+    /*
+        =====================================================
+        TYPES
+        =====================================================
+    */
+
+    function libelleType(type) {
+
+        const types = {
+
+            CSP:
+                "Centre de secours principal",
+
+            CS:
+                "Centre de secours",
+
+            CPI:
+                "Centre de première intervention",
+
+            SPECIALISE:
+                "Centre spécialisé"
+
+        };
+
+
+        return (
+            types[type]
+            ||
+            type
+        );
+
+    }
+
+
+    /*
+        =====================================================
+        STATUTS
+        =====================================================
+    */
+
+    function htmlStatut(statut) {
+
+        if (
+            statut === "ACTIVE"
+        ) {
+
+            return `
+
+                <span class="badge badge-active">
+                    OPÉRATIONNELLE
+                </span>
+
+            `;
+
+        }
+
+
+        if (
+            statut === "CONSTRUCTION"
+        ) {
+
+            return `
+
+                <span class="badge badge-construction">
+                    TRAVAUX
+                </span>
+
+            `;
+
+        }
+
+
+        return `
+
+            <span class="badge badge-fermee">
+                FERMÉE
+            </span>
+
+        `;
+
+    }
+
+
+    /*
+        =====================================================
+        PROGRESSION
+        =====================================================
+    */
+
+    function htmlProgression(valeur) {
+
+        let classe =
+            "";
+
+
+        if (
+            valeur < 40
+        ) {
+
+            classe =
+                "progress-red";
+
+        }
+
+        else if (
+            valeur < 70
+        ) {
+
+            classe =
+                "progress-orange";
+
+        }
+
+
+        return `
+
+            <div class="progress">
+
+                <div
+                    class="progress-bar ${classe}"
+                    style="width:${valeur}%"
+                ></div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /*
+        =====================================================
+        STATS
+        =====================================================
+    */
+
+    function mettreAJourStats() {
+
+        document.getElementById(
+            "statTotal"
+        ).textContent =
+            casernes.length;
+
+
+        document.getElementById(
+            "statActives"
+        ).textContent =
+            casernes.filter(
+                caserne =>
+                    caserne.statut ===
+                    "ACTIVE"
+            ).length;
+
+
+        document.getElementById(
+            "statVehicules"
+        ).textContent =
+
+            casernes.reduce(
+                (
+                    total,
+                    caserne
+                ) =>
+                    total +
+                    caserne.vehicules.length,
+                0
+            );
+
+
+        document.getElementById(
+            "statPersonnel"
+        ).textContent =
+
+            casernes.reduce(
+                (
+                    total,
+                    caserne
+                ) =>
+                    total +
+                    caserne.personnel,
+                0
+            );
+
+
+        const cout =
+            casernes.reduce(
+                (
+                    total,
+                    caserne
+                ) =>
+                    total +
+                    caserne.cout,
+                0
+            );
+
+
+        document.getElementById(
+            "statCout"
+        ).textContent =
+            cout.toLocaleString(
+                "fr-FR"
+            )
+            +
+            " €";
+
+    }
+
+
+    /*
+        =====================================================
+        SELECTION
+        =====================================================
+    */
+
+    function selectionnerCaserne(id) {
+
+        caserneSelectionnee =
+            casernes.find(
+                caserne =>
+                    caserne.id === id
+            );
+
+
+        afficherCasernes();
+
+        afficherDetail();
+
+    }
+
+
+    /*
+        =====================================================
+        DETAILS
+        =====================================================
+    */
+
+    function afficherDetail() {
+
+        if (
+            !caserneSelectionnee
+        ) {
+            return;
+        }
+
+
+        const c =
+            caserneSelectionnee;
+
+
+        const zone =
+            document.getElementById(
+                "detailCaserne"
+            );
+
+
+        const vehiculesHTML =
+
+            c.vehicules.length === 0
+
+            ? `
+                <div class="liste-item">
+                    Aucun véhicule affecté
+                </div>
+            `
+
+            :
+
+            c.vehicules
+                .map(
+                    vehicule => `
+
+                        <div class="liste-item">
+
+                            <strong>
+                                🚒 ${vehicule}
+                            </strong>
+
+                            <span>
+                                Affecté
+                            </span>
+
+                        </div>
+
+                    `
+                )
+                .join("");
+
+
+        const extensionsHTML =
+
+            c.extensions.length === 0
+
+            ? `
+                <div class="liste-item">
+                    Aucune extension
+                </div>
+            `
+
+            :
+
+            c.extensions
+                .map(
+                    extension => `
+
+                        <div class="liste-item">
+
+                            <strong>
+                                ${extension}
+                            </strong>
+
+                            <span>
+                                Installée
+                            </span>
+
+                        </div>
+
+                    `
+                )
+                .join("");
+
+
+        zone.innerHTML = `
+
+            <div class="detail-title">
+
+                <div class="detail-icon">
+                    🏢
+                </div>
+
+                <div>
+
+                    <h3>
+                        ${c.nom}
+                    </h3>
+
+                    <p>
+                        ${c.adresse}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            ${htmlStatut(
+                c.statut
+            )}
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-grid">
+
+                <div class="detail-box">
+
+                    <span>
+                        Type
+                    </span>
+
+                    <strong>
+                        ${libelleType(
+                            c.type
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Niveau
+                    </span>
+
+                    <strong>
+                        ${c.niveau}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Secteur
+                    </span>
+
+                    <strong>
+                        ${c.secteur}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>
+                        Coût mensuel
+                    </span>
+
+                    <strong>
+                        ${c.cout.toLocaleString(
+                            "fr-FR"
+                        )} €
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Véhicules
+                </h4>
+
+                <div class="liste">
+                    ${vehiculesHTML}
+                </div>
+
+            </div>
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Personnel
+                </h4>
+
+                <div class="liste">
+
+                    <div class="liste-item">
+
+                        <strong>
+                            Effectif actuel
+                        </strong>
+
+                        <span>
+                            ${c.personnel}
+                        </span>
+
+                    </div>
+
+
+                    <div class="liste-item">
+
+                        <strong>
+                            Capacité maximale
+                        </strong>
+
+                        <span>
+                            ${c.capacitePersonnel}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    Extensions
+                </h4>
+
+                <div class="liste">
+                    ${extensionsHTML}
+                </div>
+
+            </div>
+
+
+            <div class="separator"></div>
+
+
+            <div class="detail-section">
+
+                <h4>
+                    État du bâtiment
+                </h4>
+
+                <div class="progress-label">
+
+                    <span>
+                        État général
+                    </span>
+
+                    <strong>
+                        ${c.etat} %
+                    </strong>
+
+                </div>
+
+                ${htmlProgression(
+                    c.etat
+                )}
+
+            </div>
+
+
+            <div class="actions">
+
+                <button
+                    class="btn btn-success"
+                    onclick="ameliorerCaserne()"
+                >
+                    ⬆ Améliorer la caserne
+                </button>
+
+
+                <button
+                    class="btn btn-secondary"
+                    onclick="ajouterExtension()"
+                >
+                    🏗 Ajouter une extension
+                </button>
+
+
+                <button
+                    class="btn btn-warning"
+                    onclick="reparerCaserne()"
+                >
+                    🔧 Réparer le bâtiment
+                </button>
+
+
+                <button
+                    class="btn btn-danger"
+                    onclick="changerStatut()"
+                >
+                    Modifier le statut
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /*
+        =====================================================
+        AMELIORATIONS
+        =====================================================
+    */
+
+    function ameliorerCaserne() {
+
+        if (
+            !caserneSelectionnee
+        ) {
+            return;
+        }
+
+
+        const cout =
+            caserneSelectionnee.niveau
+            * 25000;
+
+
+        const confirmation =
+            confirm(
+                "Améliorer cette caserne pour "
+                +
+                cout.toLocaleString(
+                    "fr-FR"
+                )
+                +
+                " € ?"
+            );
+
+
+        if (
+            !confirmation
+        ) {
+            return;
+        }
+
+
+        caserneSelectionnee.niveau++;
+
+
+        caserneSelectionnee.capaciteVehicules +=
+            2;
+
+
+        caserneSelectionnee.capacitePersonnel +=
+            8;
+
+
+        caserneSelectionnee.cout +=
+            1500;
+
+
+        sauvegarder();
+
+        afficherCasernes();
+
+        afficherDetail();
+
+    }
+
+
+    function ajouterExtension() {
+
+        if (
+            !caserneSelectionnee
+        ) {
+            return;
+        }
+
+
+        const extension =
+            prompt(
+                "Nom de la nouvelle extension :",
+                "Atelier mécanique"
+            );
+
+
+        if (
+            !extension
+        ) {
+            return;
+        }
+
+
+        caserneSelectionnee.extensions.push(
+            extension
+        );
+
+
+        caserneSelectionnee.cout +=
+            500;
+
+
+        sauvegarder();
+
+        afficherDetail();
+
+    }
+
+
+    function reparerCaserne() {
+
+        if (
+            !caserneSelectionnee
+        ) {
+            return;
+        }
+
+
+        caserneSelectionnee.etat =
+            100;
+
+
+        sauvegarder();
+
+        afficherCasernes();
+
+        afficherDetail();
+
+    }
+
+
+    /*
+        =====================================================
+        STATUT
+        =====================================================
+    */
+
+    function changerStatut() {
+
+        if (
+            !caserneSelectionnee
+        ) {
+            return;
+        }
+
+
+        const choix =
+            prompt(
+                "Nouveau statut : ACTIVE, CONSTRUCTION ou FERMEE",
+                caserneSelectionnee.statut
+            );
+
+
+        if (
+            !choix
+        ) {
+            return;
+        }
+
+
+        const statut =
+            choix.toUpperCase();
+
+
+        if (
+            ![
+                "ACTIVE",
+                "CONSTRUCTION",
+                "FERMEE"
+            ].includes(
+                statut
+            )
+        ) {
+
+            alert(
+                "Statut invalide."
+            );
+
+            return;
+
+        }
+
+
+        caserneSelectionnee.statut =
+            statut;
+
+
+        sauvegarder();
+
+        afficherCasernes();
+
+        afficherDetail();
+
+    }
+
+
+    /*
+        =====================================================
+        AJOUT CASERNE
+        =====================================================
+    */
+
+    function ouvrirAjout() {
+
+        document.getElementById(
+            "modalAjout"
+        ).classList.add(
+            "active"
+        );
+
+    }
+
+
+    function fermerAjout() {
+
+        document.getElementById(
+            "modalAjout"
+        ).classList.remove(
+            "active"
+        );
+
+    }
+
+
+    function ajouterCaserne() {
+
+        const nom =
+            document.getElementById(
+                "nouveauNom"
+            )
+            .value
+            .trim();
+
+
+        const adresse =
+            document.getElementById(
+                "nouvelleAdresse"
+            )
+            .value
+            .trim();
+
+
+        const type =
+            document.getElementById(
+                "nouveauType"
+            ).value;
+
+
+        const capacite =
+            Number(
+                document.getElementById(
+                    "nouvelleCapacite"
+                ).value
+            );
+
+
+        if (
+            !nom ||
+            !adresse
+        ) {
+
+            alert(
+                "Complétez le nom et l'adresse."
+            );
+
+            return;
+
+        }
+
+
+        casernes.push({
+
+            id:
+                Date.now(),
+
+            nom:
+                nom,
+
+            type:
+                type,
+
+            adresse:
+                adresse,
+
+            secteur:
+                "Nouveau secteur",
+
+            niveau:
+                1,
+
+            statut:
+                "CONSTRUCTION",
+
+            capaciteVehicules:
+                capacite,
+
+            vehicules:
+                [],
+
+            personnel:
+                0,
+
+            capacitePersonnel:
+                capacite * 4,
+
+            etat:
+                50,
+
+            cout:
+                2500,
+
+            extensions:
+                []
+
+        });
+
+
+        document.getElementById(
+            "nouveauNom"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "nouvelleAdresse"
+        ).value =
+            "";
+
+
+        sauvegarder();
+
+        fermerAjout();
+
+        afficherCasernes();
+
+    }
+
+
+    /*
+        =====================================================
+        SAUVEGARDE
+        =====================================================
+    */
+
+    function sauvegarder() {
+
+        localStorage.setItem(
+
+            "casernesSecours",
+
+            JSON.stringify(
+                casernes
+            )
+
+        );
+
+    }
+
+
+    function chargerSauvegarde() {
+
+        const sauvegarde =
+            localStorage.getItem(
+                "casernesSecours"
+            );
+
+
+        if (
+            !sauvegarde
+        ) {
+            return;
+        }
+
+
+        try {
+
+            const donnees =
+                JSON.parse(
+                    sauvegarde
+                );
+
+
+            if (
+                Array.isArray(
+                    donnees
+                )
+            ) {
+
+                casernes =
+                    donnees;
+
+            }
+
+        }
+
+        catch (
+            erreur
+        ) {
+
+            console.error(
+                "Erreur de chargement des casernes :",
+                erreur
+            );
+
+        }
+
+    }
+
+
+    /*
+        =====================================================
+        DEMARRAGE
+        =====================================================
+    */
+
+    chargerSauvegarde();
+
+    afficherCasernes();
+
+
+    if (
+        casernes.length > 0
+    ) {
+
+        selectionnerCaserne(
+            casernes[0].id
+        );
+
+    }
+
+</script>
+
+</body>
+</html>
+```
