@@ -61,7 +61,6 @@
         }
       ]
     },
-
     "evaRepondRetour": {
       "dialogues": [
         {
@@ -104,7 +103,6 @@
         }
       ]
     },
-
     "evaRepondBonsoir": {
       "dialogues": [
         {
@@ -147,7 +145,6 @@
         }
       ]
     },
-
     "evaRepondPonctualite": {
       "dialogues": [
         {
@@ -190,7 +187,6 @@
         }
       ]
     },
-
     "evaToucheeAttention": {
       "dialogues": [
         {
@@ -232,7 +228,6 @@
         }
       ]
     },
-
     "evaReagitTaquinerie": {
       "dialogues": [
         {
@@ -263,7 +258,6 @@
         }
       ]
     },
-
     "evaReagitAttente": {
       "dialogues": [
         {
@@ -310,7 +304,6 @@
         }
       ]
     },
-
     "evaReagitEmelyne": {
       "dialogues": [
         {
@@ -354,7 +347,6 @@
         }
       ]
     },
-
     "evaQuestionEmelyne": {
       "dialogues": [
         {
@@ -401,7 +393,6 @@
         }
       ]
     },
-
     "retourSujetBryan": {
       "dialogues": [
         {
@@ -428,7 +419,6 @@
         }
       ]
     },
-
     "evaRaconteSoiree": {
       "dialogues": [
         {
@@ -491,7 +481,7 @@
           "next": "evaApprecieReaction"
         }
       ]
-    }
+    },
     "evaParleBryan": {
       "dialogues": [
         {
@@ -539,7 +529,6 @@
         }
       ]
     },
-
     "evaParleDelle": {
       "dialogues": [
         {
@@ -614,7 +603,6 @@
         }
       ]
     },
-
     "evaReagitConfession": {
       "dialogues": [
         {
@@ -653,7 +641,6 @@
         }
       ]
     },
-
     "evaRepondAttiranceBryan": {
       "dialogues": [
         {
@@ -712,7 +699,6 @@
         }
       ]
     },
-
     "evaReagitJalousie": {
       "dialogues": [
         {
@@ -761,7 +747,6 @@
         }
       ]
     },
-
     "evaDouteCuriosite": {
       "dialogues": [
         {
@@ -804,7 +789,6 @@
         }
       ]
     },
-
     "evaApprecieReaction": {
       "dialogues": [
         {
@@ -848,7 +832,6 @@
         }
       ]
     },
-
     "evaRassuree": {
       "dialogues": [
         {
@@ -879,7 +862,6 @@
         }
       ]
     },
-
     "evaPoseLimiteBryan": {
       "dialogues": [
         {
@@ -923,7 +905,6 @@
         }
       ]
     },
-
     "evaAccepteExcuses": {
       "dialogues": [
         {
@@ -951,7 +932,6 @@
         }
       ]
     },
-
     "evaMetFinConversation": {
       "dialogues": [
         {
@@ -979,7 +959,6 @@
         }
       ]
     },
-
     "evaDemandeAvisBryan": {
       "dialogues": [
         {
@@ -1019,7 +998,6 @@
         }
       ]
     },
-
     "evaDemandeRaisonBryan": {
       "dialogues": [
         {
@@ -1056,8 +1034,8 @@
           "next": "evaPoseLimiteBryan"
         }
       ]
-    }
-        "evaQuestionPersonnelle": {
+    },
+    "evaQuestionPersonnelle": {
       "dialogues": [
         {
           "personnage": "eva",
@@ -1109,7 +1087,6 @@
         }
       ]
     },
-
     "evaApprecieHonnêteté": {
       "dialogues": [
         {
@@ -1151,7 +1128,6 @@
         }
       ]
     },
-
     "evaReagitSentiments": {
       "dialogues": [
         {
@@ -1199,7 +1175,6 @@
         }
       ]
     },
-
     "evaRefuseComparaison": {
       "dialogues": [
         {
@@ -1230,7 +1205,6 @@
         }
       ]
     },
-
     "evaFatigue": {
       "dialogues": [
         {
@@ -1262,7 +1236,6 @@
         }
       ]
     },
-
     "finConversationCalme": {
       "dialogues": [
         {
@@ -1300,7 +1273,6 @@
         }
       ]
     },
-
     "evaBonneNuit": {
       "dialogues": [
         {
@@ -1324,7 +1296,6 @@
         }
       ]
     },
-
     "evaBonneNuitAffectueuse": {
       "dialogues": [
         {
@@ -1348,7 +1319,6 @@
         }
       ]
     },
-
     "finChapitre4": {
       "dialogues": [
         {
@@ -1379,7 +1349,6 @@
         }
       ]
     },
-
     "finChapitre4Froide": {
       "dialogues": [
         {
@@ -1404,7 +1373,7 @@
           "texte": "Continuer vers le chapitre 5",
           "message": {
             "personnage": "narrateur",
-            "texte": "Une nouvelle journée commence bientôt..."
+            "texte": "La conversation reprendra à 22 h..."
           },
           "next": "chapitre5"
         }
