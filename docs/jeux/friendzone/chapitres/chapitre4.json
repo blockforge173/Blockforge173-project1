@@ -1350,43 +1350,32 @@
       ]
     },
     "finChapitre4Froide": {
-      "dialogues": [
-        {
-          "personnage": "narrateur",
-          "texte": "La conversation s'est terminée plus tôt que prévu."
-        },
-        {
-          "personnage": "narrateur",
-          "texte": "Ton insistance à propos de Bryan a visiblement déplu à Eva."
-        },
-        {
-          "personnage": "narrateur",
-          "texte": "Il faudra probablement regagner sa confiance."
-        },
-        {
-          "personnage": "narrateur",
-          "texte": "Chapitre 4 terminé."
-        }
-      ],
-      "finChapitre4": {
-        "dialogues": [
-          {
-            "personnage": "narrateur",
-            "texte": "Chapitre 4 terminé."
-          }
-        ],
-        "choix": [
-          {
-            "texte": "Continuer vers le chapitre 5",
-            "message": {
-              "personnage": "narrateur",
-              "texte": "La conversation reprendra à 22 h..."
-            },
-            "next": "chapitre5"
-          }
-        ]
-      }
+  "dialogues": [
+    {
+      "personnage": "narrateur",
+      "texte": "La conversation s'est terminée plus tôt que prévu."
+    },
+    {
+      "personnage": "narrateur",
+      "texte": "Ton insistance à propos de Bryan a visiblement déplu à Eva."
+    },
+    {
+      "personnage": "narrateur",
+      "texte": "Il faudra probablement regagner sa confiance."
+    },
+    {
+      "personnage": "narrateur",
+      "texte": "Chapitre 4 terminé."
     }
-  }
+  ],
+  "choix": [
+    {
+      "texte": "Continuer vers le chapitre 5",
+      "message": {
+        "personnage": "narrateur",
+        "texte": "Une nouvelle journée commence bientôt..."
+      },
+      "next": "chapitre5"
+    }
+  ]
 }
-
