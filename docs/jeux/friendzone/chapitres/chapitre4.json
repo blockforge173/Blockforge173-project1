@@ -61,6 +61,7 @@
         }
       ]
     },
+
     "evaRepondRetour": {
       "dialogues": [
         {
@@ -103,6 +104,7 @@
         }
       ]
     },
+
     "evaRepondBonsoir": {
       "dialogues": [
         {
@@ -145,6 +147,7 @@
         }
       ]
     },
+
     "evaRepondPonctualite": {
       "dialogues": [
         {
@@ -187,6 +190,7 @@
         }
       ]
     },
+
     "evaToucheeAttention": {
       "dialogues": [
         {
@@ -228,6 +232,7 @@
         }
       ]
     },
+
     "evaReagitTaquinerie": {
       "dialogues": [
         {
@@ -258,6 +263,7 @@
         }
       ]
     },
+
     "evaReagitAttente": {
       "dialogues": [
         {
@@ -304,6 +310,7 @@
         }
       ]
     },
+
     "evaReagitEmelyne": {
       "dialogues": [
         {
@@ -347,6 +354,7 @@
         }
       ]
     },
+
     "evaQuestionEmelyne": {
       "dialogues": [
         {
@@ -393,6 +401,7 @@
         }
       ]
     },
+
     "retourSujetBryan": {
       "dialogues": [
         {
@@ -419,6 +428,7 @@
         }
       ]
     },
+
     "evaRaconteSoiree": {
       "dialogues": [
         {
@@ -481,7 +491,7 @@
           "next": "evaApprecieReaction"
         }
       ]
-    },
+    }
     "evaParleBryan": {
       "dialogues": [
         {
@@ -529,6 +539,7 @@
         }
       ]
     },
+
     "evaParleDelle": {
       "dialogues": [
         {
@@ -603,6 +614,7 @@
         }
       ]
     },
+
     "evaReagitConfession": {
       "dialogues": [
         {
@@ -641,6 +653,7 @@
         }
       ]
     },
+
     "evaRepondAttiranceBryan": {
       "dialogues": [
         {
@@ -699,6 +712,7 @@
         }
       ]
     },
+
     "evaReagitJalousie": {
       "dialogues": [
         {
@@ -747,6 +761,7 @@
         }
       ]
     },
+
     "evaDouteCuriosite": {
       "dialogues": [
         {
@@ -789,6 +804,7 @@
         }
       ]
     },
+
     "evaApprecieReaction": {
       "dialogues": [
         {
@@ -832,6 +848,7 @@
         }
       ]
     },
+
     "evaRassuree": {
       "dialogues": [
         {
@@ -862,6 +879,7 @@
         }
       ]
     },
+
     "evaPoseLimiteBryan": {
       "dialogues": [
         {
@@ -905,6 +923,7 @@
         }
       ]
     },
+
     "evaAccepteExcuses": {
       "dialogues": [
         {
@@ -932,6 +951,7 @@
         }
       ]
     },
+
     "evaMetFinConversation": {
       "dialogues": [
         {
@@ -959,6 +979,7 @@
         }
       ]
     },
+
     "evaDemandeAvisBryan": {
       "dialogues": [
         {
@@ -998,6 +1019,7 @@
         }
       ]
     },
+
     "evaDemandeRaisonBryan": {
       "dialogues": [
         {
@@ -1034,8 +1056,8 @@
           "next": "evaPoseLimiteBryan"
         }
       ]
-    },
-    "evaQuestionPersonnelle": {
+    }
+        "evaQuestionPersonnelle": {
       "dialogues": [
         {
           "personnage": "eva",
@@ -1087,6 +1109,7 @@
         }
       ]
     },
+
     "evaApprecieHonnêteté": {
       "dialogues": [
         {
@@ -1128,6 +1151,7 @@
         }
       ]
     },
+
     "evaReagitSentiments": {
       "dialogues": [
         {
@@ -1175,6 +1199,7 @@
         }
       ]
     },
+
     "evaRefuseComparaison": {
       "dialogues": [
         {
@@ -1205,6 +1230,7 @@
         }
       ]
     },
+
     "evaFatigue": {
       "dialogues": [
         {
@@ -1236,6 +1262,7 @@
         }
       ]
     },
+
     "finConversationCalme": {
       "dialogues": [
         {
@@ -1273,6 +1300,7 @@
         }
       ]
     },
+
     "evaBonneNuit": {
       "dialogues": [
         {
@@ -1296,6 +1324,7 @@
         }
       ]
     },
+
     "evaBonneNuitAffectueuse": {
       "dialogues": [
         {
@@ -1319,6 +1348,7 @@
         }
       ]
     },
+
     "finChapitre4": {
       "dialogues": [
         {
@@ -1349,33 +1379,36 @@
         }
       ]
     },
+
     "finChapitre4Froide": {
-  "dialogues": [
-    {
-      "personnage": "narrateur",
-      "texte": "La conversation s'est terminée plus tôt que prévu."
-    },
-    {
-      "personnage": "narrateur",
-      "texte": "Ton insistance à propos de Bryan a visiblement déplu à Eva."
-    },
-    {
-      "personnage": "narrateur",
-      "texte": "Il faudra probablement regagner sa confiance."
-    },
-    {
-      "personnage": "narrateur",
-      "texte": "Chapitre 4 terminé."
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "La conversation s'est terminée plus tôt que prévu."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Ton insistance à propos de Bryan a visiblement déplu à Eva."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Il faudra probablement regagner sa confiance."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Chapitre 4 terminé."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Continuer vers le chapitre 5",
+          "message": {
+            "personnage": "narrateur",
+            "texte": "Une nouvelle journée commence bientôt..."
+          },
+          "next": "chapitre5"
+        }
+      ]
     }
-  ],
-  "choix": [
-    {
-      "texte": "Continuer vers le chapitre 5",
-      "message": {
-        "personnage": "narrateur",
-        "texte": "Une nouvelle journée commence bientôt..."
-      },
-      "next": "chapitre5"
-    }
-  ]
+  }
 }
