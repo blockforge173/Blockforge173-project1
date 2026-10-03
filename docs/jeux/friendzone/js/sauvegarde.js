@@ -87,6 +87,9 @@ const sauvegardeManager = {
             repasSeulEva: false,
 
             infoEvaZoeAnciennesAmies: false,
+            
+            //conséquences du chapitre 4 
+            evaFroideApresChapitre4: false,
 
             // Chapitres 5 à 7
             refusRepasEva: false,
