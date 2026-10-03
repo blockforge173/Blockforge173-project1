@@ -1,3 +1,4 @@
+
 {
   "titre": "Chapitre 4 - La conversation de 22 heures",
   "musique": "repas_eva",
@@ -899,7 +900,8 @@
           },
           "effet": {
             "relationEva": -3,
-            "confianceEva": -4
+            "confianceEva": -4,
+            "evaFroideApresChapitre4": true
           },
           "next": "evaMetFinConversation"
         }
@@ -1373,7 +1375,7 @@
           "texte": "Continuer vers le chapitre 5",
           "message": {
             "personnage": "narrateur",
-            "texte": "La conversation reprendra à 22 h..."
+            "texte": "Le lendemain, il faudra faire face aux conséquences de cette conversation."
           },
           "next": "chapitre5"
         }
