@@ -28,6 +28,14 @@
       "conditions": [
         {
           "si": {
+            "variable": "evaFroideApresChapitre4",
+            "operateur": "===",
+            "valeur": true
+          },
+          "next": "lendemainDisputeEva"
+        },
+        {
+          "si": {
             "variable": "confianceEva",
             "operateur": "<=",
             "valeur": 2
@@ -39,6 +47,289 @@
         }
       ],
       "choix": []
+    },
+    "lendemainDisputeEva": {
+      "fond": "couloir_rencontre_eva",
+      "ambiance": "class",
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "En entrant dans le hall, {{nomJoueur}} aperçoit Eva près des casiers."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Pendant une seconde, leurs regards se croisent."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Eva détourne les yeux presque immédiatement."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "La conversation de la veille revient aussitôt à l'esprit de {{nomJoueur}}."
+        },
+        {
+          "personnage": "eva",
+          "texte": "Salut.",
+          "son": "eva"
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Son ton n'est pas agressif. Seulement beaucoup plus distant que d'habitude."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Présenter tes excuses pour hier soir",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Eva... pour hier soir, je suis désolé. Tu m'avais demandé de respecter ton choix et j'ai insisté."
+          },
+          "effet": {
+            "confianceEva": 3,
+            "relationEva": 1,
+            "excuseApresDisputeEva": true
+          },
+          "next": "evaReagitExcusesChap5"
+        },
+        {
+          "texte": "La saluer sans reparler de la dispute",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Salut."
+          },
+          "effet": {
+            "confianceEva": -1,
+            "disputeEvaIgnoree": true
+          },
+          "next": "evaDistanceChap5"
+        },
+        {
+          "texte": "Maintenir ce que tu as dit sur Bryan",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Je sais que tu n'as pas aimé ce que j'ai dit hier, mais je pense toujours la même chose à propos de Bryan."
+          },
+          "effet": {
+            "relationEva": -3,
+            "confianceEva": -3,
+            "conflitEvaBryanAggrave": true
+          },
+          "next": "evaRefuseDiscussionChap5"
+        }
+      ]
+    },
+    "evaReagitExcusesChap5": {
+      "dialogues": [
+        {
+          "personnage": "narrateur",
+          "texte": "Eva reste silencieuse quelques secondes."
+        },
+        {
+          "personnage": "eva",
+          "texte": "J'étais vraiment énervée hier.",
+          "son": "eva"
+        },
+        {
+          "personnage": "eva",
+          "texte": "Ce n'est pas parce que tu n'aimes pas Bryan que ça me dérange."
+        },
+        {
+          "personnage": "eva",
+          "texte": "C'est le fait que tu aies continué après que je t'ai demandé d'arrêter."
+        },
+        {
+          "personnage": "eva",
+          "texte": "Je veux pouvoir faire mes propres choix, même si tu n'es pas d'accord avec eux."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Reconnaître qu'elle a raison",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Tu as raison. Je n'avais pas à insister."
+          },
+          "effet": {
+            "confianceEva": 3,
+            "relationEva": 2,
+            "limiteEvaRespecteeApresDispute": true
+          },
+          "next": "evaAccepteExcusesChap5"
+        },
+        {
+          "texte": "Expliquer que tu étais jaloux",
+          "message": {
+            "personnage": "joueur",
+            "texte": "J'étais jaloux. Ce n'est pas une excuse, mais c'est pour ça que j'ai réagi comme ça."
+          },
+          "effet": {
+            "confianceEva": 2,
+            "relationEva": 1,
+            "jalousieEva": 1,
+            "joueurAvoueJalousieApresDispute": true
+          },
+          "next": "evaAccepteExcusesChap5"
+        }
+      ]
+    },
+    "evaAccepteExcusesChap5": {
+      "dialogues": [
+        {
+          "personnage": "eva",
+          "texte": "D'accord.",
+          "son": "eva"
+        },
+        {
+          "personnage": "eva",
+          "texte": "Merci de me le dire."
+        },
+        {
+          "personnage": "eva",
+          "texte": "Je ne vais pas faire comme si rien ne s'était passé..."
+        },
+        {
+          "personnage": "eva",
+          "texte": "Mais je préfère ça plutôt que de rester fâchée contre toi."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "La tension semble retomber légèrement, sans disparaître complètement."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Continuer la journée",
+          "message": {
+            "personnage": "narrateur",
+            "texte": "{{nomJoueur}} décide de ne pas pousser la conversation davantage."
+          },
+          "next": "arriveeCoursCommun"
+        }
+      ]
+    },
+    "evaDistanceChap5": {
+      "dialogues": [
+        {
+          "personnage": "eva",
+          "texte": "Salut.",
+          "son": "eva"
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Un silence inconfortable s'installe."
+        },
+        {
+          "personnage": "eva",
+          "texte": "Je dois rejoindre Zoé avant le cours."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Eva referme son casier."
+        },
+        {
+          "personnage": "eva",
+          "texte": "À plus tard."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Elle s'éloigne avant que {{nomJoueur}} ait réellement le temps de poursuivre la conversation."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "La laisser partir",
+          "message": {
+            "personnage": "narrateur",
+            "texte": "{{nomJoueur}} comprend que la conversation de la veille n'est pas encore oubliée."
+          },
+          "next": "arriveeCoursCommun"
+        }
+      ]
+    },
+    "evaRefuseDiscussionChap5": {
+      "dialogues": [
+        {
+          "personnage": "eva",
+          "texte": "Sérieusement ?",
+          "son": "eva"
+        },
+        {
+          "personnage": "eva",
+          "texte": "C'est exactement pour ça que j'ai arrêté de te parler hier."
+        },
+        {
+          "personnage": "eva",
+          "texte": "Tu peux penser ce que tu veux de Bryan."
+        },
+        {
+          "personnage": "eva",
+          "texte": "Mais je ne vais pas continuer à me justifier auprès de toi."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Eva récupère ses affaires et referme brusquement son casier."
+        },
+        {
+          "personnage": "eva",
+          "texte": "J'ai besoin que tu me laisses tranquille pour le moment."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Respecter sa demande",
+          "message": {
+            "personnage": "joueur",
+            "texte": "D'accord."
+          },
+          "effet": {
+            "confianceEva": 1,
+            "evaDemandeDistance": true
+          },
+          "next": "arriveeCoursCommun"
+        },
+        {
+          "texte": "Essayer encore de te justifier",
+          "message": {
+            "personnage": "joueur",
+            "texte": "Je cherche seulement à te protéger."
+          },
+          "effet": {
+            "relationEva": -3,
+            "confianceEva": -4,
+            "evaDemandeDistance": true,
+            "joueurIgnoreLimiteEvaDeuxFois": true
+          },
+          "next": "evaCoupeCourtChap5"
+        }
+      ]
+    },
+    "evaCoupeCourtChap5": {
+      "dialogues": [
+        {
+          "personnage": "eva",
+          "texte": "Je t'ai demandé de me laisser tranquille. Respecte au moins ça.",
+          "son": "eva"
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "Eva s'éloigne sans attendre de réponse."
+        },
+        {
+          "personnage": "narrateur",
+          "texte": "{{nomJoueur}} reste un instant près des casiers, puis prend la direction de la salle de cours."
+        }
+      ],
+      "choix": [
+        {
+          "texte": "Rejoindre le cours",
+          "message": {
+            "personnage": "narrateur",
+            "texte": "La discussion est terminée, mais la tension entre vous n'a pas disparu."
+          },
+          "next": "arriveeCoursCommun"
+        }
+      ]
     },
     "arriveeEvaPositive": {
       "dialogues": [
